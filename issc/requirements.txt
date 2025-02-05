@@ -1,0 +1,10 @@
+asgiref==3.8.1
+Django==5.1.6
+mysqlclient==2.2.7
+python-dotenv==1.0.1
+setuptools==75.8.0
+sqlparse==0.5.3
+tzdata==2025.1
+wheel==0.45.1
+whitenoise==6.8.2
+Python==3.12.8
