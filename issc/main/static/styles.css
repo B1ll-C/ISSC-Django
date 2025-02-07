@@ -1,3 +1,197 @@
-h1 {
-    color: blue;
-}
+ /* Global Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fff;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+            color: #333;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: #F1F1F1; /* Light Gray */
+            color: maroon;
+            height: 100vh;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            transition: width 0.3s ease, background-color 0.3s ease;
+            overflow: hidden;
+            border-right: 2px solid #ddd;
+        }
+
+        .sidebar.collapsed {
+            width: 70px;
+            background-color: #f1f1f1; /* Lighter Gray */
+        }
+
+        .sidebar h2 {
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed h2 {
+            opacity: 0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 1rem;
+        }
+
+        .sidebar ul li a {
+            color: maroon; /* Maroon text color */
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            padding: 0.8rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+        }
+
+        .sidebar ul li a .icon {
+            font-size: 1.6rem;
+            margin-right: 1rem;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #f1f1f1;
+            color: maroon; 
+            transform: translateX(5px);
+        }
+
+        /* .sidebar ul li a:active {
+            background-color: #fff;
+            color: maroon;
+        } */
+
+        .sidebar .user-info {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid #ddd;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed .user-info {
+            opacity: 0;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background-color: #f1f1f1; /* Light Gray */
+            color: maroon;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .navbar h1,
+        .navbar h2 {
+            margin: 0;
+            font-size: 1rem;
+            color: maroon; /* Maroon text color */
+        }
+
+        .navbar .toggle-btn {
+            background-color: transparent;
+            border: none;
+            color: maroon; /* Maroon button color */
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+
+        /* Container Styles */
+        .container {
+            margin-left: 250px;
+            padding: 2rem;
+            flex-grow: 1;
+            overflow-y: auto;
+            transition: margin-left 0.3s ease;
+            margin-top: 80px;
+        }
+
+        .container.collapsed {
+            margin-left: 80px;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #f1f1f1; /* Light Gray */
+            color: maroon;
+            text-align: center;
+            padding: 1.2rem;
+            margin-top: auto;
+        }
+
+        /* Link Styling */
+        .texttitle {
+            color: maroon;
+            text-decoration: none;
+        }
+
+        .texttitle:hover {
+            color: #800000; /* Light Yellow */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 60px;
+                padding: 10px;
+            }
+
+            .container {
+                margin-left: 60px;
+            }
+
+            .navbar .toggle-btn {
+                display: inline-block;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 100%;
+                position: fixed;
+                height: auto;
+                top: 60px;
+            }
+
+            .container {
+                margin-left: 0;
+                margin-top: 120px;
+            }
+
+            .navbar {
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+
+            .navbar h1,
+            .navbar h2 {
+                font-size: 0.9rem;
+            }
+
+            .navbar .toggle-btn {
+                font-size: 1.8rem;
+            }
+        }
