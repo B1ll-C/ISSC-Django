@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block title %} Incident {% endblock title %}
+
+{% block content %}
+    <a href="" class="createnewbtn">File New Incident</a>
+
+    <!-- Incident Reports Table -->
+    <table class="incident-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Location</th>
+                <th>Subject</th>
+                <th>Vehicle Description</th>
+                <th>Student Name</th>
+                <th>Program</th>
+                <th>Last Seen Location</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
+
+<style>
+    /* Button Styles */
+    .viewbtn, .editbtn, .delbtn {
+        display: inline-block;
+        padding: 9px 9px;
+        font-size: 13px;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        text-align: center;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .createnewbtn{
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        text-align: center;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .createnewbtn {
+        background-color: #7E0202;
+    }
+
+    .createnewbtn:hover {
+        background-color: #f1f1f1;
+        color: #7E0202;
+    }
+
+    .viewbtn {
+        background-color: #141414;
+    }
+
+    .viewbtn:hover {
+        background-color: #f1f1f1;
+        color: #141414;
+    }
+
+    .editbtn {
+        background-color: #141414;
+    }
+
+    .editbtn:hover {
+        background-color: #f1f1f1;
+        color: #141414;
+    }
+
+    .delbtn {
+        background-color: #9e0f0f;
+    }
+
+    .delbtn:hover {
+        background-color: #f1f1f1;
+        color: #9e0f0f;
+    }
+
+    /* Table Styles */
+    .incident-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .incident-table th, .incident-table td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    .incident-table th {
+        background-color: #800000;
+        color: white;
+    }
+
+    .incident-table tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .incident-table td {
+        background-color: #fff;
+    }
+
+</style>
+
+{% endblock content %}

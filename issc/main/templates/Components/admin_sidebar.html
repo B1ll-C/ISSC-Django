@@ -34,7 +34,7 @@
   </ul>
   <div class="user-info">
     <p class="text-2xl font-semibold">
-      <strong>{{ user.username }}</strong>
+      <strong>{{ user_role }}</strong>
     </p>
     <form method="POST" action="{% url 'logout' %}"> {% csrf_token %} <button type="submit" class="text-1xl font-medium text-gray-700 underline hover:text-[#800000]"> Logout </button>
     </form>

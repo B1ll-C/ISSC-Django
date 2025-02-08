@@ -1,11 +1,35 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title></title>
+	<title>{% block title %} {% endblock title%}</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+   
 </head>
 <body>
+	{% include 'components/admin_sidebar.html' %}
+	<nav class="navbar">
+        <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+        <div class="flex items-center space-x-4">
+            <div class="navbar-logo">
+                <img src="{% static 'images/pup-logo.png' %}" alt="Logo" class="w-12 h-12 sm:w-16 sm:h-16">
+            </div>
+            <div>
+                <a href="{% url 'dashboard' %}" class="texttitle">
+                    <span class="font-bold text-lg">Polytechnic University of the Philippines Calauan</span><br>
+                    <span class="font-medium text-sm">Integrated Safety and Security System</span>
+                </a>
+            </div>
+        </div>
+    </nav>
 
+	<main class="container">
+        {% block content %}
+        {% endblock content %}
+	</main>
 </body>
 </html>

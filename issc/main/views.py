@@ -1,32 +1,60 @@
 from django.http import HttpResponse
-from django.shortcuts import render
 from django.template import loader
+from django.shortcuts import render
 
-# Create your views here.
 user_roles = ['admin','student','faculty']
+i = 0
 
-def index(request):
+def base(request):
+    template = loader.get_template('dashboard/dashboard.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
     
-    user_role = user_roles[1]
+def index(request):
+    user_role = user_roles[i]
     template = loader.get_template('index.html')
     context = {
-        'user_role':user_role
+        'user_role': user_role
     }
-
-
     return HttpResponse(template.render(context, request))
 
 def incident(request):
-    return render(request, 'incident.html')
+    user_role = user_roles[i]
+    template = loader.get_template('incident/incident.html')
+    context = {
+        'user_role': user_role
+    }
+    return HttpResponse(template.render(context, request))
 
 def vehicles(request):
-    return render(request,'vehicle.html')
+    user_role = user_roles[i]
+    template = loader.get_template('vehicle/vehicle.html')
+    context = {
+        'user_role': user_role
+    }
+    return HttpResponse(template.render(context, request))
 
 def live_feed(request):
-    return render(request, 'live-feed.html')
+    user_role = user_roles[i]
+    template = loader.get_template('live-feed/live-feed.html')
+    context = {
+        'user_role': user_role
+    }
+    return HttpResponse(template.render(context, request))
 
 def about(request):
-    return render(request, 'about.html')
+    user_role = user_roles[i]
+    template = loader.get_template('about/about.html')
+    context = {
+        'user_role': user_role
+    }
+    return HttpResponse(template.render(context, request))
 
 def logout(request):
-    pass
+    user_role = user_roles[i]
+    template = loader.get_template('logout.html')
+    context = {
+        'user_role': user_role
+    }
+    return HttpResponse(template.render(context, request))

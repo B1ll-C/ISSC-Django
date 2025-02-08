@@ -14,11 +14,11 @@
 <body>
     <!-- Sidebar -->
     {% if user_role == 'admin' %}
-        {% include 'components/admin_sidebar.html' %}
+        {% include 'components/admin_sidebar.html' with user_role=user_role %}
     {% elif user_role == 'student' %}
-        {% include 'components/student_sidebar.html' %}
+        {% include 'components/student_sidebar.html' with user_role=user_role %}
     {% elif user_role == 'faculty' %}
-        {% include 'components/sidebar.html' %}
+        {% include 'components/sidebar.html' with user_role=user_role %}
 
     {% endif %}
 
@@ -42,7 +42,6 @@
 
     <!-- Main Content -->
     <div class="container">
-        {% block content %}{% endblock %}
     </div>
 
     <!-- Footer -->
