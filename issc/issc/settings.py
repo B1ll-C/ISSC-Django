@@ -52,7 +52,7 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
     "django.contrib.auth.hashers.ScryptPasswordHasher",
 ]
-# LOGIN_URL = '/login/'  # Redirect unauthenticated users to login
+LOGIN_URL = '/login/'  # Redirect unauthenticated users to login
 
 
 
