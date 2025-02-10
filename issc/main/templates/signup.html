@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create an Account</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="max-w-md mx-auto mt-10 p-6 bg-[rgba(255,255,255,0.1)] rounded-lg">
+        <h2 class="text-2xl font-bold text-center text-[#800000]">Create an Account</h2>
+        <p class="text-sm text-center text-gray-500 mt-2 mb-6">Fill in the details below to register a new account.</p>
+
+        <form method="POST" action="#">
+            {% csrf_token %}
+            <!-- Name -->
+            <div>
+                <label for="name" class="block text-sm font-medium text-[#800000]">Name</label>
+                <input id="name" 
+                       class="block mt-1 w-full border-gray-300 hover:border-[#800000] focus:border-[#800000] focus:ring-[#800000] rounded-md shadow-sm" 
+                       type="text" 
+                       name="name" 
+                       required 
+                       autofocus 
+                       autocomplete="name" />
+                <!-- {% for message in errors.name %}
+                    <div class="mt-2">{{ message }}</div>
+                {% endfor %} -->
+            </div>
+
+            <!-- Email Address -->
+            <div class="mt-4">
+                <label for="email" class="block text-sm font-medium text-[#800000]">Email Address</label>
+                <input id="email" 
+                       class="block mt-1 w-full border-gray-300 hover:border-[#800000] focus:border-[#800000] focus:ring-[#800000] rounded-md shadow-sm" 
+                       type="email" 
+                       name="email" 
+                       required 
+                       autocomplete="username" />
+               <!--  {% for message in errors.email %}
+                    <div class="mt-2">{{ message }}</div>
+                {% endfor %} -->
+            </div>
+
+            <!-- Password -->
+            <div class="mt-4">
+                <label for="password" class="block text-sm font-medium text-[#800000]">Password</label>
+                <input id="password" 
+                       class="block mt-1 w-full border-gray-300 hover:border-[#800000] focus:border-[#800000] focus:ring-[#800000] rounded-md shadow-sm" 
+                       type="password" 
+                       name="password" 
+                       required 
+                       autocomplete="new-password" />
+                {% for message in errors.password %}
+                    <div class="mt-2">{{ message }}</div>
+                {% endfor %}
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mt-4">
+                <label for="password_confirmation" class="block text-sm font-medium text-[#800000]">Confirm Password</label>
+                <input id="password_confirmation" 
+                       class="block mt-1 w-full border-gray-300 hover:border-[#800000] focus:border-[#800000] focus:ring-[#800000] rounded-md shadow-sm" 
+                       type="password" 
+                       name="password_confirmation" 
+                       required 
+                       autocomplete="new-password" />
+               <!--  {% for message in errors.password_confirmation %}
+                    <div class="mt-2">{{ message }}</div>
+                {% endfor %} -->
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center justify-between mt-6">
+                <a href="" 
+                   class="text-sm text-[#800000] hover:underline hover:text-[#5c0000] focus:outline-none focus:ring-2 focus:ring-[#800000]">
+                    Already registered?
+                </a>
+                <button type="submit" class="ml-3 bg-[#800000] hover:bg-[#5c0000] text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-[#800000]">
+                    Register
+                </button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
