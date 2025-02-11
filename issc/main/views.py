@@ -7,7 +7,10 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 
-from .models import AccountRegistration
+from django.core.files.storage import FileSystemStorage
+
+from .models import AccountRegistration, IncidentReport, VehicleRegistration
+
 
 
 
@@ -115,6 +118,44 @@ def incident_forms(request):
         'user_data':user[0]
 
     }
+
+    if request.method == 'POST':
+        first_name = request.POST['first_name']
+        middle_name = request.POST.get('middle_name', '')  # Optional field
+        last_name = request.POST['last_name']
+        contact_number = request.POST['contact_number']
+        id_number = request.POST['id_number']
+        subject = request.POST['subject']
+        location = request.POST['location']
+        incident = request.POST['incident']
+        request_for_action = request.POST['request_for_action']
+        reported_by = request.POST['reported_by']
+        position = request.POST['position']
+        department = request.POST['department']
+        phone_number = request.POST['phone_number']
+        status = request.POST['status']
+        file = request.FILES.get('file', None)
+
+        # Create and save the incident report manually
+        report = IncidentReport(
+            first_name=first_name,
+            middle_name=middle_name,
+            last_name=last_name,
+            contact_number=contact_number,
+            id_number=id_number,
+            subject=subject,
+            location=location,
+            incident=incident,
+            request_for_action=request_for_action,
+            reported_by=reported_by,
+            position=position,
+            department=department,
+            phone_number=phone_number,
+            status=status,
+            file=file
+        )
+        report.save()
+        
     return HttpResponse(template.render(context, request))
 
 @login_required(login_url='/login/')
@@ -142,6 +183,51 @@ def vehicle_forms(request):
         'user_data':user[0]
 
     }
+
+    if request.method == 'POST':
+        first_name = request.POST['first_name']
+        middle_name = request.POST.get('middle_name', '')  # Optional field
+        last_name = request.POST['last_name']
+        id_number = request.POST['id_number']
+        contact_number = request.POST['contact_number']
+        email_address = request.POST['email_address']
+        role = request.POST['role']
+        vehicle_type = request.POST['vehicle_type']
+        color = request.POST['color']
+        model = request.POST['model']
+        plate_number = request.POST['plate_number']
+        sticker_number = request.POST['sticker_number']
+        drivers_license = request.POST['drivers_license']
+        guardian_name = request.POST['guardian_name']
+        guardian_number = request.POST['guardian_number']
+        status = request.POST['status']
+        image = request.FILES.get('image')
+        qr_code = request.FILES.get('qr_code')
+
+        # Create a new VehicleRegistration instance and save it to the database
+        vehicle = VehicleRegistration(
+            first_name=first_name,
+            middle_name=middle_name,
+            last_name=last_name,
+            id_number=id_number,
+            contact_number=contact_number,
+            email_address=email_address,
+            role=role,
+            vehicle_type=vehicle_type,
+            color=color,
+            model=model,
+            plate_number=plate_number,
+            sticker_number=sticker_number,
+            drivers_license=drivers_license,
+            guardian_name=guardian_name,
+            guardian_number=guardian_number,
+            status=status,
+            image=image,
+            qr_code=qr_code
+        )
+        vehicle.save()
+        
+
     return HttpResponse(template.render(context,request))
 
 
