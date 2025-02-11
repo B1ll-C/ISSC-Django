@@ -1,27 +1,23 @@
 {% extends 'base.html' %}
 
-{% block title %} Register Vehicle {% endblock title %}
+{% block title %} Incident {% endblock title %}
 
 {% block content %}
+    <a href="{% url 'incident_forms' %}" class="createnewbtn">File New Incident</a>
 
-
-    <a href="#" class="createnewbtn">Register New Vehicle</a>
-
-    <!-- Vehicle Registrations Table -->
-    <table>
+    <!-- Incident Reports Table -->
+    <table class="incident-table">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Date of Application</th>
-                <th>Name</th>
-                <th>Student Number</th>
-                <th>Sticker Number</th>
-                <th>Cellphone Number</th>
-                <th>Type of Vehicle</th>
-                <th>Plate Number</th>
-                <th>Color</th>
-                <th>Model</th>
-                <th>Guardian Name</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Location</th>
+                <th>Subject</th>
+                <th>Vehicle Description</th>
+                <th>Student Name</th>
+                <th>Program</th>
+                <th>Last Seen Location</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -92,31 +88,32 @@
         color: #9e0f0f;
     }
 
-    /* Table Styling */
-    table {
+    /* Table Styles */
+    .incident-table {
         width: 100%;
         border-collapse: collapse;
         margin-top: 20px;
     }
 
-    table, th, td {
+    .incident-table th, .incident-table td {
+        padding: 12px;
+        text-align: left;
         border: 1px solid #ddd;
     }
 
-    th, td {
-        padding: 12px;
-        text-align: left;
-        font-size: 14px;
-    }
-
-    th {
+    .incident-table th {
         background-color: #800000;
         color: white;
     }
 
-    tr:hover {
+    .incident-table tr:hover {
         background-color: #f1f1f1;
     }
+
+    .incident-table td {
+        background-color: #fff;
+    }
+
 </style>
 
 {% endblock content %}

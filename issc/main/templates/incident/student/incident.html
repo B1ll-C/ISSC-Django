@@ -3,7 +3,7 @@
 {% block title %} Incident {% endblock title %}
 
 {% block content %}
-    <a href="" class="createnewbtn">File New Incident</a>
+    <a href="{% url 'incident_forms' %}" class="createnewbtn">File New Incident</a>
 
     <!-- Incident Reports Table -->
     <table class="incident-table">

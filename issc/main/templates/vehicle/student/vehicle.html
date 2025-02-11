@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %} Register Vehicle {% endblock title %}
+
+{% block content %}
+
+
+    <a href="{% url 'vehicle_forms' %}" class="createnewbtn">Register New Vehicle</a>
+
+
+    <!-- Vehicle Registrations Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date of Application</th>
+                <th>Name</th>
+                <th>Student Number</th>
+                <th>Sticker Number</th>
+                <th>Cellphone Number</th>
+                <th>Type of Vehicle</th>
+                <th>Plate Number</th>
+                <th>Color</th>
+                <th>Model</th>
+                <th>Guardian Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
+
+<style>
+    /* Button Styles */
+    .viewbtn, .editbtn, .delbtn {
+        display: inline-block;
+        padding: 9px 9px;
+        font-size: 13px;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        text-align: center;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .createnewbtn{
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        text-align: center;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .createnewbtn {
+        background-color: #7E0202;
+    }
+
+    .createnewbtn:hover {
+        background-color: #f1f1f1;
+        color: #7E0202;
+    }
+
+    .viewbtn {
+        background-color: #141414;
+    }
+
+    .viewbtn:hover {
+        background-color: #f1f1f1;
+        color: #141414;
+    }
+
+    .editbtn {
+        background-color: #141414;
+    }
+
+    .editbtn:hover {
+        background-color: #f1f1f1;
+        color: #141414;
+    }
+
+    .delbtn {
+        background-color: #9e0f0f;
+    }
+
+    .delbtn:hover {
+        background-color: #f1f1f1;
+        color: #9e0f0f;
+    }
+
+    /* Table Styling */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    table, th, td {
+        border: 1px solid #ddd;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        font-size: 14px;
+    }
+
+    th {
+        background-color: #800000;
+        color: white;
+    }
+
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+</style>
+
+{% endblock content %}

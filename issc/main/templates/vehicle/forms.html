@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block title %} Register Vehicle {% endblock title %}
+
+{% block content %}
+<!-- Vehicle Registration Template ## REMOVE <H1> -->
+    <div class="max-w-4xl mx-auto mt-10 bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold mb-6">Vehicle Registration Form</h2>
+        <form method="POST" enctype="multipart/form-data" class="space-y-4">
+            {% csrf_token %}
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block font-medium">First Name</label>
+                    <input type="text" name="first_name" class="w-full p-2 border rounded-md" required>
+                </div>
+                <div>
+                    <label class="block font-medium">Middle Name</label>
+                    <input type="text" name="middle_name" class="w-full p-2 border rounded-md">
+                </div>
+                <div>
+                    <label class="block font-medium">Last Name</label>
+                    <input type="text" name="last_name" class="w-full p-2 border rounded-md" required>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-medium">ID Number</label>
+                    <input type="text" name="id_number" class="w-full p-2 border rounded-md" required>
+                </div>
+                <div>
+                    <label class="block font-medium">Contact Number</label>
+                    <input type="tel" name="contact_number" class="w-full p-2 border rounded-md" required>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-medium">Email Address</label>
+                    <input type="email" name="email_address" class="w-full p-2 border rounded-md" required>
+                </div>
+                <div>
+                    <label class="block font-medium">Role</label>
+                    <input type="text" name="role" class="w-full p-2 border rounded-md" required>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block font-medium">Vehicle Type</label>
+                    <input type="text" name="vehicle_type" class="w-full p-2 border rounded-md" required>
+                </div>
+                <div>
+                    <label class="block font-medium">Color</label>
+                    <input type="text" name="color" class="w-full p-2 border rounded-md" required>
+                </div>
+                <div>
+                    <label class="block font-medium">Model</label>
+                    <input type="text" name="model" class="w-full p-2 border rounded-md" required>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block font-medium">Plate Number</label>
+                    <input type="text" name="plate_number" class="w-full p-2 border rounded-md" required>
+                </div>
+                <div>
+                    <label class="block font-medium">Sticker Number</label>
+                    <input type="text" name="sticker_number" class="w-full p-2 border rounded-md" required>
+                </div>
+                <div>
+                    <label class="block font-medium">Driver's License</label>
+                    <input type="text" name="drivers_license" class="w-full p-2 border rounded-md" required>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-medium">Guardian Name</label>
+                    <input type="text" name="guardian_name" class="w-full p-2 border rounded-md" required>
+                </div>
+                <div>
+                    <label class="block font-medium">Guardian Contact Number</label>
+                    <input type="tel" name="guardian_number" class="w-full p-2 border rounded-md" required>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-medium">Upload Image</label>
+                    <input type="file" name="image" class="w-full p-2 border rounded-md" required>
+                </div>
+                <div>
+                    <label class="block font-medium">Upload QR Code</label>
+                    <input type="file" name="qr_code" class="w-full p-2 border rounded-md" required>
+                </div>
+            </div>
+            
+            <div>
+                <label class="block font-medium">Status</label>
+                <select name="status" class="w-full p-2 border rounded-md">
+                    <option value="allowed">Allowed</option>
+                    <option value="restricted">Restricted</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="w-full mt-4 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">Submit</button>
+        </form>
+    </div>
+
+{% endblock content %}
