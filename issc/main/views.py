@@ -11,18 +11,18 @@ from .models import AccountRegistration
 
 
 
-
+    
 def login(request):
     template = loader.get_template('login.html')
     context = {}
     if request.user.is_authenticated:
         return redirect('dashboard')
     if request.method == 'POST':
-        email = request.POST['email']
+        username = request.POST['username']
         password = request.POST['password']
         # print(email)
         # print(password)
-        user = authenticate(request, username=email,password=password)
+        user = authenticate(request, username=username,password=password)
         if user:
             auth_login(request, user)
             return redirect('dashboard') 
@@ -94,7 +94,22 @@ def base(request):
 @login_required(login_url='/login/')
 def incident(request):
     user = AccountRegistration.objects.filter(username=request.user).values()
-    template = loader.get_template('incident/incident.html')
+    if user[0]['privilege'] == 'student':
+        template = loader.get_template('incident/student/incident.html')
+    else:
+        template = loader.get_template('incident/admin/incident.html')
+
+        
+    context = {
+        'user_role': user[0]['privilege'],
+        'user_data':user[0]
+
+    }
+    return HttpResponse(template.render(context, request))
+@login_required(login_url='/login/')
+def incident_forms(request):
+    user = AccountRegistration.objects.filter(username=request.user).values()
+    template = loader.get_template('incident/forms.html')
     context = {
         'user_role': user[0]['privilege'],
         'user_data':user[0]
@@ -105,8 +120,11 @@ def incident(request):
 @login_required(login_url='/login/')
 def vehicles(request):
     user = AccountRegistration.objects.filter(username=request.user).values()
+    if user[0]['privilege'] == 'student' :
+        template = loader.get_template('vehicle/student/vehicle.html')
+    else:
+        template = loader.get_template('vehicle/admin/vehicle.html')
 
-    template = loader.get_template('vehicle/vehicle.html')
     context = {
         'user_role': user[0]['privilege'],
         'user_data':user[0]
@@ -115,7 +133,21 @@ def vehicles(request):
     return HttpResponse(template.render(context, request))
 
 @login_required(login_url='/login/')
+def vehicle_forms(request):
+    user = AccountRegistration.objects.filter(username=request.user).values()
+    template = loader.get_template('vehicle/forms.html')
+
+    context = {
+        'user_role': user[0]['privilege'],
+        'user_data':user[0]
+
+    }
+    return HttpResponse(template.render(context,request))
+
+
+@login_required(login_url='/login/')
 def live_feed(request):
+    user = AccountRegistration.objects.filter(username=request.user).values()
     template = loader.get_template('live-feed/live-feed.html')
     context = {
         'user_role': user[0]['privilege'],
@@ -135,6 +167,17 @@ def about(request):
 
     }
     return HttpResponse(template.render(context, request))
+
+@login_required(login_url='/login')
+def face_enrollment(request):
+    user = AccountRegistration.objects.filter(username=request.user).values()
+    template = loader.get_template('face_enrollment/face.html')
+    context ={
+        'user_role': user[0]['privilege'],
+        'user_data':user[0]
+    }
+
+    return HttpResponse(template.render(context,request))
 
 def logout(request):
     auth_logout(request)
