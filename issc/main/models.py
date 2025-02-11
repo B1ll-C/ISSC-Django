@@ -74,7 +74,7 @@ class IncidentReport(models.Model):
     middle_name = models.CharField(max_length=30, null=True, blank=True)
     last_name = models.CharField(max_length=30)
     contact_number = models.CharField(max_length=15)
-    id_number = models.CharField(max_length=100, unique=True)
+    id_number = models.CharField(max_length=100)
     subject = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
     date = models.DateField(auto_now_add=True)
