@@ -265,6 +265,19 @@ def face_enrollment(request):
 
     return HttpResponse(template.render(context,request))
 
+
 def logout(request):
     auth_logout(request)
     return redirect('login')
+
+
+def image_test(request):
+    user = AccountRegistration.objects.filter(username=request.user).values()
+    print(user[0]['id_number'])
+    template = loader.get_template('test.html')
+    reports = VehicleRegistration.objects.all()
+    context = {
+        'reports':reports
+    }
+    return HttpResponse(template.render(context,request))
+
