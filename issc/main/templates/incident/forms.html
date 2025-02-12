@@ -3,6 +3,11 @@
 {% block title %} Incident Report {% endblock title %}
 
 {% block content %}
+
+{% load static %} 
+
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
+
 <!-- Incident Report Template ## REMOVE <H1> -->
     <div class="max-w-4xl mx-auto mt-10 bg-white p-6 rounded-lg shadow-md">
         <h2 class="text-2xl font-bold mb-6">Incident Report Form</h2>
