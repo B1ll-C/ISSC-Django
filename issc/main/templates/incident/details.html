@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %} Incident {% endblock title %}
+
+{% block content %} 
+    <h2>Incident Details</h2>
+    <p>ID: {{ incident.id }}</p>
+    <p>First Name: {{ incident.first_name }}</p>
+    <p>Middle Name: {{ incident.middle_name }}</p>
+    <p>Last Name: {{ incident.last_name }}</p>
+    <p>Contact Number: {{ incident.contact_number }}</p>
+    <p>ID Number: {{ incident.id_number }}</p>
+    <p>Subject: {{ incident.subject }}</p>
+    <p>Location: {{ incident.location }}</p>
+    <p>Incident: {{ incident.incident }}</p>
+    <p>Request for Action: {{ incident.request_for_action }}</p>
+    <p>Reported By: {{ incident.reported_by }}</p>
+    <p>Position: {{ incident.position }}</p>
+    <p>Department: {{ incident.department }}</p>
+    <p>Phone Number: {{ incident.phone_number }}</p>
+    <p>File: <a href="{{ incident.file.url }}">Download</a></p>
+
+    <p>Status: {{ incident.status }}</p>
+    <p>Date Joined: {{ incident.date_joined }}</p>
+    <form method="POST" accept="">
+    	{% csrf_token %}
+    	<select class="form-input" name="status" style="width: 140px;" >
+                            <option value="open" {% if incident.status == 'open' %}selected{% endif %}>Open</option>
+                            <option value="pending" {% if incident.status == 'pending' %}selected{% endif %}>Pending</option>
+                            <option value="closed" {% if incident.status == 'closed' %}selected{% endif %}>Closed</option>
+                        </select>
+        <input type="text" name="incident_id" value="{{ incident.id }}" hidden >
+    	<button>Submit</button>
+    </form>
+{% endblock %}
