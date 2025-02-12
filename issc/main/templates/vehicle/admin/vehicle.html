@@ -8,115 +8,131 @@
     <a href="{% url 'vehicle_forms' %}" class="createnewbtn">Register New Vehicle</a>
 
     <!-- Vehicle Registrations Table -->
-    <table>
+    <table class="form-table">
         <thead>
             <tr>
-                <th>ID</th>
+                <th colspan="13">Allowed Vehicle</th>
+            </tr>
+            <tr>
                 <th>Date of Application</th>
-                <th>Name</th>
+                <th>Student Name</th>
                 <th>Student Number</th>
                 <th>Sticker Number</th>
                 <th>Cellphone Number</th>
                 <th>Type of Vehicle</th>
                 <th>Plate Number</th>
-                <th>Color</th>
-                <th>Model</th>
                 <th>Guardian Name</th>
-                <th>Actions</th>
+                <th>Status</th>
+                <th>Details</th>
+                <th colspan="3">Actions</th>
             </tr>
         </thead>
         <tbody>
+            {% for vehicle in allowed_vehicles %}
+            <form method="POST" action="">
+                    {% csrf_token %}
+                <tr>
+                    <td>{{ vehicle.date_joined }}</td>
+                    <input type="hidden" name="vehicle_id" value="{{ vehicle.id }}" >
+                    <td>{{ vehicle.first_name }}</td>
+                    <td>{{ vehicle.id_number }}</td>
+                    <td>{{ vehicle.sticker_number }}</td>
+                    <td>{{ vehicle.contact_number }}</td>
+                    <td>{{ vehicle.vehicle_type }}</td>
+                    <td>{{ vehicle.plate_number  }}</td>
+                    <td>{{ vehicle.guardian_name }}</td>
+                    <td><a href="{% url 'vehicle_details' vehicle.id %}">Details</a></td>
+                    <td>
+                        <select class="form-input" name="status" style="width: 140px;" disabled>
+                            <option value="allowed" {% if vehicle.status == 'allowed' %}selected{% endif %}>allowed</option>
+                            <option value="restricted" {% if vehicle.status == 'restricted' %}selected{% endif %}>restricted</option>
+                        </select>
+                    </td>
+                    <td><button name="delete" class="form-input form-btn" value="{{ vehicle.id }}" onclick="return confirmDelete();" disabled>DELETE</button></td>
+                    <td><button name="update" class="form-input form-btn" value="{{ vehicle.id }}" disabled>UPDATE</button></td>
+                </form>
+                <td><button onclick="toggleEditFields(this)">TOGGLE</button></td>
+                </tr>
+            {% empty %}
+             <tr>
+                <td colspan="13" style="text-align: center;">No Vehicles Registered</td>
+            </tr> 
+            {% endfor %}
+
             
         </tbody>
     </table>
 
-<style>
-    /* Button Styles */
-    .viewbtn, .editbtn, .delbtn {
-        display: inline-block;
-        padding: 9px 9px;
-        font-size: 13px;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        text-decoration: none;
-        text-align: center;
-        transition: background-color 0.3s ease, color 0.3s ease;
-    }
+        <table class="form-table">
+        <thead>
+            <tr>
+                <th colspan="13">Allowed Vehicle</th>
+            </tr>
+            <tr>
+                <th>Date of Application</th>
+                <th>Student Name</th>
+                <th>Student Number</th>
+                <th>Sticker Number</th>
+                <th>Cellphone Number</th>
+                <th>Type of Vehicle</th>
+                <th>Plate Number</th>
+                <th>Guardian Name</th>
+                <th>Status</th>
+                <th>Details</th>
+                <th colspan="3">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vehicle in restricted_vehicles %}
+            <form method="POST" action="">
+                    {% csrf_token %}
+                <tr>
+                    <td>{{ vehicle.date_joined }}</td>
+                    <input type="hidden" name="vehicle_id" value="{{ vehicle.id }}" >
+                    <td>{{ vehicle.first_name }}</td>
+                    <td>{{ vehicle.id_number }}</td>
+                    <td>{{ vehicle.sticker_number }}</td>
+                    <td>{{ vehicle.contact_number }}</td>
+                    <td>{{ vehicle.vehicle_type }}</td>
+                    <td>{{ vehicle.plate_number  }}</td>
+                    <td>{{ vehicle.guardian_name }}</td>
+                    <td><a href="{% url 'vehicle_details' vehicle.id %}">Details</a></td>
+                    <td>
+                        <select class="form-input" name="status" style="width: 140px;" disabled>
+                            <option value="allowed" {% if vehicle.status == 'allowed' %}selected{% endif %}>allowed</option>
+                            <option value="restricted" {% if vehicle.status == 'restricted' %}selected{% endif %}>restricted</option>
+                        </select>
+                    </td>
+                    <td><button name="delete" class="form-input form-btn" value="{{ vehicle.id }}" onclick="return confirmDelete();" disabled>DELETE</button></td>
+                    <td><button name="update" class="form-input form-btn" value="{{ vehicle.id }}" disabled>UPDATE</button></td>
+                </form>
+                <td><button onclick="toggleEditFields(this)">TOGGLE</button></td>
+                </tr>
+            {% empty %}
+             <tr>
+                <td colspan="13" style="text-align: center;">No Vehicles Registered</td>
+            </tr> 
+            {% endfor %}
 
-    .createnewbtn{
-        display: inline-block;
-        padding: 10px 20px;
-        font-size: 16px;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        text-decoration: none;
-        text-align: center;
-        transition: background-color 0.3s ease, color 0.3s ease;
-    }
+            
+        </tbody>
+    </table>
 
-    .createnewbtn {
-        background-color: #7E0202;
-    }
+<script type="text/javascript">
+        function toggleEditFields(button) {
+            const row = button.closest('tr'); // Get the closest row of the clicked button
+            const inputs = row.querySelectorAll('.form-input'); // Select all input fields in the row
+            
+            inputs.forEach(input => {
+                input.disabled = !input.disabled;
+                input.style.cursor = input.disabled ? "not-allowed" : "auto";
+            });
+        }
 
-    .createnewbtn:hover {
-        background-color: #f1f1f1;
-        color: #7E0202;
-    }
+        function confirmDelete() {
+            return confirm('Do you really want to delete this user?');
+        }
+    </script>
 
-    .viewbtn {
-        background-color: #141414;
-    }
-
-    .viewbtn:hover {
-        background-color: #f1f1f1;
-        color: #141414;
-    }
-
-    .editbtn {
-        background-color: #141414;
-    }
-
-    .editbtn:hover {
-        background-color: #f1f1f1;
-        color: #141414;
-    }
-
-    .delbtn {
-        background-color: #9e0f0f;
-    }
-
-    .delbtn:hover {
-        background-color: #f1f1f1;
-        color: #9e0f0f;
-    }
-
-    /* Table Styling */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-
-    table, th, td {
-        border: 1px solid #ddd;
-    }
-
-    th, td {
-        padding: 12px;
-        text-align: left;
-        font-size: 14px;
-    }
-
-    th {
-        background-color: #800000;
-        color: white;
-    }
-
-    tr:hover {
-        background-color: #f1f1f1;
-    }
-</style>
 
 {% endblock content %}

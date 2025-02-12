@@ -1,131 +1,135 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} 
 
-{% load static %}
+{% load static %} 
 
-{% block title %} Signup {% endblock title %}
+{% block title %} Signup {% endblock title %} 
 
 {% block content %}
-    
-    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
+<a href="{% url 'signup-forms' %}" class="create-new-btn">Create New Account</a>
 
-    <!-- Table Displaying Form Inputs -->
-    <div class="table-container">
-        <table class="form-table">
-            <thead>
-                <tr>
-                    <th>Date Time</th>
-                    <th>Username</th>
-                    <th>First Name</th>
-                    <th>Middle Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>ID Number</th>
-                    <th>Contact Number</th>
-                    <th>Gender</th>
-                    <th>Department</th>
-                    <th>Privilege</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Example Data Row -->
-                <tr>
-                    <td>2024-04-20 14:30</td>
-                    <td>johndoe123</td>
-                    <td>John</td>
-                    <td>A.</td>
-                    <td>Doe</td>
-                    <td>john@example.com</td>
-                    <td>123456</td>
-                    <td>+1234567890</td>
-                    <td>Male</td>
-                    <td>Engineering</td>
-                    <td>Student</td>
-                    <td>Allowed</td>
-                </tr>
-                <!-- Add more dynamic rows here -->
-            </tbody>
-        </table>
-    </div>
+<div class="table-container">
+  <table class="form-table">
+    <thead>
+      <tr>
+        <th>Date Time</th>
+        <th>Username</th>
+        <th>First Name</th>
+        <th>Middle Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>ID Number</th>
+        <th>Contact Number</th>
+        <th>Gender</th>
+        <th>Department</th>
+        <th>Privilege</th>
+        <th>Status</th>
+        <th colspan="3" style="text-align: center;">Action</th>
+      </tr>
+    </thead>
+    <tbody> 
+        {% for user in users %} 
+            <tr>
+        <form method="POST" action="">
+            {% csrf_token %}
 
-    <!-- Signup Form -->
-    <form class="forms" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <div class="form-field username">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-
-            <div class="form-field first-name">
-                <label for="first_name">First Name:</label>
-                <input type="text" id="first_name" name="first_name" required>
-            </div>
-
-            <div class="form-field middle-name">
-                <label for="middle_name">Middle Name:</label>
-                <input type="text" id="middle_name" name="middle_name">
-            </div>
-
-            <div class="form-field last-name">
-                <label for="last_name">Last Name:</label>
-                <input type="text" id="last_name" name="last_name" required>
-            </div>
-
-            <div class="form-field email">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-
-            <div class="form-field id-number">
-                <label for="id_number">ID Number:</label>
-                <input type="text" id="id_number" name="id_number" required>
-            </div>
-
-            <div class="form-field contact-number">
-                <label for="contact_number">Contact Number:</label>
-                <input type="text" id="contact_number" name="contact_number">
-            </div>
-
-            <div class="form-field gender">
-                <label for="gender">Gender:</label>
-                <select id="gender" name="gender">
-                    <option value="M">Male</option>
-                    <option value="F">Female</option>
-                    <option value="O">Other</option>
+            <td>{{ user.date_joined }}</td>
+            <td>{{ user.username }}</td>
+            <input type="text" name="username" value="{{ user.username }}" hidden>
+            <td><input type="text" class="form-input" style="width: 140px;" name="first_name" value="{{ user.first_name }}" disabled></td>
+            <td><input type="text" class="form-input" style="width: 140px;" name="middle_name" value="{{ user.middle_name }}" disabled></td>
+            <td><input type="text" class="form-input" style="width: 140px;" name="last_name" value="{{ user.last_name }}" disabled></td>
+            <td><input type="text" class="form-input" style="width: 140px;" name="email" value="{{ user.email }}" disabled></td>
+            <td><input type="text" class="form-input" style="width: 140px;" name="id_number" value="{{ user.id_number }}" disabled></td>
+            <td><input type="text" class="form-input" style="width: 140px;" name="contact_number" value="{{ user.contact_number }}" disabled></td>
+            <td>
+                <select id="gender" class="form-input" name="gender" style="width: 140px;" disabled>
+                    <option value="M" {% if user.gender == 'M' %}selected{% endif %}>Male</option>
+                    <option value="F" {% if user.gender == 'F' %}selected{% endif %}>Female</option>
+                    <option value="O" {% if user.gender == 'O' %}selected{% endif %}>Other</option>
                 </select>
-            </div>
+            </td>
+            <td><input type="text" class="form-input" style="width: 140px;" name="department" value="{{ user.department }}" disabled></td>
 
-            <div class="form-field department">
-                <label for="department">Department:</label>
-                <input type="text" id="department" name="department">
-            </div>
-
-            <div class="form-field privilege">
-                <label for="privilege">Privilege:</label>
-                <select id="privilege" name="privilege">
-                    <option value="student">Student</option>
-                    <option value="faculty">Faculty</option>
-                    <option value="admin">Admin</option>
+            <td>
+                <select id="privilege" class="form-input" name="privilege" style="width: 140px;" disabled>
+                    <option value="student" {% if user.privilege == 'student' %}selected{% endif %}>Student</option>
+                    <option value="faculty" {% if user.privilege == 'faculty' %}selected{% endif %}>Faculty</option>
+                    <option value="admin" {% if user.privilege == 'admin' %}selected{% endif %}>Admin</option>
                 </select>
-            </div>
-
-            <div class="form-field status">
-                <label for="status">Status:</label>
-                <select id="status" name="status">
-                    <option value="allowed">Allowed</option>
-                    <option value="restricted">Restricted</option>
+            </td>
+            <td>
+                <select id="status" class="form-input" name="status" style="width: 140px;" disabled>
+                    <option value="allowed" {% if user.status == 'allowed' %}selected{% endif %}>Allowed</option>
+                    <option value="restricted" {% if user.status == 'restricted' %}selected{% endif %}>Restricted</option>
                 </select>
-            </div>
+            </td>
+            <td><button name="delete" style="cursor: not-allowed;" value="{{ user.username }}" class="form-input form-btn" onclick="return confirmDelete();" disabled>DELETE</button></td>
+            <td><button style="cursor: not-allowed;" name="update" class="form-input form-btn" value="{{ user.username }}" disabled>UPDATE</button></td>
 
-            <div class="form-field password full-width">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-        </div>
+        </form>
+        <td><button id="{{ forloop.counter }}" onclick="toggleEditFields(this)">TOGGLE</button></td>
+    </tr> 
+        {% empty %} 
+            <tr>
+                <td colspan="12" style="text-align: center;">No users found</td>
+            </tr> 
+        {% endfor %} 
+    </tbody>
+  </table>
+  <!-- Pagination Controls -->
+  <div class="pagination"> 
+    {% if users.has_previous %} 
+      <a href="?page=1">&laquo; First</a>
+      <a href="?page={{ users.previous_page_number }}">Previous</a> 
+    {% endif %} 
+    <span>Page {{ users.number }} of {{ users.paginator.num_pages }}</span> 
+    {% if users.has_next %} 
+      <a href="?page={{ users.next_page_number }}">Next</a>
+      <a href="?page={{ users.paginator.num_pages }}">Last &raquo;</a> 
+    {% endif %}
+  </div>
+</div> 
 
-        <div class="register-btn">
-            <button type="submit">Register</button>
-        </div>
-    </form>
+<script type="text/javascript">
+    let formInputs = document.getElementsByClassName('form-input');
+    const totalFields = formInputs.length; 
+
+    const fieldsPerRow = 13;
+
+    function getStartIndex(rowIndex) {
+        return (rowIndex - 1) * fieldsPerRow;
+    }
+
+    function getEndIndex(rowIndex) {
+        return (rowIndex * fieldsPerRow) - 1;
+    }
+
+    function toggleEditFields(button){
+        const rowIndex = parseInt(button.id);
+        const startIndex = getStartIndex(rowIndex);
+        const endIndex = getEndIndex(rowIndex);
+
+        console.log('Start: ' + startIndex + ', End: ' + endIndex);
+
+        for (let i = startIndex; i <= endIndex; i++) {
+            const inputField = formInputs[i];
+            
+            if (inputField.disabled) {
+                inputField.disabled = false;
+                console.log('Enabled field at index: ' + i);
+                inputField.style.cursor = "auto";
+            } else {
+                inputField.disabled = true;
+                console.log('Disabled field at index: ' + i);
+                inputField.style.cursor = "not-allowed";
+            }
+        }
+    }
+
+    function confirmDelete() {
+        return confirm('Do you really want to delete this user?');
+    }
+</script>
+
 {% endblock content %}

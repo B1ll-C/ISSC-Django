@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} Signup {% endblock title %}
+
+{% block content %}
+  <!-- Signup Form -->
+    <form class="forms" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <div class="form-field username">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+
+            <div class="form-field first-name">
+                <label for="first_name">First Name:</label>
+                <input type="text" id="first_name" name="first_name" required>
+            </div>
+
+            <div class="form-field middle-name">
+                <label for="middle_name">Middle Name:</label>
+                <input type="text" id="middle_name" name="middle_name">
+            </div>
+
+            <div class="form-field last-name">
+                <label for="last_name">Last Name:</label>
+                <input type="text" id="last_name" name="last_name" required>
+            </div>
+
+            <div class="form-field email">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-field id-number">
+                <label for="id_number">ID Number:</label>
+                <input type="text" id="id_number" name="id_number" required>
+            </div>
+
+            <div class="form-field contact-number">
+                <label for="contact_number">Contact Number:</label>
+                <input type="text" id="contact_number" name="contact_number">
+            </div>
+
+            <div class="form-field gender">
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender">
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                    <option value="O">Other</option>
+                </select>
+            </div>
+
+            <div class="form-field department">
+                <label for="department">Department:</label>
+                <input type="text" id="department" name="department">
+            </div>
+
+            <div class="form-field privilege">
+                <label for="privilege">Privilege:</label>
+                <select id="privilege" name="privilege">
+                    <option value="student">Student</option>
+                    <option value="faculty">Faculty</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+
+            <div class="form-field status">
+                <label for="status">Status:</label>
+                <select id="status" name="status">
+                    <option value="allowed">Allowed</option>
+                    <option value="restricted">Restricted</option>
+                </select>
+            </div>
+
+            <div class="form-field password full-width">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+        </div>
+
+        <div class="register-btn">
+            <button type="submit">Register</button>
+        </div>
+    </form>
+{% endblock content %}
