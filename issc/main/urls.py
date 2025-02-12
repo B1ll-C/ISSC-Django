@@ -13,6 +13,5 @@ urlpatterns = [
     path("live_feed/", views.live_feed, name="live_feed"),
     path("about/", views.about, name="about"),
     path("face-enrollment/", views.face_enrollment, name="face_enrollment"),
-
-
+    path("image_test/", views.image_test, name="image_test")
 ]
