@@ -3,173 +3,240 @@
 {% block title %} Incident {% endblock title %}
 
 {% block content %}
-    <a href="{% url 'incident_forms' %}" class="createnewbtn">File New Incident</a>
+
+{% load static %} 
+
+    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+
+    <div class="create-search">
+        <a href="{% url 'incident_forms' %}" class="create-new-btn">File New Incident</a>
+
+        <div class="search-container">
+            <input type="text" id="tableSearch" placeholder="Search..." onkeyup="filterTable()">
+            <span class="search-icon">&#128269;</span> <!-- Unicode for a magnifying glass -->
+        </div>
+    </div>
 
     <!-- Incident Reports Table -->
-    <table class="form-table">
-        <thead>
-            <tr>
-                <th colspan="13">Open Cases</th>
-            </tr>
-            <tr>
-                <th>Date Time</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Subject</th>
-                <th>Location</th>
-                <th>Reported By</th>
-                <th>Department</th>
-                <th>Phone Number</th>
-                <th>Status</th>
-                <th>Details</th>
-                <th colspan="3">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for data in open_incident %}
-            <tr>
-                <form method="POST" action="">
-                    {% csrf_token %}
-                    <td>{{ data.date_joined }}</td>
-                    <input type="hidden" name="incident_id" value="{{ data.id }}">
-                    <td>{{ data.first_name }}</td>
-                    <td>{{ data.last_name }}</td>
-                    <td>{{ data.subject }}</td>
-                    <td>{{ data.location }}</td>
-                    <td>{{ data.reported_by }}</td>
-                    <td>{{ data.department }}</td>
-                    <td>{{ data.phone_number }}</td>
-                    <td>
-                        <select class="form-input" name="status" style="width: 140px;" disabled>
-                            <option value="open" {% if data.status == 'open' %}selected{% endif %}>Open</option>
-                            <option value="pending" {% if data.status == 'pending' %}selected{% endif %}>Pending</option>
-                            <option value="closed" {% if data.status == 'closed' %}selected{% endif %}>Closed</option>
-                        </select>
-                    </td>
-                    <td><a href="{% url 'incident_details' data.id %}" style="text-decoration: underline;">Details</a></td>
-                    <td><button name="delete" class="form-input form-btn" value="{{ data.id }}" onclick="return confirmDelete();" disabled>DELETE</button></td>
-                    <td><button name="update" class="form-input form-btn" value="{{ data.id }}" disabled>UPDATE</button></td>
-                </form>
-                <td><button onclick="toggleEditFields(this)">TOGGLE</button></td>
-            </tr>
-            {% empty %} 
-            <tr>
-                <td colspan="13" style="text-align: center;">No Cases Found</td>
-            </tr> 
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="table-container">
+        <table class="form-table">
+            <thead>
+                <tr>
+                    <th colspan="13">Open Cases</th>
+                </tr>
+                <tr>
+                    <th>Date Time</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Subject</th>
+                    <th>Location</th>
+                    <th>Reported By</th>
+                    <th>Department</th>
+                    <th>Phone Number</th>
+                    <th>Status</th>
+                    <th>Details</th>
+                    <th colspan="3">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in open_incident %}
+                <tr>
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <td>{{ data.date_joined }}</td>
+                        <input type="hidden" name="incident_id" value="{{ data.id }}">
+                        <td>{{ data.first_name }}</td>
+                        <td>{{ data.last_name }}</td>
+                        <td>{{ data.subject }}</td>
+                        <td>{{ data.location }}</td>
+                        <td>{{ data.reported_by }}</td>
+                        <td>{{ data.department }}</td>
+                        <td>{{ data.phone_number }}</td>
+                        <td>
+                            <select class="form-input" name="status" style="width: 140px;" disabled>
+                                <option value="open" {% if data.status == 'open' %}selected{% endif %}>Open</option>
+                                <option value="pending" {% if data.status == 'pending' %}selected{% endif %}>Pending</option>
+                                <option value="closed" {% if data.status == 'closed' %}selected{% endif %}>Closed</option>
+                            </select>
+                        </td>
+                        <td><a href="{% url 'incident_details' data.id %}" style="text-decoration: underline;">Details</a></td>
+                        <td><button name="delete" class="form-input form-btn" value="{{ data.id }}" onclick="return confirmDelete();" disabled>DELETE</button></td>
+                        <td><button name="update" class="form-input form-btn" value="{{ data.id }}" disabled>UPDATE</button></td>
+                    </form>
+                    <td><button onclick="toggleEditFields(this)">TOGGLE</button></td>
+                </tr>
+                {% empty %} 
+                <tr>
+                    <td colspan="13" style="text-align: center;">No Cases Found</td>
+                </tr> 
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
+    <div class="create-search">
+        <a></a>
+        <div class="search-container">
+            <input type="text" id="tableSearch" placeholder="Search..." onkeyup="filterTable()">
+            <span class="search-icon">&#128269;</span> <!-- Unicode for a magnifying glass -->
+        </div>
+    </div>
 
-    <table class="form-table">
-        <thead>
-            <tr>
-                <th colspan="13">Pending Cases</th>
-            </tr>
-            <tr>
-                <th>Date Time</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Subject</th>
-                <th>Location</th>
-                <th>Reported By</th>
-                <th>Department</th>
-                <th>Phone Number</th>
-                <th>Status</th>
-                <th>Details</th>
-                <th colspan="3">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for data in pending_incident %}
-            <tr>
-                <form method="POST" action="">
-                    {% csrf_token %}
-                    <td>{{ data.date_joined }}</td>
-                    <input type="hidden" name="incident_id" value="{{ data.id }}">
-                    <td>{{ data.first_name }}</td>
-                    <td>{{ data.last_name }}</td>
-                    <td>{{ data.subject }}</td>
-                    <td>{{ data.location }}</td>
-                    <td>{{ data.reported_by }}</td>
-                    <td>{{ data.department }}</td>
-                    <td>{{ data.phone_number }}</td>
-                    <td>
-                        <select class="form-input" name="status" style="width: 140px;" disabled>
-                            <option value="open" {% if data.status == 'open' %}selected{% endif %}>Open</option>
-                            <option value="pending" {% if data.status == 'pending' %}selected{% endif %}>Pending</option>
-                            <option value="closed" {% if data.status == 'closed' %}selected{% endif %}>Closed</option>
-                        </select>
-                    </td>
-                    <td><a href="{% url 'incident_details' data.id %}" style="text-decoration: underline;">Details</a></td>
-                    <td><button name="delete" class="form-input form-btn" value="{{ data.id }}" onclick="return confirmDelete();" disabled>DELETE</button></td>
-                    <td><button name="update" class="form-input form-btn" value="{{ data.id }}" disabled>UPDATE</button></td>
-                </form>
-                <td><button onclick="toggleEditFields(this)">TOGGLE</button></td>
-            </tr>
-            {% empty %} 
-            <tr>
-                <td colspan="13" style="text-align: center;">No Cases Found</td>
-            </tr> 
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="table-container">
+        <table class="form-table">
+            <thead>
+                <tr>
+                    <th colspan="13">Pending Cases</th>
+                </tr>
+                <tr>
+                    <th>Date Time</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Subject</th>
+                    <th>Location</th>
+                    <th>Reported By</th>
+                    <th>Department</th>
+                    <th>Phone Number</th>
+                    <th>Status</th>
+                    <th>Details</th>
+                    <th colspan="3">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in pending_incident %}
+                <tr>
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <td>{{ data.date_joined }}</td>
+                        <input type="hidden" name="incident_id" value="{{ data.id }}">
+                        <td>{{ data.first_name }}</td>
+                        <td>{{ data.last_name }}</td>
+                        <td>{{ data.subject }}</td>
+                        <td>{{ data.location }}</td>
+                        <td>{{ data.reported_by }}</td>
+                        <td>{{ data.department }}</td>
+                        <td>{{ data.phone_number }}</td>
+                        <td>
+                            <select class="form-input" name="status" style="width: 140px;" disabled>
+                                <option value="open" {% if data.status == 'open' %}selected{% endif %}>Open</option>
+                                <option value="pending" {% if data.status == 'pending' %}selected{% endif %}>Pending</option>
+                                <option value="closed" {% if data.status == 'closed' %}selected{% endif %}>Closed</option>
+                            </select>
+                        </td>
+                        <td><a href="{% url 'incident_details' data.id %}" style="text-decoration: underline;">Details</a></td>
+                        <td><button name="delete" class="form-input form-btn" value="{{ data.id }}" onclick="return confirmDelete();" disabled>DELETE</button></td>
+                        <td><button name="update" class="form-input form-btn" value="{{ data.id }}" disabled>UPDATE</button></td>
+                    </form>
+                    <td><button onclick="toggleEditFields(this)">TOGGLE</button></td>
+                </tr>
+                {% empty %} 
+                <tr>
+                    <td colspan="13" style="text-align: center;">No Cases Found</td>
+                </tr> 
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-    <table class="form-table">
-        <thead>
-            <tr>
-                <th colspan="13">Closed Cases</th>
-            </tr>
-            <tr>
-                <th>Date Time</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Subject</th>
-                <th>Location</th>
-                <th>Reported By</th>
-                <th>Department</th>
-                <th>Phone Number</th>
-                <th>Status</th>
-                <th>Details</th>
-                <th colspan="3">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for data in closed_incident %}
-            <tr>
-                <form method="POST" action="">
-                    {% csrf_token %}
-                    <td>{{ data.date_joined }}</td>
-                    <input type="hidden" name="incident_id" value="{{ data.id }}">
-                    <td>{{ data.first_name }}</td>
-                    <td>{{ data.last_name }}</td>
-                    <td>{{ data.subject }}</td>
-                    <td>{{ data.location }}</td>
-                    <td>{{ data.reported_by }}</td>
-                    <td>{{ data.department }}</td>
-                    <td>{{ data.phone_number }}</td>
-                    <td>
-                        <select class="form-input" name="status" style="width: 140px;" disabled>
-                            <option value="open" {% if data.status == 'open' %}selected{% endif %}>Open</option>
-                            <option value="pending" {% if data.status == 'pending' %}selected{% endif %}>Pending</option>
-                            <option value="closed" {% if data.status == 'closed' %}selected{% endif %}>Closed</option>
-                        </select>
-                    </td>
-                    <td><a href="{% url 'incident_details' data.id %}" style="text-decoration: underline;">Details</a></td>
-                    <td><button name="delete" class="form-input form-btn" value="{{ data.id }}" onclick="return confirmDelete();" disabled>DELETE</button></td>
-                    <td><button name="update" class="form-input form-btn" value="{{ data.id }}" disabled>UPDATE</button></td>
-                </form>
-                <td><button onclick="toggleEditFields(this)">TOGGLE</button></td>
-            </tr>
-            {% empty %} 
-            <tr>
-                <td colspan="13" style="text-align: center;">No Cases Found</td>
-            </tr> 
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="create-search">
+        <a></a>
+        <div class="search-container">
+            <input type="text" id="tableSearch" placeholder="Search..." onkeyup="filterTable()">
+            <span class="search-icon">&#128269;</span> <!-- Unicode for a magnifying glass -->
+        </div>
+    </div>
+    
+    <div class="table-container">
+        <table class="form-table">
+            <thead>
+                <tr>
+                    <th colspan="13">Closed Cases</th>
+                </tr>
+                <tr>
+                    <th>Date Time</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Subject</th>
+                    <th>Location</th>
+                    <th>Reported By</th>
+                    <th>Department</th>
+                    <th>Phone Number</th>
+                    <th>Status</th>
+                    <th>Details</th>
+                    <th colspan="3">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in closed_incident %}
+                <tr>
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <td>{{ data.date_joined }}</td>
+                        <input type="hidden" name="incident_id" value="{{ data.id }}">
+                        <td>{{ data.first_name }}</td>
+                        <td>{{ data.last_name }}</td>
+                        <td>{{ data.subject }}</td>
+                        <td>{{ data.location }}</td>
+                        <td>{{ data.reported_by }}</td>
+                        <td>{{ data.department }}</td>
+                        <td>{{ data.phone_number }}</td>
+                        <td>
+                            <select class="form-input" name="status" style="width: 140px;" disabled>
+                                <option value="open" {% if data.status == 'open' %}selected{% endif %}>Open</option>
+                                <option value="pending" {% if data.status == 'pending' %}selected{% endif %}>Pending</option>
+                                <option value="closed" {% if data.status == 'closed' %}selected{% endif %}>Closed</option>
+                            </select>
+                        </td>
+                        <td><a href="{% url 'incident_details' data.id %}" style="text-decoration: underline;">Details</a></td>
+                        <td><button name="delete" class="form-input form-btn" value="{{ data.id }}" onclick="return confirmDelete();" disabled>DELETE</button></td>
+                        <td><button name="update" class="form-input form-btn" value="{{ data.id }}" disabled>UPDATE</button></td>
+                    </form>
+                    <td><button onclick="toggleEditFields(this)">TOGGLE</button></td>
+                </tr>
+                {% empty %} 
+                <tr>
+                    <td colspan="13" style="text-align: center;">No Cases Found</td>
+                </tr> 
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
     <script type="text/javascript">
+        function filterTable() {
+            const input = document.getElementById('tableSearch');
+            const filter = input.value.toLowerCase();
+            const table = document.querySelector('.form-table tbody');
+            const rows = table.getElementsByTagName('tr');
+        
+            for (let i = 0; i < rows.length; i++) {
+                let cells = rows[i].getElementsByTagName('td');
+                let rowMatches = false;
+        
+                // Check each cell in the row
+                for (let j = 0; j < cells.length; j++) {
+                    let cellText = '';
+        
+                    // If the cell contains an input/select element, get its value
+                    const inputElement = cells[j].querySelector('input, select');
+                    if (inputElement) {
+                        cellText = inputElement.value.toLowerCase();
+                    } else {
+                        cellText = cells[j].innerText.toLowerCase();
+                    }
+        
+                    // Check if the cell text includes the filter keyword
+                    if (cellText.includes(filter)) {
+                        rowMatches = true;
+                        break;  // No need to check the rest of the cells if one matches
+                    }
+                }
+        
+                // Show or hide the row based on whether a match was found
+                rows[i].style.display = rowMatches ? '' : 'none';
+            }
+        }
+        
         function toggleEditFields(button) {
             const row = button.closest('tr'); // Get the closest row of the clicked button
             const inputs = row.querySelectorAll('.form-input'); // Select all input fields in the row

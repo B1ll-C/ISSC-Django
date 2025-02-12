@@ -154,15 +154,144 @@ select {
     box-shadow: 0 3px 8px rgba(75, 0, 0, 0.4);
 }
 
+/* Search Bar Styling */
+.search-container {
+    display: flex;
+    align-items: center;
+    width: 300px;
+    position: relative;
+}
+
+.search-container :focus{
+    border-color: #800000;
+    outline: none;
+    box-shadow: 0 4px 8px rgba(128, 0, 0, 0.3);
+}
+
+#tableSearch {
+    width: 100%;
+    padding: 8px 30px 8px 20px; /* Leave space for icon */
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    font-size: 14px;
+}
+
+.create-search {
+    padding-top: 40px;
+    display: flex;
+    justify-content: space-between; /* Push items to opposite ends */
+    align-items: center;            /* Vertically center them */
+}
+
+.search-icon {
+    position: absolute;
+    right: 10px;
+    font-size: 16px;
+    color: #fff;  /* Deep Maroon */
+}
+
+/* General Button Styles */
+.create-new-btn, .pagination a, .update-btn, .delete-btn, .toggle-btn {
+    background-color: rgba(230, 230, 230, 1);
+    color: maroon;
+    border: none;
+    padding: 6px 33px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.17);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.create-new-btn {
+    font-size: 13px;
+}
+
+/* Specific Button Colors */
+.delete-btn {
+    color: maroon;
+}
+
+.update-btn {
+    color: darkgreen;
+}
+
+/* Hover Effects */
+.delete-btn:hover {
+    background-color: maroon;
+    color: white;
+}
+
+.update-btn:hover {
+    background-color: darkgreen;
+    color: white;
+}
+
+.custom-toggle-btn {
+    display: inline-block !important;
+    color: #d0ab15;
+    padding: 6px 33px;
+    border-radius: 50px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.17);
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.custom-toggle-btn:hover {
+    background-color: #e6b800;
+    color: white;
+}
+
+
+.create-new-btn:hover, .pagination a:hover, .pagination button:hover, .create-new-btn button:hover {
+    background-color: maroon;  /* Darker maroon on hover */
+    color: #fff;
+}
+
+.table-container input, select{
+    border-radius: 50px;
+    padding: 5px 15px;
+    outline: none;
+}
+
+.table-container input, select :focus{
+    outline: none;
+}
+
+/* Pagination Styling */
+.pagination{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px 10px 10px;
+}
+.pagination a {
+    text-decoration: none;
+    color: maroon;
+    font-size: 14px;
+}
+
+.pagination :hover {
+    color: #fff;
+}
+
+.pagination span {
+    font-weight: 600;
+    color: #686767c1;
+}
+
 /* Table Wrapper for Scroll */
 .table-container {
     max-width: 100%;         /* Restrict table width to container */
-    max-height: 400px;       /* Limit table height */
     overflow-x: auto;        /* Enable horizontal scroll if content overflows */
-    overflow-y: auto;        /* Enable vertical scroll if content overflows */
     border-radius: 5px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    margin: 20px auto 40px auto;
+    margin: 20px auto 15px auto;
     animation: fadeIn .5s ease-in-out forwards;
     animation-delay: 0.2s; /* Delay to start after the form */
     opacity: 0; /* Start hidden before animation */
@@ -182,13 +311,13 @@ select {
     background-color: #4B0000;  /* Deep Maroon */
     color: #ffffff;
     text-transform: uppercase;
-    font-size: 12px;           /* Smaller Header Font */
-    letter-spacing: 0.8px;
+    font-size: 15px;           /* Smaller Header Font */
+    letter-spacing: 1px;
 }
 
 /* Table Cells */
 .form-table th, .form-table td {
-    padding: 10px 15px;       /* Reduce padding for smaller cell size */
+    padding: 10px;       /* Reduce padding for smaller cell size */
     text-align: left;
     font-size: 12px;          /* Smaller Font Size */
     color: #333333;
@@ -197,7 +326,8 @@ select {
 }
 
 .form-table th{
-    color: #dbdbdb;
+    color: #fff;
+    padding: 15px;
 }
 
 /* Table Rows */
@@ -208,11 +338,6 @@ select {
 
 .form-table tbody tr:hover {
     background-color: rgba(75, 0, 0, 0.1);  /* Light Maroon Hover */
-}
-
-/* Alternating Row Colors */
-.form-table tbody tr:nth-child(even) {
-    background-color: #eeeeee;
 }
 
 /* First Column (Date Time) Styling */
