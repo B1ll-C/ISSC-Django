@@ -1,0 +1,285 @@
+/* Wider Form with Blur (Glassmorphism Effect) */
+.forms {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 2.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    font-family: 'Poppins', Arial, sans-serif;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeIn .7s ease-in-out forwards;
+    opacity: 0; /* Start hidden before animation */
+}
+
+/* Subtle Hover Effect */
+.forms:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* Grid Layout for Form */
+.form-group {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);  /* 3 columns layout */
+    gap: 20px;
+}
+
+/* Row 1: Username spans all 3 columns */
+.username {
+    grid-column: span 3;
+}
+
+/* Row 2: First Name, Middle Name, Last Name (1 column each) */
+.first-name {
+    grid-column: span 1;
+}
+.middle-name {
+    grid-column: span 1;
+}
+.last-name {
+    grid-column: span 1;
+}
+
+/* Row 3: Email, ID Number, Contact Number (1 column each) */
+.email {
+    grid-column: span 1;
+}
+.id-number {
+    grid-column: span 1;
+}
+.contact-number {
+    grid-column: span 1;
+}
+
+/* Row 4: Gender, Department, Privilege (1 column each) */
+.gender {
+    grid-column: span 1;
+}
+.department {
+    grid-column: span 1;
+}
+.privilege {
+    grid-column: span 1;
+}
+
+/* Row 5: Status and Password */
+.status {
+    grid-column: span 1;
+}
+.password {
+    grid-column: span 2;  /* Password spans 2 columns for wider input */
+}
+
+/* Button spans full width */
+.register-btn {
+    grid-column: span 3;
+    margin-top: 20px;
+}
+
+/* Label Styling */
+.form-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #4B0000;  /* Deep Maroon */
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Input Fields with Modern Style */
+.form-field input[type="text"],
+.form-field input[type="email"],
+.form-field input[type="password"],
+.form-field select {
+    width: 100%;
+    padding: 8px 25px;
+    border: none;  /* Remove borders */
+    border-radius: 50px;
+    background-color: rgba(224, 224, 224, 0.5);  /* Light gray transparent background */
+    font-size: 13px;
+    color: #333333;  /* Dark Gray Text */
+    transition: all 0.3s ease;
+    outline: none;
+    box-sizing: border-box;
+}
+
+/* Focus Effect on Inputs */
+.form-field input[type="text"]:focus,
+.form-field input[type="email"]:focus,
+.form-field input[type="password"]:focus,
+.form-field select:focus {
+    background-color: rgba(255, 255, 255, 0.8);  /* White-ish background on focus */
+    box-shadow: 0 0 10px rgba(75, 0, 0, 0.5);  /* Deep Maroon Glow */
+}
+
+/* Select Dropdown Customization */
+select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 140 140' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='20,50 70,100 120,50' fill='none' stroke='%234B0000' stroke-width='15' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 15px;
+    cursor: pointer;
+}
+
+/* Submit Button with Deep Maroon Gradient */
+.register-btn button[type="submit"] {
+    width: 100%;
+    padding: 8px 25px;
+    margin-top: 20px;
+    background: linear-gradient(135deg, #4B0000, #260000);
+    border: none;
+    border-radius: 50px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 12px rgba(75, 0, 0, 0.5);
+}
+
+/* Button Hover & Active Effects */
+.register-btn button[type="submit"]:hover {
+    background: linear-gradient(135deg, #260000, #4B0000);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(75, 0, 0, 0.7);
+}
+
+.register-btn button[type="submit"]:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 8px rgba(75, 0, 0, 0.4);
+}
+
+/* Table Wrapper for Scroll */
+.table-container {
+    max-width: 100%;         /* Restrict table width to container */
+    max-height: 400px;       /* Limit table height */
+    overflow-x: auto;        /* Enable horizontal scroll if content overflows */
+    overflow-y: auto;        /* Enable vertical scroll if content overflows */
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 20px auto 40px auto;
+    animation: fadeIn .5s ease-in-out forwards;
+    animation-delay: 0.2s; /* Delay to start after the form */
+    opacity: 0; /* Start hidden before animation */
+}
+
+/* Table Styling */
+.form-table {
+    width: 100%;
+    min-width: 800px;        /* Set a minimum width to trigger horizontal scroll */
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 5px;
+}
+
+/* Table Header */
+.form-table thead {
+    background-color: #4B0000;  /* Deep Maroon */
+    color: #ffffff;
+    text-transform: uppercase;
+    font-size: 12px;           /* Smaller Header Font */
+    letter-spacing: 0.8px;
+}
+
+/* Table Cells */
+.form-table th, .form-table td {
+    padding: 10px 15px;       /* Reduce padding for smaller cell size */
+    text-align: left;
+    font-size: 12px;          /* Smaller Font Size */
+    color: #333333;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap;      /* Prevent text from wrapping */
+}
+
+.form-table th{
+    color: #dbdbdb;
+}
+
+/* Table Rows */
+.form-table tbody tr {
+    background-color: #f9f9f9;
+    transition: background-color 0.3s ease;
+}
+
+.form-table tbody tr:hover {
+    background-color: rgba(75, 0, 0, 0.1);  /* Light Maroon Hover */
+}
+
+/* Alternating Row Colors */
+.form-table tbody tr:nth-child(even) {
+    background-color: #eeeeee;
+}
+
+/* First Column (Date Time) Styling */
+.form-table tbody tr td:first-child {
+    color: #4B0000;  /* Deep Maroon for Date Time */
+    font-weight: 600;
+}
+
+/* Scrollbar Styling (Optional for Webkit Browsers) */
+.table-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: gray;  /* Deep Maroon Scrollbar */
+    border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: #260000;  /* Darker Maroon on Hover */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .form-table th, .form-table td {
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+
+    .form-group {
+        grid-template-columns: 1fr;  /* Single column on smaller screens */
+    }
+
+    .full-width {
+        grid-column: span 1;  /* Reset full-width fields */
+    }
+
+    .username,
+    .first-name,
+    .middle-name,
+    .last-name,
+    .email,
+    .id-number,
+    .contact-number,
+    .gender,
+    .department,
+    .privilege,
+    .status,
+    .password,
+    .register-btn {
+        grid-column: span 1;  /* All fields take full width */
+    }
+}
+
+/* Keyframe for Fade-In Effect */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px); /* Slight upward movement */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0); /* Settle to original position */
+    }
+}

@@ -1,57 +1,131 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %} Signup {% endblock title %}
 
 {% block content %}
-    <form method="post">
+    
+    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+
+    <!-- Table Displaying Form Inputs -->
+    <div class="table-container">
+        <table class="form-table">
+            <thead>
+                <tr>
+                    <th>Date Time</th>
+                    <th>Username</th>
+                    <th>First Name</th>
+                    <th>Middle Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>ID Number</th>
+                    <th>Contact Number</th>
+                    <th>Gender</th>
+                    <th>Department</th>
+                    <th>Privilege</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Example Data Row -->
+                <tr>
+                    <td>2024-04-20 14:30</td>
+                    <td>johndoe123</td>
+                    <td>John</td>
+                    <td>A.</td>
+                    <td>Doe</td>
+                    <td>john@example.com</td>
+                    <td>123456</td>
+                    <td>+1234567890</td>
+                    <td>Male</td>
+                    <td>Engineering</td>
+                    <td>Student</td>
+                    <td>Allowed</td>
+                </tr>
+                <!-- Add more dynamic rows here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Signup Form -->
+    <form class="forms" method="post">
         {% csrf_token %}
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br>
+        <div class="form-group">
+            <div class="form-field username">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
 
-        <label for="first_name">First Name:</label>
-        <input type="text" id="first_name" name="first_name" required><br>
+            <div class="form-field first-name">
+                <label for="first_name">First Name:</label>
+                <input type="text" id="first_name" name="first_name" required>
+            </div>
 
-        <label for="middle_name">Middle Name:</label>
-        <input type="text" id="middle_name" name="middle_name"><br>
+            <div class="form-field middle-name">
+                <label for="middle_name">Middle Name:</label>
+                <input type="text" id="middle_name" name="middle_name">
+            </div>
 
-        <label for="last_name">Last Name:</label>
-        <input type="text" id="last_name" name="last_name" required><br>
+            <div class="form-field last-name">
+                <label for="last_name">Last Name:</label>
+                <input type="text" id="last_name" name="last_name" required>
+            </div>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br>
+            <div class="form-field email">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
 
-        <label for="id_number">ID Number:</label>
-        <input type="text" id="id_number" name="id_number" required><br>
+            <div class="form-field id-number">
+                <label for="id_number">ID Number:</label>
+                <input type="text" id="id_number" name="id_number" required>
+            </div>
 
-        <label for="contact_number">Contact Number:</label>
-        <input type="text" id="contact_number" name="contact_number"><br>
+            <div class="form-field contact-number">
+                <label for="contact_number">Contact Number:</label>
+                <input type="text" id="contact_number" name="contact_number">
+            </div>
 
-        <label for="gender">Gender:</label>
-        <select id="gender" name="gender">
-            <option value="M">Male</option>
-            <option value="F">Female</option>
-            <option value="O">Other</option>
-        </select><br>
+            <div class="form-field gender">
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender">
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                    <option value="O">Other</option>
+                </select>
+            </div>
 
-        <label for="department">Department:</label>
-        <input type="text" id="department" name="department"><br>
+            <div class="form-field department">
+                <label for="department">Department:</label>
+                <input type="text" id="department" name="department">
+            </div>
 
-        <label for="privilege">Privilege:</label>
-        <select id="privilege" name="privilege">
-            <option value="student">Student</option>
-            <option value="faculty">Faculty</option>
-            <option value="admin">Admin</option>
-        </select><br>
+            <div class="form-field privilege">
+                <label for="privilege">Privilege:</label>
+                <select id="privilege" name="privilege">
+                    <option value="student">Student</option>
+                    <option value="faculty">Faculty</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
 
-        <label for="status">Status:</label>
-        <select id="status" name="status">
-            <option value="allowed">Allowed</option>
-            <option value="restricted">Restricted</option>
-        </select><br>
+            <div class="form-field status">
+                <label for="status">Status:</label>
+                <select id="status" name="status">
+                    <option value="allowed">Allowed</option>
+                    <option value="restricted">Restricted</option>
+                </select>
+            </div>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br>
+            <div class="form-field password full-width">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+        </div>
 
-        <button type="submit">Register</button>
+        <div class="register-btn">
+            <button type="submit">Register</button>
+        </div>
     </form>
 {% endblock content %}
