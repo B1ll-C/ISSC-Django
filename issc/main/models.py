@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+import uuid
 
 
 # Create your models here.
@@ -47,7 +48,6 @@ class VehicleRegistration(models.Model):
     email_address = models.EmailField(unique=True)
     role = models.CharField(max_length=20)
     vehicle_type = models.CharField(max_length=50)
-    date_joined = models.DateTimeField(auto_now_add=True)
     color = models.CharField(max_length=30)
     model = models.CharField(max_length=50)
     plate_number = models.CharField(max_length=20, unique=True)
@@ -78,7 +78,8 @@ class IncidentReport(models.Model):
     id_number = models.CharField(max_length=100)
     subject = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
-    date_joined = models.DateTimeField(auto_now_add=True)
+    date = models.DateField(auto_now_add=True)
+    time = models.TimeField(auto_now_add=True)
     incident = models.TextField()
     request_for_action = models.TextField()
     reported_by = models.CharField(max_length=100)
@@ -94,3 +95,21 @@ class IncidentReport(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.subject}"
+
+
+class FacesEmbeddings(models.Model):
+    face_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id_number = models.ForeignKey(AccountRegistration, to_field="id_number", on_delete=models.CASCADE)
+    embedding = models.TextField()
+    image_hash = models.CharField(max_length=64, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Face entry for {self.id_number.id_number} at {self.created_at}"
+
+    class Meta:
+        verbose_name = "Face Embedding"
+        verbose_name_plural = "Faces Embeddings"
+
+
