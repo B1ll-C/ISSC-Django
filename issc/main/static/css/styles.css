@@ -167,17 +167,18 @@ body {
 
 .user-info p{
     font-size: 24px;
-    color: rgb(146, 146, 146);
+    color: rgb(237, 237, 237);
     text-transform: capitalize;
 }
 
 /* Footer */
 footer {
     background-color: #242121;
-    color: rgb(169, 169, 169);
+    color: rgb(98, 98, 98);
     text-align: center;
-    padding: 1.2rem;
+    padding: 1.5rem;
     margin-top: auto;
+    font-size: smaller;
 }
 
 /* Toggle Button */
