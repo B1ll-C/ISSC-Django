@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import auth_view, dashboard_view, incident_view, vehicle_view, live_view, about_view, face_enrollment_view
+from .views import auth_view, dashboard_view, incident_view, vehicle_view, live_view, about_view, face_enrollment_view, video_feed_view
 urlpatterns = [
 
     path("login/", auth_view.login, name='login'),
@@ -24,6 +24,7 @@ urlpatterns = [
 
     path("about/", about_view.about, name="about"),
     path("face-enrollment/", face_enrollment_view.face_enrollment, name="face_enrollment"),
+    path('video-feed/', video_feed_view.video_feed, name='video_feed'),
     # path("image_test/", views.image_test, name="image_test")
 ]
 

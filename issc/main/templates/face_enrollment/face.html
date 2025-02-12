@@ -4,6 +4,24 @@
 
 {% block content %}
 
-<h1>Face Enrollment</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Enrollment</title>
+</head>
+<body>
+    <h1>Face Enrollment</h1>
+    <p>Follow the instructions displayed on the video feed.</p>
+
+    <img src="{% url 'video_feed' %}" width="640" height="480" />
+
+    {% if result %}
+        <p>Status: {{ result.status }}</p>
+        <p>Message: {{ result.message }}</p>
+    {% endif %}
+</body>
+</html>
 
 {% endblock content %}
