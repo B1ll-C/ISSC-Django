@@ -25,6 +25,7 @@ urlpatterns = [
     path("about/", about_view.about, name="about"),
     path("face-enrollment/", face_enrollment_view.face_enrollment, name="face_enrollment"),
     path('video-feed/', video_feed_view.video_feed, name='video_feed'),
+    path('enroll-face/', face_enrollment_view.enroll_face, name='enroll_face'),
     # path("image_test/", views.image_test, name="image_test")
 ]
 
