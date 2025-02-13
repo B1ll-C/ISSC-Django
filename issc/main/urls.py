@@ -20,12 +20,16 @@ urlpatterns = [
     path("vehicles/forms", vehicle_view.vehicle_forms, name="vehicle_forms"),
     path('vehicles/<int:id>/', vehicle_view.vehicle_details, name='vehicle_details'),
 
-    path("live_feed/", live_view.live_feed, name="live_feed"),
+    path('video-feed/<int:camera_id>/', video_feed_view.video_feed, name='video_feed'),
+    path('live-feed/', video_feed_view.multiple_streams, name='multiple_streams'),
+    path('check_cams/', video_feed_view.check_cams, name='check_cams'),
 
     path("about/", about_view.about, name="about"),
     path("face-enrollment/", face_enrollment_view.face_enrollment, name="face_enrollment"),
-    path('video-feed/', video_feed_view.video_feed, name='video_feed'),
     path('enroll-face/', face_enrollment_view.enroll_face, name='enroll_face'),
-    # path("image_test/", views.image_test, name="image_test")
+
+
+
+   
 ]
 
