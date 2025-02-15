@@ -6,46 +6,25 @@
 
 <h2>Face Enrollment</h2>
 
-<!-- Live Video Stream -->
-<img id="video-stream" src="{% url 'video_feed' %}" width="640px" />
+<div class="container mx-auto px-4 py-8 bg-gray-900 text-white">
+    <h1 class="text-3xl font-bold text-center mb-6 text-gray-300">Live Camera Feed</h1>
 
-<!-- Capture Button -->
-<button id="capture">Capture Face</button>
-<p id="status"></p>
-
-<!-- CSRF Token (Hidden) -->
-<input type="hidden" id="csrf_token" value="{{ csrf_token }}">
-
-<script>
-    // Function to get CSRF token from cookie
-    function getCSRFToken() {
-        let cookieValue = null;
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.startsWith("csrftoken=")) {
-                cookieValue = cookie.substring("csrftoken=".length, cookie.length);
-                break;
-            }
-        }
-        return cookieValue;
-    }
-
-    document.getElementById("capture").addEventListener("click", function () {
-        fetch("{% url 'enroll_face' %}", { 
-            method: "POST", 
-            headers: {
-                "X-CSRFToken": getCSRFToken(),  // Include CSRF token in request
-                "Content-Type": "application/json",
-            },
-            credentials: "same-origin"
-        })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("status").innerText = data.message;
-        })
-        .catch(error => console.error("Error:", error));
-    });
-</script>
+    {% if camera_ids %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {% for camera_id in camera_ids %}
+                <div class="bg-gray-800 rounded-lg shadow-lg p-4">
+                    <h3 class="text-lg font-semibold text-center text-gray-300 mb-2">Camera {{ camera_id }}</h3>
+                    <div class="border-4 border-[#6AAE43] rounded-lg overflow-hidden">
+                        <img class="w-full h-auto" src="{% url 'video_feed' camera_id %}" alt="Camera {{ camera_id }}">
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="col-span-full text-center">
+            <p class="text-gray-500 text-lg">No cameras are currently available. Please check back later.</p>
+        </div>
+    {% endif %}
+</div>
 
 {% endblock content %}
