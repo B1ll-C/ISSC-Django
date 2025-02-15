@@ -4,10 +4,8 @@
 
 {% block content %}
 
-<h2>Face Enrollment</h2>
-
 <div class="container mx-auto px-4 py-8 bg-gray-900 text-white">
-    <h1 class="text-3xl font-bold text-center mb-6 text-gray-300">Live Camera Feed</h1>
+    <h1 class="text-3xl font-bold text-center mb-6 text-gray-300">Face Enrollment</h1>
 
     {% if camera_ids %}
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -15,7 +13,7 @@
                 <div class="bg-gray-800 rounded-lg shadow-lg p-4">
                     <h3 class="text-lg font-semibold text-center text-gray-300 mb-2">Camera {{ camera_id }}</h3>
                     <div class="border-4 border-[#6AAE43] rounded-lg overflow-hidden">
-                        <img class="w-full h-auto" src="{% url 'video_feed' camera_id %}" alt="Camera {{ camera_id }}">
+                        <img class="w-full h-auto" src="{% url 'video_feed_face' camera_id %}" alt="Camera {{ camera_id }}">
                     </div>
                 </div>
             {% endfor %}
