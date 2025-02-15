@@ -22,10 +22,9 @@ urlpatterns = [
 
 
     path('video-feed/<int:camera_id>/', video_feed_view.video_feed, name='video_feed'),
-
-
     path('live-feed/', video_feed_view.multiple_streams, name='multiple_streams'),
     path('check_cams/', video_feed_view.check_cams, name='check_cams'),
+    
 
     path("about/", about_view.about, name="about"),
 
