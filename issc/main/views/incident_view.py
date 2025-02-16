@@ -19,14 +19,14 @@ def incident(request):
     user = AccountRegistration.objects.filter(username=request.user).values()
     if user[0]['privilege'] == 'student':
         template = loader.get_template('incident/student/incident.html')
-        open_incident = IncidentReport.objects.filter(status='open', id_number=user[0]['id_number']).order_by('date')
-        pending_incident = IncidentReport.objects.filter(status='pending', id_number=user[0]['id_number']).order_by('date')
-        closed_incident = IncidentReport.objects.filter(status='closed', id_number=user[0]['id_number']).order_by('date')
+        open_incident = IncidentReport.objects.filter(status='open', id_number=user[0]['id_number']).order_by('date_joined')
+        pending_incident = IncidentReport.objects.filter(status='pending', id_number=user[0]['id_number']).order_by('date_joined')
+        closed_incident = IncidentReport.objects.filter(status='closed', id_number=user[0]['id_number']).order_by('date_joined')
     else:
         template = loader.get_template('incident/admin/incident.html')
-        open_incident = IncidentReport.objects.filter(status='open').order_by('date')
-        pending_incident = IncidentReport.objects.filter(status='pending').order_by('date')
-        closed_incident = IncidentReport.objects.filter(status='closed').order_by('date')
+        open_incident = IncidentReport.objects.filter(status='open').order_by('date_joined')
+        pending_incident = IncidentReport.objects.filter(status='pending').order_by('date_joined')
+        closed_incident = IncidentReport.objects.filter(status='closed').order_by('date_joined')
 
     open_incident = paginate(open_incident,request)
     pending_incident = paginate(pending_incident,request)
