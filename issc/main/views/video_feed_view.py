@@ -10,14 +10,16 @@ from django.template import loader
 
 from ..models import AccountRegistration, IncidentReport, VehicleRegistration
 
+
 # Initialize cameras and frame queues
 NUM_CAMERAS = 4
 cameras = {i: cv2.VideoCapture(i) for i in range(NUM_CAMERAS)}
 frame_queues = {i: Queue(maxsize=10) for i in cameras}
 running = True
 
+
 def process_with_model(frame):
-    #add model and annotate
+    
     return frame
 
 def generate_no_signal_frame():

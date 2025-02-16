@@ -19,12 +19,12 @@ def vehicles(request):
     user = AccountRegistration.objects.filter(username=request.user).values()
     if user[0]['privilege'] == 'student' :
         template = loader.get_template('vehicle/student/vehicle.html')
-        allowed_vehicle_type = VehicleRegistration.objects.filter(status='allowed').order_by('date_joined')
-        restricted_vehicle_type = VehicleRegistration.objects.filter(status='restricted').order_by('date_joined')
+        allowed_vehicle_type = VehicleRegistration.objects.filter(status='allowed').order_by('id_number')
+        restricted_vehicle_type = VehicleRegistration.objects.filter(status='restricted').order_by('id_number')
     else:
         template = loader.get_template('vehicle/admin/vehicle.html')
-        allowed_vehicle_type = VehicleRegistration.objects.filter(status='allowed').order_by('date_joined')
-        restricted_vehicle_type = VehicleRegistration.objects.filter(status='restricted').order_by('date_joined')
+        allowed_vehicle_type = VehicleRegistration.objects.filter(status='allowed').order_by('id_number')
+        restricted_vehicle_type = VehicleRegistration.objects.filter(status='restricted').order_by('id_number')
 
     context = {
         'user_role': user[0]['privilege'],

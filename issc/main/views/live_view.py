@@ -14,8 +14,12 @@ from ..models import AccountRegistration, IncidentReport, VehicleRegistration
 
 from .utils import paginate
 
+
 @login_required(login_url='/login/')
 def live_feed(request):
+
+    return StreamingHttpResponse(recognizer.generate_frames(), content_type="multipart/x-mixed-replace; boundary=frame")
+    
     user = AccountRegistration.objects.filter(username=request.user).values()
     template = loader.get_template('live-feed/live-feed.html')
     context = {
