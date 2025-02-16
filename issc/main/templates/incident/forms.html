@@ -8,94 +8,94 @@
 
 <link rel="stylesheet" href="{% static 'css/forms.css' %}">
 
-<!-- Incident Report Template ## REMOVE <H1> -->
-    <div class="max-w-4xl mx-auto mt-10 bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-2xl font-bold mb-6">Incident Report Form</h2>
-        <form method="POST" enctype="multipart/form-data" class="space-y-4">
-            {% csrf_token %}
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                    <label class="block font-medium">First Name</label>
-                    <input type="text" name="first_name" class="w-full p-2 border rounded-md" required>
-                </div>
-                <div>
-                    <label class="block font-medium">Middle Name</label>
-                    <input type="text" name="middle_name" class="w-full p-2 border rounded-md">
-                </div>
-                <div>
-                    <label class="block font-medium">Last Name</label>
-                    <input type="text" name="last_name" class="w-full p-2 border rounded-md" required>
-                </div>
+<div class = "forms"> 
+    <form method="POST" enctype="multipart/form-data" class="space-y-4">
+        {% csrf_token %}
+        <div class="form-group">
+            <div class="form-field first-name">
+                <label>First Name</label>
+                <input type="text" name="first_name" required>
+            </div>
+            <div class="form-field middle-name">
+                <label>Middle Name</label>
+                <input type="text" name="middle_name">
+            </div>
+            <div class="form-field last-name">
+                <label>Last Name</label>
+                <input type="text" name="last_name" required>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block font-medium">Contact Number</label>
-                    <input type="tel" name="contact_number" class="w-full p-2 border rounded-md" required>
-                </div>
-                <div>
-                    <label class="block font-medium">ID Number</label>
-                    <input type="text" name="id_number" class="w-full p-2 border rounded-md" required>
-                </div>
+            <div class="form-field contact-number">
+                <label>Contact Number</label>
+                <input type="tel" name="contact_number"required>
+            </div>
+
+            <div class="form-field id-number">
+                <label>ID Number</label>
+                <input type="text" name="id_number" required>
+            </div>
+
+            <div class="form-field subject">
+                <label>Subject</label>
+                <input type="text" name="subject" required>
             </div>
             
-            <div>
-                <label class="block font-medium">Subject</label>
-                <input type="text" name="subject" class="w-full p-2 border rounded-md" required>
+            <div class="form-field location">
+                <label>Location</label>
+                <input type="text" name="location" required>
             </div>
             
-            <div>
-                <label class="block font-medium">Location</label>
-                <input type="text" name="location" class="w-full p-2 border rounded-md" required>
+            <div class="form-field incident-description">
+                <label>Incident Description</label>
+                <textarea name="incident" required></textarea>
             </div>
             
-            <div>
-                <label class="block font-medium">Incident Description</label>
-                <textarea name="incident" class="w-full p-2 border rounded-md" required></textarea>
+            <div class="form-field request-action">
+                <label>Request for Action</label>
+                <textarea name="request_for_action" required></textarea>
             </div>
             
-            <div>
-                <label class="block font-medium">Request for Action</label>
-                <textarea name="request_for_action" class="w-full p-2 border rounded-md" required></textarea>
+            <div class="form-field reported-by">
+                <label>Reported By</label>
+                <input type="text" name="reported_by" required>
+            </div>
+
+            <div class="form-field position">
+                <label>Position</label>
+                <input type="text" name="position" required>
+            </div>
+
+            <div class="form-field department">
+                <label>Department</label>
+                <input type="text" name="department" required>
+            </div>
+
+            <div class="form-field phone-number">
+                <label>Phone Number</label>
+                <input type="tel" name="phone_number" required>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                    <label class="block font-medium">Reported By</label>
-                    <input type="text" name="reported_by" class="w-full p-2 border rounded-md" required>
-                </div>
-                <div>
-                    <label class="block font-medium">Position</label>
-                    <input type="text" name="position" class="w-full p-2 border rounded-md" required>
-                </div>
-                <div>
-                    <label class="block font-medium">Department</label>
-                    <input type="text" name="department" class="w-full p-2 border rounded-md" required>
-                </div>
+            <div class="form-field upload-file">
+                <label>Upload File</label>
+                <input type="file" name="file">
             </div>
             
-            <div>
-                <label class="block font-medium">Phone Number</label>
-                <input type="tel" name="phone_number" class="w-full p-2 border rounded-md" required>
-            </div>
-            
-            <div>
-                <label class="block font-medium">Upload File</label>
-                <input type="file" name="file" class="w-full p-2 border rounded-md">
-            </div>
-            
-            <div>
-                <label class="block font-medium">Status</label>
-                <select name="status" class="w-full p-2 border rounded-md">
+            <div class="form-field status">
+                <label>Status</label>
+                <select name="status">
                     <option value="open">Open</option>
                     <option value="closed">Closed</option>
                     <option value="pending">Pending</option>
                 </select>
             </div>
-            
-            <button type="submit" class="w-full mt-4 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">Submit</button>
-        </form>
-    </div>
+            <div  class="register-btn">
+                <button type="submit">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Incident Report Template ## REMOVE <H1> -->
+    
 
 {% endblock content %}
