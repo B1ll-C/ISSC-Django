@@ -61,6 +61,8 @@ class VehicleRegistration(models.Model):
         ('restricted', 'Restricted')
     ])
     qr_code = models.ImageField(upload_to='images/')
+    date_joined = models.DateTimeField(auto_now_add=True)
+
 
     def __str__(self):
         return self.id_number
@@ -78,8 +80,7 @@ class IncidentReport(models.Model):
     id_number = models.CharField(max_length=100)
     subject = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
-    date = models.DateField(auto_now_add=True)
-    time = models.TimeField(auto_now_add=True)
+    date_joined = models.DateTimeField(auto_now_add=True)
     incident = models.TextField()
     request_for_action = models.TextField()
     reported_by = models.CharField(max_length=100)

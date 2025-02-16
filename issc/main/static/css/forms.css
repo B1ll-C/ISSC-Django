@@ -94,6 +94,9 @@
 .form-field input[type="text"],
 .form-field input[type="email"],
 .form-field input[type="password"],
+.form-field input[type="tel"],
+.form-field input[type="file"],
+.form-field textarea,
 .form-field select {
     width: 100%;
     padding: 8px 25px;
@@ -111,9 +114,24 @@
 .form-field input[type="text"]:focus,
 .form-field input[type="email"]:focus,
 .form-field input[type="password"]:focus,
+.form-field input[type="tel"]:focus,
+.form-field input[type="file"]:focus,
+.form-field textarea:focus,
 .form-field select:focus {
     background-color: rgba(255, 255, 255, 0.8);  /* White-ish background on focus */
-    box-shadow: 0 0 10px rgba(75, 0, 0, 0.5);  /* Deep Maroon Glow */
+    box-shadow: 0 0 5px rgba(75, 0, 0, 0.5);  /* Deep Maroon Glow */
+}
+
+/* Hover Effect on Inputs */
+.form-field input[type="text"]:hover,
+.form-field input[type="email"]:hover,
+.form-field input[type="password"]:hover,
+.form-field input[type="tel"]:hover,
+.form-field input[type="file"]:hover,
+.form-field textarea:hover,
+.form-field select:hover {
+    background-color: rgba(255, 255, 255, 0.8);  /* White-ish background on focus */
+    box-shadow: 0 0 5px rgba(75, 0, 0, 0.5);  /* Deep Maroon Glow */
 }
 
 /* Select Dropdown Customization */
@@ -127,7 +145,8 @@ select {
 }
 
 /* Submit Button with Deep Maroon Gradient */
-.register-btn button[type="submit"] {
+.register-btn button[type="submit"],
+.form-field button {
     width: 100%;
     padding: 8px 25px;
     margin-top: 20px;
@@ -143,13 +162,15 @@ select {
 }
 
 /* Button Hover & Active Effects */
-.register-btn button[type="submit"]:hover {
+.register-btn button[type="submit"]:hover,
+.form-field button:hover {
     background: linear-gradient(135deg, #260000, #4B0000);
     transform: translateY(-3px);
     box-shadow: 0 6px 16px rgba(75, 0, 0, 0.7);
 }
 
-.register-btn button[type="submit"]:active {
+.register-btn button[type="submit"]:active,
+.form-field button:active {
     transform: translateY(0);
     box-shadow: 0 3px 8px rgba(75, 0, 0, 0.4);
 }
@@ -274,10 +295,6 @@ select {
     text-decoration: none;
     color: maroon;
     font-size: 14px;
-}
-
-.pagination :hover {
-    color: #fff;
 }
 
 .pagination span {
