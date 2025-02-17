@@ -9,6 +9,7 @@ import time
 import signal
 import sys
 from django.template import loader
+from datetime import datetime
 
 from ..models import AccountRegistration, IncidentReport, VehicleRegistration
 
@@ -31,7 +32,8 @@ VIDEO_FORMAT = "XVID"
 # Initialize video writers for each camera
 for cam_id in cameras:
     fourcc = cv2.VideoWriter_fourcc(*VIDEO_FORMAT)
-    video_path = os.path.join(SAVE_DIR, f'camera_{cam_id}.avi')
+    date_str = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    video_path = os.path.join(SAVE_DIR, f'camera_{cam_id}_{date_str}.avi')
     video_writers[cam_id] = cv2.VideoWriter(video_path, fourcc, FPS, (FRAME_WIDTH, FRAME_HEIGHT))
 
 def process_with_model(frame):
@@ -127,3 +129,15 @@ def handle_exit(signum, frame):
 
 # Register signal handler for Ctrl + C
 signal.signal(signal.SIGINT, handle_exit)
+
+
+def recording_archive(request):
+    user = AccountRegistration.objects.filter(username=request.user).values()
+
+    template = loader.get_template('live-feed/recording_arcihve.html')
+    context = {
+        'user_role': user[0]['privilege'],
+        'user_data': user[0],
+    }
+
+    return HttpResponse(template.render(context,request))
