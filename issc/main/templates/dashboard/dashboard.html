@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
-
+{% load base64_filter %}
+	
 {% block title %} Dashboard {% endblock title %}
 
 {% block content %}
-<h1>Put Graphs Here</h1>
+    <img src="data:image/png;base64,{{ monthly_incident_data }}" alt="Generated Image">
+
+    <img src="data:image/png;base64,{{ department_incident_data }}" alt="Generated Image">
+
+
 {% endblock content %}
