@@ -63,6 +63,10 @@ class VehicleRegistration(models.Model):
     qr_code = models.ImageField(upload_to='images/')
     date_joined = models.DateTimeField(auto_now_add=True)
 
+    last_updated = models.DateTimeField(auto_now=True)
+    last_updated_by =  models.CharField(max_length=100)
+    is_archived = models.BooleanField()
+
 
     def __str__(self):
         return self.id_number
@@ -96,6 +100,10 @@ class IncidentReport(models.Model):
     date = models.DateField(auto_now_add=True)
     time = models.TimeField(auto_now_add=True)
 
+    last_updated = models.DateTimeField(auto_now=True)
+    last_updated_by =  models.CharField(max_length=100)
+
+    is_archived = models.BooleanField()
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.subject}"
 
