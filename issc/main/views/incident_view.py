@@ -19,14 +19,14 @@ def incident(request):
     user = AccountRegistration.objects.filter(username=request.user).values()
     if user[0]['privilege'] == 'student':
         template = loader.get_template('incident/student/incident.html')
-        open_incident = IncidentReport.objects.filter(status='open', id_number=user[0]['id_number']).order_by('date_joined')
-        pending_incident = IncidentReport.objects.filter(status='pending', id_number=user[0]['id_number']).order_by('date_joined')
-        closed_incident = IncidentReport.objects.filter(status='closed', id_number=user[0]['id_number']).order_by('date_joined')
+        open_incident = IncidentReport.objects.filter(status='open', id_number=user[0]['id_number'] , is_archived=False).order_by('date_joined')
+        pending_incident = IncidentReport.objects.filter(status='pending', id_number=user[0]['id_number'] , is_archived=False).order_by('date_joined')
+        closed_incident = IncidentReport.objects.filter(status='closed', id_number=user[0]['id_number'] , is_archived=False).order_by('date_joined')
     else:
         template = loader.get_template('incident/admin/incident.html')
-        open_incident = IncidentReport.objects.filter(status='open').order_by('date_joined')
-        pending_incident = IncidentReport.objects.filter(status='pending').order_by('date_joined')
-        closed_incident = IncidentReport.objects.filter(status='closed').order_by('date_joined')
+        open_incident = IncidentReport.objects.filter(status='open', is_archived=False).order_by('date_joined')
+        pending_incident = IncidentReport.objects.filter(status='pending', is_archived=False).order_by('date_joined')
+        closed_incident = IncidentReport.objects.filter(status='closed', is_archived=False).order_by('date_joined')
 
     open_incident = paginate(open_incident,request)
     pending_incident = paginate(pending_incident,request)
@@ -39,19 +39,23 @@ def incident(request):
        
         if 'delete' in request.POST:
             incident = IncidentReport.objects.get(id=incident_id)
-            incident.delete()
+            incident.is_archived = True
+            incident.last_updated_by = user[0]['id_number']
+
+            incident.save()
             return redirect('incidents')
             
         if 'update' in request.POST:
             incident = IncidentReport.objects.get(id=incident_id)
             incident.status = status
+            incident.last_updated_by = user[0]['id_number']
             incident.save()
             return redirect('incidents')
 
 
 
 
-        
+       
     context = {
         'user_role': user[0]['privilege'],
         'user_data':user[0],
@@ -78,6 +82,7 @@ def incident_details(request, id):
         status = request.POST['status']
 
         incident.status = status
+        incident.last_updated_by = request.user 
         incident.save()
 
 
@@ -133,4 +138,17 @@ def incident_forms(request):
         )
         report.save()
         
+    return HttpResponse(template.render(context, request))
+
+
+@login_required(login_url='/login/')
+def incident_archived(request):
+    user = AccountRegistration.objects.filter(username=request.user).values()
+    template = loader.get_template('incident/incident_archived.html')
+    context = {
+        'user_role': user[0]['privilege'],
+        'user_data':user[0]
+
+    }
+
     return HttpResponse(template.render(context, request))

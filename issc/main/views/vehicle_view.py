@@ -19,12 +19,12 @@ def vehicles(request):
     user = AccountRegistration.objects.filter(username=request.user).values()
     if user[0]['privilege'] == 'student' :
         template = loader.get_template('vehicle/student/vehicle.html')
-        allowed_vehicle_type = VehicleRegistration.objects.filter(status='allowed').order_by('id_number')
-        restricted_vehicle_type = VehicleRegistration.objects.filter(status='restricted').order_by('id_number')
+        allowed_vehicle_type = VehicleRegistration.objects.filter(status='allowed', is_archived=False).order_by('id_number')
+        restricted_vehicle_type = VehicleRegistration.objects.filter(status='restricted' , is_archived=False).order_by('id_number')
     else:
         template = loader.get_template('vehicle/admin/vehicle.html')
-        allowed_vehicle_type = VehicleRegistration.objects.filter(status='allowed').order_by('id_number')
-        restricted_vehicle_type = VehicleRegistration.objects.filter(status='restricted').order_by('id_number')
+        allowed_vehicle_type = VehicleRegistration.objects.filter(status='allowed', is_archived=False).order_by('id_number')
+        restricted_vehicle_type = VehicleRegistration.objects.filter(status='restricted', is_archived=False).order_by('id_number')
 
     context = {
         'user_role': user[0]['privilege'],
@@ -39,10 +39,13 @@ def vehicles(request):
         status = request.POST['status']
         if 'delete' in request.POST:
             vehicle = VehicleRegistration.objects.get(id=vehicle_id)
-            vehicle.delete()
+            vehicle.is_archived = True
+            vehicle.last_updated_by = user[0]['id_number']
+            vehicle.save()
         if 'update' in request.POST:
             vehicle = VehicleRegistration.objects.get(id=vehicle_id)
             vehicle.status = status
+            vehicle.last_updated_by = user[0]['id_number']
             vehicle.save()
 
 
@@ -61,7 +64,8 @@ def vehicle_details(request, id):
 
     if request.method == 'POST':
         status = request.POST['status']
-
+        vehicle.last_updated_by = user[0]['id_number']
+            
         vehicle.status = status
         vehicle.save()
 
@@ -124,6 +128,19 @@ def vehicle_forms(request):
         )
         vehicle.save()
         
+
+    return HttpResponse(template.render(context,request))
+
+
+@login_required(login_url='/login/')
+def vehicle_archive(request):
+    user = AccountRegistration.objects.filter(username=request.user).values()
+
+    template = loader.get_template('vehicle/vehicle_archive.html')
+    context = {
+        'user_role': user[0]['privilege'],
+        'user_data':user[0]
+    }
 
     return HttpResponse(template.render(context,request))
 

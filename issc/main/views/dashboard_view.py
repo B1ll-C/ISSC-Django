@@ -7,6 +7,7 @@ import base64
 from ..models import AccountRegistration, IncidentReport, VehicleRegistration
 
 import calendar
+import pandas as pd
 
 from collections import Counter
 def monthly_incident_graph():
@@ -65,6 +66,30 @@ def department_incident_graph():
 
     return img_data
 
+def vehicle_graph():
+    data = VehicleRegistration.objects.values('role','vehicle_type')
+    df = pd.DataFrame(list(data))
+
+    counts = df.groupby(['role','vehicle_type']).size().unstack(fill_value=0)
+
+    plt.figure(figsize=(10,5))
+
+    counts.plot(kind='bar')
+
+    plt.title('Type of Owner and Type of Vehicle')
+    plt.xlabel('Vehicle Type')
+    plt.ylabel('Count')
+    plt.legend(title='Role')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+
+    buf = BytesIO()
+
+    plt.savefig(buf, format='png')
+    buf.seek(0)
+
+    img_data = base64.b64encode(buf.read()).decode('utf-8')
+    return img_data
 
 
 
@@ -79,13 +104,15 @@ def base(request):
 
     img_data = monthly_incident_graph()
     department_incident_data = department_incident_graph()
+    vehicle_data = vehicle_graph()
 
     # Pass the image data along with other context variables
     context = {
         'user_role': user.privilege,  # Direct access without using `values()`
         'user_data': user,
         'monthly_incident_data': img_data,  # Pass the base64 image to the template
-        'department_incident_data':department_incident_data
+        'department_incident_data':department_incident_data,
+        'vehicle_data':vehicle_graph
     }
 
     # Render the template with the context
