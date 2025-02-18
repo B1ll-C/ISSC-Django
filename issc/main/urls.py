@@ -25,6 +25,7 @@ urlpatterns = [
     path('live-feed/', video_feed_view.multiple_streams, name='multiple_streams'),
     path('check_cams/', video_feed_view.check_cams, name='check_cams'),
     path('live-feed/archive', video_feed_view.recording_archive, name="recording_archive"),
+    path('live-feed/reset', video_feed_view.reset_recordings, name="reset_recordings"),
     
 
     path("about/", about_view.about, name="about"),

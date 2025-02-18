@@ -1,7 +1,7 @@
 import cv2
 import os
 import numpy as np
-from django.http import StreamingHttpResponse, HttpResponse
+from django.http import StreamingHttpResponse, HttpResponse, JsonResponse
 from django.shortcuts import render
 from threading import Thread
 from queue import Queue
@@ -18,8 +18,11 @@ load_dotenv()
 from ..models import AccountRegistration, IncidentReport, VehicleRegistration
 
 
-from ..computer_vision.plate_recognition import LicencePlateRecognition
 
+from django.conf import settings
+import re
+
+import LicencePlateRecognition
 recognizer = LicencePlateRecognition(os.getenv("ROBOFLOW_API_KEY"), os.getenv("PROJECT_NAME"), "1")
 
 SAVE_DIR = 'recordings'
@@ -39,14 +42,23 @@ running = True
 # Video settings
 FRAME_WIDTH, FRAME_HEIGHT = 640, 480
 FPS = 30
-VIDEO_FORMAT = "XVID"
+VIDEO_FORMAT = "mp4v"
 
-# Initialize video writers for each camera
-for cam_id in cameras:
-    fourcc = cv2.VideoWriter_fourcc(*VIDEO_FORMAT)
+def initialize_video_writers():
+    """Creates new video writers for each camera."""
+    global video_writers
     date_str = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    video_path = os.path.join(SAVE_DIR, f'camera_{cam_id}_{date_str}.avi')
-    video_writers[cam_id] = cv2.VideoWriter(video_path, fourcc, FPS, (FRAME_WIDTH, FRAME_HEIGHT))
+    new_video_writers = {}
+
+    for cam_id in cameras:
+        fourcc = cv2.VideoWriter_fourcc(*VIDEO_FORMAT)
+        video_path = os.path.join(SAVE_DIR, f'camera_{cam_id}_{date_str}.mp4')
+        new_video_writers[cam_id] = cv2.VideoWriter(video_path, fourcc, FPS, (FRAME_WIDTH, FRAME_HEIGHT))
+
+    video_writers = new_video_writers  # Replace old video writers
+
+# Initialize video writers at startup
+initialize_video_writers()
 
 
 def process_with_model(frame):
@@ -90,7 +102,6 @@ def capture_frames(camera_id):
     """Captures frames and skips unnecessary processing to speed up inference."""
     global frame_count
     cap = cameras[camera_id]
-    video_writer = video_writers[camera_id]
 
     while running:
         success, frame = cap.read()
@@ -104,8 +115,10 @@ def capture_frames(camera_id):
         if not frame_queues[camera_id].full():
             frame_queues[camera_id].put(frame)
 
-        video_writer.write(frame)
-        time.sleep(1 / FPS)
+        if camera_id in video_writers:
+            video_writers[camera_id].write(frame)
+
+        time.sleep(1/FPS)
 
 
 # Start a separate thread for each camera
@@ -146,6 +159,52 @@ def check_cams(request):
     """Returns the number of available cameras."""
     return HttpResponse(str(len(cameras)))
 
+def reset_recordings(request):
+    """Stops current video recording and starts a new one for each camera."""
+    global video_writers
+
+    # Release current video writers
+    for cam_id in video_writers:
+        video_writers[cam_id].release()
+
+    # Create new video writers
+    initialize_video_writers()
+
+    return redirect('recording_archive')
+
+
+def recording_archive(request):
+    """Renders the recording archive page with available recordings."""
+    user = AccountRegistration.objects.filter(username=request.user).values()
+
+    # Define the recordings directory
+    recordings_dir = os.path.join(settings.BASE_DIR, 'recordings')
+
+    filename_pattern = re.compile(r"camera_(\d+)_(\d+)-(\d+)-(\d+)_(\d+-\d+-\d+).mp4")
+
+    categorized_recordings = {}
+
+    if os.path.exists(recordings_dir):
+        for filename in os.listdir(recordings_dir):
+            match = filename_pattern.match(filename)
+            if match:
+                cam_id, year, month, day, time = match.groups()
+
+                # Structure: {camera_id: {year: {month: {day: [filenames]}}}}
+                categorized_recordings.setdefault(cam_id, {}).setdefault(year, {}).setdefault(month, {}).setdefault(day, []).append(filename)
+
+
+
+    template = loader.get_template('live-feed/recording_arcihve.html')
+    context = {
+        'user_role': user[0]['privilege'],
+        'user_data': user[0],
+        'categorized_recordings': categorized_recordings,  # Pass the structured data
+    }
+
+    return HttpResponse(template.render(context, request))
+
+
 def handle_exit(signum, frame):
     """Handles graceful shutdown on Ctrl + C."""
     global running
@@ -161,15 +220,3 @@ def handle_exit(signum, frame):
 
 # Register signal handler for Ctrl + C
 signal.signal(signal.SIGINT, handle_exit)
-
-
-def recording_archive(request):
-    user = AccountRegistration.objects.filter(username=request.user).values()
-
-    template = loader.get_template('live-feed/recording_arcihve.html')
-    context = {
-        'user_role': user[0]['privilege'],
-        'user_data': user[0],
-    }
-
-    return HttpResponse(template.render(context,request))
