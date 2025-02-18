@@ -11,11 +11,19 @@ import sys
 from django.template import loader
 from datetime import datetime
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from ..models import AccountRegistration, IncidentReport, VehicleRegistration
 
-from django.conf import settings
 
+
+from django.conf import settings
 import re
+
+import LicencePlateRecognition
+recognizer = LicencePlateRecognition(os.getenv("ROBOFLOW_API_KEY"), os.getenv("PROJECT_NAME"), "1")
 
 SAVE_DIR = 'recordings'
 os.makedirs(SAVE_DIR, exist_ok=True)
@@ -25,6 +33,9 @@ NUM_CAMERAS = 4
 cameras = {i: cv2.VideoCapture(i) for i in range(NUM_CAMERAS)}
 frame_queues = {i: Queue(maxsize=10) for i in cameras}
 video_writers = {}
+
+FRAME_SKIP = 5  # Process every 5th frame
+frame_count = 0
 
 running = True
 
@@ -49,8 +60,27 @@ def initialize_video_writers():
 # Initialize video writers at startup
 initialize_video_writers()
 
+
 def process_with_model(frame):
+    """Processes a video frame to detect and recognize license plates efficiently."""
+    
+    bounding_boxes = recognizer.detect_license_plate(frame)
+    
+    if not bounding_boxes:
+        return frame  
+
+    cropped_plates = recognizer.crop_license_plate(frame, bounding_boxes)
+    plate_texts = recognizer.recognize_text(cropped_plates) if cropped_plates else []
+    
+    for (box, text) in zip(bounding_boxes, plate_texts):
+        x_min, y_min, x_max, y_max = box
+        cv2.rectangle(frame, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
+        
+        cv2.putText(frame, text, (x_min, y_min - 10), cv2.FONT_HERSHEY_SIMPLEX, 
+                    0.9, (0, 0, 255), 2, cv2.LINE_AA)
+
     return frame
+
 
 def generate_no_signal_frame():
     """Creates a 'No Signal' frame with a gradient background and warning icon."""
@@ -67,27 +97,29 @@ def generate_no_signal_frame():
 
     return frame
 
+
 def capture_frames(camera_id):
-    """Captures frames from a camera, stores them in a queue, and saves them to a video file."""
+    """Captures frames and skips unnecessary processing to speed up inference."""
+    global frame_count
     cap = cameras[camera_id]
 
     while running:
         success, frame = cap.read()
-
         if not success:
             frame = generate_no_signal_frame()
-        else:
+
+        frame_count += 1
+        if frame_count % FRAME_SKIP == 0:  # Only process every 5th frame
             frame = process_with_model(frame)
 
-        # Add frame to the queue if it's not full
         if not frame_queues[camera_id].full():
             frame_queues[camera_id].put(frame)
 
-        # Save frame to the video file
         if camera_id in video_writers:
             video_writers[camera_id].write(frame)
 
-        time.sleep(1 / FPS)  # Control the frame rate
+        time.sleep(1/FPS)
+
 
 # Start a separate thread for each camera
 for cam_id in cameras:
