@@ -15,12 +15,10 @@ urlpatterns = [
     path("incidents/", incident_view.incident, name="incidents"),
     path("incidents/forms", incident_view.incident_forms, name="incident_forms"),
     path('incidents/<int:id>/', incident_view.incident_details, name='incident_details'),
-    path('incidents/archive', incident_view.incident_archived, name='incident_archived'),
 
     path("vehicles/", vehicle_view.vehicles, name="vehicles"),
     path("vehicles/forms", vehicle_view.vehicle_forms, name="vehicle_forms"),
     path('vehicles/<int:id>/', vehicle_view.vehicle_details, name='vehicle_details'),
-    path('vehicles/archive', vehicle_view.vehicle_archive, name='vehicle_archive'),
 
 
     path('video-feed/<int:camera_id>/', video_feed_view.video_feed, name='video_feed'),

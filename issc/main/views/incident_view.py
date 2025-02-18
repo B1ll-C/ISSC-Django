@@ -17,16 +17,17 @@ from .utils import paginate
 @login_required(login_url='/login/')
 def incident(request):
     user = AccountRegistration.objects.filter(username=request.user).values()
+    is_archived = request.GET.get('archive', 'false').lower() == 'true'
     if user[0]['privilege'] == 'student':
         template = loader.get_template('incident/student/incident.html')
-        open_incident = IncidentReport.objects.filter(status='open', id_number=user[0]['id_number'] , is_archived=False).order_by('date_joined')
-        pending_incident = IncidentReport.objects.filter(status='pending', id_number=user[0]['id_number'] , is_archived=False).order_by('date_joined')
-        closed_incident = IncidentReport.objects.filter(status='closed', id_number=user[0]['id_number'] , is_archived=False).order_by('date_joined')
+        open_incident = IncidentReport.objects.filter(status='open', id_number=user[0]['id_number'] , is_archived=is_archived).order_by('date_joined')
+        pending_incident = IncidentReport.objects.filter(status='pending', id_number=user[0]['id_number'] , is_archived=is_archived).order_by('date_joined')
+        closed_incident = IncidentReport.objects.filter(status='closed', id_number=user[0]['id_number'] , is_archived=is_archived).order_by('date_joined')
     else:
         template = loader.get_template('incident/admin/incident.html')
-        open_incident = IncidentReport.objects.filter(status='open', is_archived=False).order_by('date_joined')
-        pending_incident = IncidentReport.objects.filter(status='pending', is_archived=False).order_by('date_joined')
-        closed_incident = IncidentReport.objects.filter(status='closed', is_archived=False).order_by('date_joined')
+        open_incident = IncidentReport.objects.filter(status='open', is_archived=is_archived).order_by('date_joined')
+        pending_incident = IncidentReport.objects.filter(status='pending', is_archived=is_archived).order_by('date_joined')
+        closed_incident = IncidentReport.objects.filter(status='closed', is_archived=is_archived).order_by('date_joined')
 
     open_incident = paginate(open_incident,request)
     pending_incident = paginate(pending_incident,request)
@@ -140,15 +141,3 @@ def incident_forms(request):
         
     return HttpResponse(template.render(context, request))
 
-
-@login_required(login_url='/login/')
-def incident_archived(request):
-    user = AccountRegistration.objects.filter(username=request.user).values()
-    template = loader.get_template('incident/incident_archived.html')
-    context = {
-        'user_role': user[0]['privilege'],
-        'user_data':user[0]
-
-    }
-
-    return HttpResponse(template.render(context, request))

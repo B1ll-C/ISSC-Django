@@ -17,15 +17,20 @@ from .utils import paginate
 @login_required(login_url='/login/')
 def vehicles(request):
     user = AccountRegistration.objects.filter(username=request.user).values()
+    is_archived = request.GET.get('archive', 'false').lower() == 'true'
+
     if user[0]['privilege'] == 'student' :
         template = loader.get_template('vehicle/student/vehicle.html')
-        allowed_vehicle_type = VehicleRegistration.objects.filter(status='allowed', is_archived=False).order_by('id_number')
-        restricted_vehicle_type = VehicleRegistration.objects.filter(status='restricted' , is_archived=False).order_by('id_number')
+        allowed_vehicle_type = VehicleRegistration.objects.filter(status='allowed', is_archived=is_archived).order_by('id_number')
+        restricted_vehicle_type = VehicleRegistration.objects.filter(status='restricted' , is_archived=is_archived).order_by('id_number')
     else:
         template = loader.get_template('vehicle/admin/vehicle.html')
-        allowed_vehicle_type = VehicleRegistration.objects.filter(status='allowed', is_archived=False).order_by('id_number')
-        restricted_vehicle_type = VehicleRegistration.objects.filter(status='restricted', is_archived=False).order_by('id_number')
+        allowed_vehicle_type = VehicleRegistration.objects.filter(status='allowed', is_archived=is_archived).order_by('id_number')
+        restricted_vehicle_type = VehicleRegistration.objects.filter(status='restricted', is_archived=is_archived).order_by('id_number')
 
+
+    allowed_vehicle_type = paginate(allowed_vehicle_type,request)
+    restricted_vehicle_type = paginate(restricted_vehicle_type, request)
     context = {
         'user_role': user[0]['privilege'],
         'user_data':user[0],
@@ -131,16 +136,4 @@ def vehicle_forms(request):
 
     return HttpResponse(template.render(context,request))
 
-
-@login_required(login_url='/login/')
-def vehicle_archive(request):
-    user = AccountRegistration.objects.filter(username=request.user).values()
-
-    template = loader.get_template('vehicle/vehicle_archive.html')
-    context = {
-        'user_role': user[0]['privilege'],
-        'user_data':user[0]
-    }
-
-    return HttpResponse(template.render(context,request))
 
