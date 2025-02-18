@@ -12,6 +12,8 @@ import pandas as pd
 from collections import Counter
 def monthly_incident_graph():
     incidents = IncidentReport.objects.all()
+    if not incidents.exists():
+        return None
     months = [incident.date.strftime('%B') for incident in incidents]
 
     month_counts = Counter(months)
@@ -41,6 +43,8 @@ def monthly_incident_graph():
 
 def department_incident_graph():
     incidents = IncidentReport.objects.all()
+    if not incidents.exists():
+        return None
     departments = [incident.department for incident in incidents]
 
     # Count incidents per department
@@ -67,13 +71,19 @@ def department_incident_graph():
     return img_data
 
 def vehicle_graph():
-    data = VehicleRegistration.objects.values('role','vehicle_type')
+    data = VehicleRegistration.objects.values('role', 'vehicle_type')
+
+    if not data.exists():  # Check if the queryset is empty
+        return None  # Return None or a placeholder image if needed
+
     df = pd.DataFrame(list(data))
 
-    counts = df.groupby(['role','vehicle_type']).size().unstack(fill_value=0)
+    if df.empty:  # Additional safeguard if DataFrame is empty
+        return None
 
-    plt.figure(figsize=(10,5))
+    counts = df.groupby(['role', 'vehicle_type']).size().unstack(fill_value=0)
 
+    plt.figure(figsize=(10, 5))
     counts.plot(kind='bar')
 
     plt.title('Type of Owner and Type of Vehicle')
@@ -84,12 +94,13 @@ def vehicle_graph():
     plt.tight_layout()
 
     buf = BytesIO()
-
     plt.savefig(buf, format='png')
     buf.seek(0)
 
     img_data = base64.b64encode(buf.read()).decode('utf-8')
-    return img_data
+
+    return img_data  # Returns the base64 string of the image
+
 
 
 
