@@ -22,7 +22,7 @@ from ..models import AccountRegistration, IncidentReport, VehicleRegistration
 from django.conf import settings
 import re
 
-import LicencePlateRecognition
+from ..computer_vision.plate_recognition import LicencePlateRecognition
 recognizer = LicencePlateRecognition(os.getenv("ROBOFLOW_API_KEY"), os.getenv("PROJECT_NAME"), "1")
 
 SAVE_DIR = 'recordings'
