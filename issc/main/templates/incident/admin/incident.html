@@ -65,7 +65,16 @@
                         </td>
                         <td>{{ data.last_updated_by }}</td>
                         <td><a href="{% url 'incident_details' data.id %}" style="text-decoration: underline;">Details</a></td>
-                        <td><button name="delete" class="form-input form-btn" value="{{ data.id }}" onclick="return confirmDelete();" disabled>DELETE</button></td>
+                        <td>
+                            <button name="{% if is_archived %}restore{% else %}delete{% endif %}" 
+                                class="form-input form-btn" 
+                                value="{{ data.id }}" 
+                                onclick="return {% if is_archived %}confirmRestore(){% else %}confirmDelete(){% endif %};"
+                                {% if not is_archived %}disabled{% endif %}>
+                                {% if is_archived %}RESTORE{% else %}DELETE{% endif %}
+                            </button>
+                        </td>
+
                         <td><button name="update" class="form-input form-btn" value="{{ data.id }}" disabled>UPDATE</button></td>
                     </form>
                     <td><button onclick="toggleEditFields(this)">TOGGLE</button></td>
@@ -148,7 +157,15 @@
                         </td>
                         <td>{{ data.last_updated_by }}</td>
                         <td><a href="{% url 'incident_details' data.id %}" style="text-decoration: underline;">Details</a></td>
-                        <td><button name="delete" class="form-input form-btn" value="{{ data.id }}" onclick="return confirmDelete();" disabled>DELETE</button></td>
+                        <td>
+                            <button name="{% if is_archived %}restore{% else %}delete{% endif %}" 
+                                class="form-input form-btn" 
+                                value="{{ data.id }}" 
+                                onclick="return {% if is_archived %}confirmRestore(){% else %}confirmDelete(){% endif %};"
+                                {% if not is_archived %}disabled{% endif %}>
+                                {% if is_archived %}RESTORE{% else %}DELETE{% endif %}
+                            </button>
+                        </td>
                         <td><button name="update" class="form-input form-btn" value="{{ data.id }}" disabled>UPDATE</button></td>
                     </form>
                     <td><button onclick="toggleEditFields(this)">TOGGLE</button></td>
@@ -231,7 +248,15 @@
                         </td>
                         <td>{{ data.last_updated_by }}</td>
                         <td><a href="{% url 'incident_details' data.id %}" style="text-decoration: underline;">Details</a></td>
-                        <td><button name="delete" class="form-input form-btn" value="{{ data.id }}" onclick="return confirmDelete();" disabled>DELETE</button></td>
+                        <td>
+                            <button name="{% if is_archived %}restore{% else %}delete{% endif %}" 
+                                class="form-input form-btn" 
+                                value="{{ data.id }}" 
+                                onclick="return {% if is_archived %}confirmRestore(){% else %}confirmDelete(){% endif %};"
+                                {% if not is_archived %}disabled{% endif %}>
+                                {% if is_archived %}RESTORE{% else %}DELETE{% endif %}
+                            </button>
+                        </td>
                         <td><button name="update" class="form-input form-btn" value="{{ data.id }}" disabled>UPDATE</button></td>
                     </form>
                     <td><button onclick="toggleEditFields(this)">TOGGLE</button></td>
@@ -331,5 +356,10 @@
         function confirmDelete() {
             return confirm('Do you really want to delete this user?');
         }
+
+        function confirmRestore() {
+    return confirm("Are you sure you want to restore this item?");
+}
+
     </script>
 {% endblock content %}

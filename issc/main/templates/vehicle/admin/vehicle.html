@@ -61,7 +61,16 @@
                                 <option value="restricted" {% if vehicle.status == 'restricted' %}selected{% endif %}>restricted</option>
                             </select>
                         </td>
-                        <td><button name="delete" class="form-input form-btn" value="{{ vehicle.id }}" onclick="return confirmDelete();" disabled>DELETE</button></td>
+                        <td>
+                            <button name="{% if is_archived %}restore{% else %}delete{% endif %}" 
+                                class="form-input form-btn" 
+                                value="{{ vehicle.id }}" 
+                                onclick="return {% if is_archived %}confirmRestore(){% else %}confirmDelete(){% endif %};"
+                                {% if not is_archived %}disabled{% endif %}>
+                                {% if is_archived %}RESTORE{% else %}DELETE{% endif %}
+                            </button>
+                        </td>
+
                         <td><button name="update" class="form-input form-btn" value="{{ vehicle.id }}" disabled>UPDATE</button></td>
                     </form>
                     <td><button onclick="toggleEditFields(this)">TOGGLE</button></td>
@@ -142,7 +151,16 @@
                                 <option value="restricted" {% if vehicle.status == 'restricted' %}selected{% endif %}>restricted</option>
                             </select>
                         </td>
-                        <td><button name="delete" class="form-input form-btn" value="{{ vehicle.id }}" onclick="return confirmDelete();" disabled>DELETE</button></td>
+                        <td>
+                            <button name="{% if is_archived %}restore{% else %}delete{% endif %}" 
+                                class="form-input form-btn" 
+                                value="{{ vehicle.id }}" 
+                                onclick="return {% if is_archived %}confirmRestore(){% else %}confirmDelete(){% endif %};"
+                                {% if not is_archived %}disabled{% endif %}>
+                                {% if is_archived %}RESTORE{% else %}DELETE{% endif %}
+                            </button>
+                        </td>
+
                         <td><button name="update" class="form-input form-btn" value="{{ vehicle.id }}" disabled>UPDATE</button></td>
                     </form>
                     <td><button onclick="toggleEditFields(this)">TOGGLE</button></td>
@@ -243,6 +261,11 @@
         function confirmDelete() {
             return confirm('Do you really want to delete this user?');
         }
+
+        function confirmRestore() {
+    return confirm("Are you sure you want to restore this item?");
+}
+
     </script>
     
 {% endblock content %}
