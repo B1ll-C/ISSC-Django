@@ -7,7 +7,7 @@
 {% load static %} 
 
 <h2>Available Recordings</h2>
-
+<a href="{% url 'reset_recordings' %}">reset</a>
 {% for cam_id, years in categorized_recordings.items %}
     <h3>Camera {{ cam_id }}</h3>
     <table border="1">
