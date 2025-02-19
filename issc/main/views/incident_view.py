@@ -35,20 +35,24 @@ def incident(request):
 
     if request.method == 'POST':
         incident_id = request.POST['incident_id']
-        status = request.POST['status']
+        incident = IncidentReport.objects.get(id=incident_id)
 
        
         if 'delete' in request.POST:
-            incident = IncidentReport.objects.get(id=incident_id)
             incident.is_archived = True
             incident.last_updated_by = user[0]['id_number']
-
             incident.save()
             return redirect('incidents')
             
         if 'update' in request.POST:
-            incident = IncidentReport.objects.get(id=incident_id)
+            status = request.POST['status']
             incident.status = status
+            incident.last_updated_by = user[0]['id_number']
+            incident.save()
+            return redirect('incidents')
+
+        if 'restore' in request.POST:
+            incident.is_archived = False
             incident.last_updated_by = user[0]['id_number']
             incident.save()
             return redirect('incidents')
@@ -62,7 +66,8 @@ def incident(request):
         'user_data':user[0],
         'open_incident':open_incident,
         'pending_incident':pending_incident,
-        'closed_incident':closed_incident
+        'closed_incident':closed_incident,
+        'is_archived':is_archived
 
     }
     return HttpResponse(template.render(context, request))
