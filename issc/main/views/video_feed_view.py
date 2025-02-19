@@ -2,7 +2,7 @@ import cv2
 import os
 import numpy as np
 from django.http import StreamingHttpResponse, HttpResponse, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from threading import Thread
 from queue import Queue
 import time
@@ -18,6 +18,7 @@ load_dotenv()
 from ..models import AccountRegistration, IncidentReport, VehicleRegistration
 
 
+import subprocess
 
 from django.conf import settings
 import re
@@ -42,7 +43,7 @@ running = True
 # Video settings
 FRAME_WIDTH, FRAME_HEIGHT = 640, 480
 FPS = 30
-VIDEO_FORMAT = "mp4v"
+VIDEO_FORMAT = "XVID"
 
 def initialize_video_writers():
     """Creates new video writers for each camera."""
@@ -52,7 +53,7 @@ def initialize_video_writers():
 
     for cam_id in cameras:
         fourcc = cv2.VideoWriter_fourcc(*VIDEO_FORMAT)
-        video_path = os.path.join(SAVE_DIR, f'camera_{cam_id}_{date_str}.mp4')
+        video_path = os.path.join(SAVE_DIR, f'camera_{cam_id}_{date_str}.avi')
         new_video_writers[cam_id] = cv2.VideoWriter(video_path, fourcc, FPS, (FRAME_WIDTH, FRAME_HEIGHT))
 
     video_writers = new_video_writers  # Replace old video writers
@@ -167,6 +168,11 @@ def reset_recordings(request):
     for cam_id in video_writers:
         video_writers[cam_id].release()
 
+
+
+    recordings_dir = os.path.join(settings.BASE_DIR, 'recordings')
+    reencode_avi_to_mp4(recordings_dir)
+
     # Create new video writers
     initialize_video_writers()
 
@@ -220,3 +226,41 @@ def handle_exit(signum, frame):
 
 # Register signal handler for Ctrl + C
 signal.signal(signal.SIGINT, handle_exit)
+
+
+def reencode_avi_to_mp4(directory):
+    """Searches for all .avi files in the specified directory, converts them to .mp4 using ffmpeg, and deletes the original .avi files."""
+    
+    if not os.path.exists(directory):
+        print(f"Directory {directory} does not exist.")
+        return
+
+    for filename in os.listdir(directory):
+        if filename.endswith(".avi"):
+            avi_path = os.path.join(directory, filename)
+            mp4_path = os.path.join(directory, filename.replace(".avi", ".mp4"))
+            
+            print(f"Converting {avi_path} to {mp4_path}...")
+            
+            # FFmpeg command for re-encoding AVI to MP4 (H.264 codec)
+            command = [
+                "ffmpeg",
+                "-i", avi_path,         # Input file
+                "-c:v", "libx264",      # Video codec
+                "-preset", "fast",      # Encoding speed
+                "-crf", "23",           # Quality (lower is better, 23 is default)
+                "-c:a", "aac",          # Audio codec
+                "-b:a", "128k",         # Audio bitrate
+                mp4_path                # Output file
+            ]
+            
+            try:
+                subprocess.run(command, check=True)
+                print(f"Successfully converted {avi_path} to {mp4_path}")
+
+                # Delete the original .avi file
+                os.remove(avi_path)
+                print(f"Deleted original file: {avi_path}")
+
+            except subprocess.CalledProcessError as e:
+                print(f"Error converting {avi_path}: {e}")
