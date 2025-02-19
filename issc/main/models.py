@@ -124,3 +124,37 @@ class FacesEmbeddings(models.Model):
         verbose_name_plural = "Faces Embeddings"
 
 
+class VehicleEntry(models.Model):
+    entry_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    vehicle = models.ForeignKey('VehicleRegistration', on_delete=models.SET_NULL, null=True, blank=True, related_name='entries')
+    
+    is_registered = models.BooleanField(default=True)
+    
+    entry_timestamp = models.DateTimeField(auto_now_add=True)
+    exit_timestamp = models.DateTimeField(null=True, blank=True)
+    
+    entry_gate = models.CharField(max_length=100)
+    exit_gate = models.CharField(max_length=100, null=True, blank=True)
+    
+    qr_code_scanned = models.BooleanField(default=False)
+    
+    is_exited = models.BooleanField(default=False)
+    
+    last_updated = models.DateTimeField(auto_now=True)
+    last_updated_by = models.CharField(max_length=100)
+
+    def save(self, *args, **kwargs):
+        """Automatically determine if the vehicle is registered or not."""
+        if self.vehicle:
+            self.is_registered = True  # Vehicle exists in VehicleRegistration
+        else:
+            self.is_registered = False  # Unregistered vehicle
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        reg_status = "Registered" if self.is_registered else "Unregistered"
+        return f"{reg_status} Vehicle Entry for {self.vehicle.plate_number if self.vehicle else 'Unknown'} at {self.entry_timestamp}"
+
+    class Meta:
+        verbose_name = "Vehicle Entry"
+        verbose_name_plural = "Vehicle Entries"
