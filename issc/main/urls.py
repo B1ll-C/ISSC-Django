@@ -1,12 +1,30 @@
 from django.urls import path
+from django.contrib.auth import views as auth_views
 from . import views
-from .views import auth_view, dashboard_view, incident_view, vehicle_view, live_view, about_view, face_enrollment_view, video_feed_view
+from .views import (
+        auth_view, 
+        dashboard_view, 
+        incident_view, 
+        vehicle_view, 
+        live_view, 
+        about_view, 
+        face_enrollment_view, 
+        video_feed_view
+    ) 
 urlpatterns = [
 
     path("login/", auth_view.login, name='login'),
     path("logout/", auth_view.logout, name="logout"),
     path("signup/", auth_view.signup, name='signup'),
     path("signup-forms/", auth_view.signup_forms, name='signup-forms'),
+
+    path("account/password-reset/", auth_view.CustomPasswordResetView.as_view(), name="password_reset"),
+    # path("account/password-reset/done/", auth_view.CustomPasswordResetDoneView.as_view(), name="password_reset_done"),
+    path('account/password-reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='registration/acc_reset_done.html'), name='password_reset_done'),
+
+    path("account/password-reset-confirm/<uidb64>/<token>/", auth_view.CustomPasswordResetConfirmView.as_view(), name="password_reset_confirm"),
+    path("account/password-reset-complete/", auth_view.CustomPasswordResetCompleteView.as_view(), name="password_reset_complete"),
+
 
 
     path("", dashboard_view.base, name="dashboard"),
