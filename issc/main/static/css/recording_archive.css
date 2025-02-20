@@ -1,0 +1,184 @@
+/* General Page Styling */
+body {
+    display: flex;
+    justify-content: space-between; /* Creates gap between table & sidebar */
+}
+
+/* === Main Content Container === */
+.content-container {
+    flex: 1; /* Allows it to take up remaining space */
+    max-width: 40%; /* Ensure it doesn’t stretch too much */
+    margin-right: 30px; /* Adds gap between table and sidebar */
+}
+
+.reset-btn{
+    background-color: rgba(230, 230, 230, 1);
+    color: maroon;
+    border: none;
+    padding: 6px 33px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.17);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 13px;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.reset-btn:hover{
+    background-color: maroon;  /* Darker maroon on hover */
+    color: #fff;
+}
+
+/* Headings */
+h2 {
+    text-align: center;
+    font-size: 26px;
+    color: #4B0000; /* Deep Maroon */
+    margin-bottom: 20px;
+}
+
+h3 {
+    color: #600000;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+}
+
+/* Table Styling */
+.table-container {
+    background: white;
+    padding: 15px;
+    border-radius: 7px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Table Header */
+thead {
+    background: #4B0000;
+    color: white;
+}
+
+th {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Hover Effect on Table Rows */
+tbody tr {
+    transition: background 0.3s ease-in-out;
+}
+
+tbody tr:hover {
+    background: rgba(75, 0, 0, 0.1);
+}
+
+/* Recording Links */
+td ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+td ul li {
+    padding: 5px 0;
+}
+
+/* Smooth Hover Effect on File Links */
+td ul li a {
+    color: #4B0000;
+    text-decoration: none;
+    position: relative;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+td ul li a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background: #4B0000;
+    transition: width 0.3s ease-in-out;
+}
+
+td ul li a:hover {
+    color: #600000;
+}
+
+td ul li a:hover::after {
+    width: 100%;
+}
+
+/* === Sidebar Styling === */
+#previewSidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 60%; /* Increased width */
+    background: rgba(25, 0, 0, 0.9); /* Darker Maroon Glassmorphism */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    box-shadow: -5px 0px 10px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border-left: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Preview Title */
+#previewSidebar h3 {
+    font-size: 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 10px;
+    width: 100%;
+    color: #ddd;
+}
+
+/* Larger Video Player */
+#videoPreview {
+    width: 100%;
+    height: 100%; /* Bigger preview */
+    border-radius: 10px;
+    margin-top: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* === Responsive Design === */
+@media (max-width: 1024px) {
+    .content-container {
+        max-width: 100%;
+        margin-right: 0;
+    }
+    
+    #previewSidebar {
+        width: 100%;
+        height: auto;
+        bottom: 0;
+        top: auto;
+        border-left: none;
+        box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    #videoPreview {
+        height: auto;
+    }
+}

@@ -3,10 +3,15 @@
 {% block title %} Dashboard {% endblock title %}
 
 {% block content %}
-    <img src="data:image/png;base64,{{ monthly_incident_data }}" alt="Generated Image">
 
-    <img src="data:image/png;base64,{{ department_incident_data }}" alt="Generated Image">
-    <img src="data:image/png;base64,{{ vehicle_data }}" alt="Generated Image">
+{% load static %}
 
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+    <div class="graph-container">
+        <img src="data:image/png;base64,{{ monthly_incident_data }}" alt="Generated Image">
+        <img src="data:image/png;base64,{{ department_incident_data }}" alt="Generated Image">
+        <img src="data:image/png;base64,{{ vehicle_data }}" alt="Generated Image" class="vehicle">
+    </div>
 
 {% endblock content %}

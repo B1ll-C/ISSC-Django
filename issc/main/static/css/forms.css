@@ -134,6 +134,14 @@
     box-shadow: 0 0 5px rgba(75, 0, 0, 0.5);  /* Deep Maroon Glow */
 }
 
+.form-field textarea {
+    width: 100%;
+    height: 150px; /* Set a larger default height */
+    min-height: 150px; /* Prevent shrinking */
+    max-height: 250px; /* Prevent excessive stretching */
+    resize: vertical; /* Allow vertical resizing within limits */
+}
+
 /* Select Dropdown Customization */
 select {
     appearance: none;
@@ -212,7 +220,7 @@ select {
 }
 
 /* General Button Styles */
-.create-new-btn, .pagination a, .update-btn, .delete-btn, .toggle-btn {
+.create-new-btn, .pagination a, .update-btn, .delete-btn, .toggle-btn , .archive-btn {
     background-color: rgba(230, 230, 230, 1);
     color: maroon;
     border: none;
@@ -224,6 +232,14 @@ select {
     font-size: 10px;
     text-transform: uppercase;
     font-weight: 500;
+}
+
+.archive-btn{
+    font-size: 15px;
+}
+
+.archive-btn span{
+    padding-right: 12px;
 }
 
 .create-new-btn {
@@ -250,7 +266,7 @@ select {
     color: white;
 }
 
-.custom-toggle-btn {
+.custom-toggle-btn, .custom-toggle-btn-3 {
     display: inline-block !important;
     color: #d0ab15;
     padding: 6px 33px;
@@ -269,7 +285,7 @@ select {
 }
 
 
-.create-new-btn:hover, .pagination a:hover, .pagination button:hover, .create-new-btn button:hover {
+.create-new-btn:hover, .pagination a:hover, .pagination button:hover, .create-new-btn button:hover, .archive-btn:hover {
     background-color: maroon;  /* Darker maroon on hover */
     color: #fff;
 }
@@ -345,6 +361,7 @@ select {
 .form-table th{
     color: #fff;
     padding: 15px;
+    text-align: center;
 }
 
 /* Table Rows */
@@ -361,6 +378,36 @@ select {
 .form-table tbody tr td:first-child {
     color: #4B0000;  /* Deep Maroon for Date Time */
     font-weight: 600;
+}
+
+.form-table td {
+    text-align: center;
+}
+
+/* Base Link Styling */
+.form-table a {
+    text-decoration: none;
+    position: relative;
+    transition: color 0.2s ease;
+    color: #4B0000;
+    font-style: italic;
+}
+
+/* Create the underline effect */
+.form-table a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px; /* Adjust spacing below text */
+    width: 0%;
+    height: 1px; /* Thickness of the underline */
+    background-color: #4B0000; /* Match text color */
+    transition: width 0.2s ease-in-out;
+}
+
+/* Expand the underline from left to right on hover */
+.form-table a:hover::after {
+    width: 100%;
 }
 
 /* Scrollbar Styling (Optional for Webkit Browsers) */

@@ -7,7 +7,9 @@
 {% load static %} 
 
     <link rel="stylesheet" href="{% static 'css/live-feed.css' %}">
-    <a href="{% url 'recording_archive' %}">Archive </a>
+    {% comment %} <a href="{% url 'recording_archive' %}">Archive </a> {% endcomment %}
+    <a href="{% url 'recording_archive' %}" class="archive-btn">
+        <span class="fas fa-archive"></span>Archive</a>
 
     <div class="container">
 

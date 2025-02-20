@@ -1,0 +1,32 @@
+/* Graph Container */
+.graph-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Three equal columns */
+    gap: 20px;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Styling for Graph Images */
+.graph-container img {
+    width: 100%; /* Make images responsive within the grid */
+    max-width: 800px; /* Adjust based on your layout */
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    background-color: #f4f4f4; /* Adjust based on your palette */
+    padding: 10px;
+}
+
+/* Responsive Design - Adjust to 1 or 2 columns on smaller screens */
+@media (max-width: 1024px) {
+    .graph-container {
+        grid-template-columns: repeat(2, 1fr); /* Two columns for tablets */
+    }
+}
+
+@media (max-width: 768px) {
+    .graph-container {
+        grid-template-columns: 1fr; /* One column for mobile */
+    }
+}
