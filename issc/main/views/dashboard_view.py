@@ -8,8 +8,61 @@ from ..models import AccountRegistration, IncidentReport, VehicleRegistration
 
 import calendar
 import pandas as pd
-
+from django.utils.timezone import now
 from collections import Counter
+
+def incident_rate():
+    current_year = now().year
+    reports = IncidentReport.objects.filter(date__year=current_year)
+
+    # Count incidents per month
+    incident_counts = Counter(report.date.month for report in reports)
+
+    # Ensure all months are represented
+    months = list(range(1, now().month + 5))
+    counts = [incident_counts.get(m, 0) for m in months]
+
+    # Calculate percentage increase
+    percentage_increase = [0]  # First month has no previous data
+    for i in range(1, len(counts)):
+        prev = counts[i - 1]
+        current = counts[i]
+        if prev == 0:  # Prevent division by zero
+            percentage = 0 if current == 0 else 100
+        else:
+            percentage = ((current - prev) / prev) * 100
+        percentage_increase.append(round(percentage, 2))
+
+    # Plot the data
+    plt.figure(figsize=(10, 5))
+    bars = plt.bar(months, counts, color="#6AAE43", alpha=0.7)
+
+    # Annotate each bar with percentage increase
+    for bar, percent in zip(bars, percentage_increase):
+        plt.text(
+            bar.get_x() + bar.get_width() / 2,  # Center text on bar
+            bar.get_height() + 1,  # Position above the bar
+            f"{percent}%",  # Display percentage
+            ha="center", va="bottom", fontsize=10, fontweight="bold", color="black"
+        )
+
+    plt.xticks(months, [calendar.month_abbr[m] for m in months])
+    plt.xlabel("Month")
+    plt.ylabel("Number of Incidents")
+    plt.title(f"Incident Reports Growth ({current_year})")
+    plt.grid(axis="y", linestyle="--", alpha=0.7)
+
+    # Convert plot to image
+    buffer = BytesIO()
+    plt.savefig(buffer, format="png")
+    buffer.seek(0)
+    image_png = buffer.getvalue()
+    buffer.close()
+    chart = base64.b64encode(image_png).decode("utf-8")
+
+    return chart
+
+
 def monthly_incident_graph():
     incidents = IncidentReport.objects.all()
     if not incidents.exists():
@@ -116,6 +169,7 @@ def base(request):
     img_data = monthly_incident_graph()
     department_incident_data = department_incident_graph()
     vehicle_data = vehicle_graph()
+    incident_data = incident_rate()
 
     # Pass the image data along with other context variables
     context = {
@@ -123,7 +177,8 @@ def base(request):
         'user_data': user,
         'monthly_incident_data': img_data,  # Pass the base64 image to the template
         'department_incident_data':department_incident_data,
-        'vehicle_data':vehicle_graph
+        'vehicle_data':vehicle_graph,
+        'incident_data':incident_data
     }
 
     # Render the template with the context

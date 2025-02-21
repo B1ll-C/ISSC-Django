@@ -8,10 +8,9 @@
 
     <link rel="stylesheet" href="{% static 'css/forms.css' %}">
 
-    <a href="{% url 'vehicles' %}?archive=true" class="archive-btn">
-        <span class="fas fa-archive"></span>Archive</a>
     <div class="create-search">
         <a href="{% url 'vehicle_forms' %}" class="create-new-btn">Register New Vehicle</a>
+        <a href="{% url 'vehicles' %}?archive=true" class="create-new-btn">Archive</a>
 
         <div class="search-container">
             <input type="text" id="tableSearch" placeholder="Search..." onkeyup="filterTable()">
@@ -62,10 +61,19 @@
                                 <option value="restricted" {% if vehicle.status == 'restricted' %}selected{% endif %}>restricted</option>
                             </select>
                         </td>
-                        <td><button name="delete" style="cursor: not-allowed;" class="form-input delete-btn" value="{{ vehicle.id }}" onclick="return confirmDelete();" disabled>DELETE</button></td>
-                        <td><button name="update" style="cursor: not-allowed;" class="form-input update-btn" value="{{ vehicle.id }}" disabled>UPDATE</button></td>
+                        <td>
+                            <button name="{% if is_archived %}restore{% else %}delete{% endif %}" 
+                                class="form-input form-btn" 
+                                value="{{ vehicle.id }}" 
+                                onclick="return {% if is_archived %}confirmRestore(){% else %}confirmDelete(){% endif %};"
+                                {% if not is_archived %}disabled{% endif %}>
+                                {% if is_archived %}RESTORE{% else %}DELETE{% endif %}
+                            </button>
+                        </td>
+
+                        <td><button name="update" class="form-input form-btn" value="{{ vehicle.id }}" disabled>UPDATE</button></td>
                     </form>
-                    <td><button onclick="toggleEditFields(this)" class="custom-toggle-btn">TOGGLE</button></td>
+                    <td><button onclick="toggleEditFields(this)">TOGGLE</button></td>
                     </tr>
                 {% empty %}
                  <tr>
@@ -79,16 +87,16 @@
     <!-- Pagination Controls -->
     <div class="pagination"> 
         <div>
-            <span>Page {{ allowed_vehicles.number }} of {{ allowed_vehicles.paginator.num_pages }}</span> 
+            <span>Page {{ users.number }} of {{ users.paginator.num_pages }}</span> 
         </div>
         <div>
-            {% if allowed_vehicles.has_previous %} 
+            {% if users.has_previous %} 
             <a href="?page=1">&laquo; First</a>
-            <a href="?page={{ allowed_vehicles.previous_page_number }}">Previous</a> 
+            <a href="?page={{ users.previous_page_number }}">Previous</a> 
         {% endif %} 
-        {% if allowed_vehicles.has_next %} 
-            <a href="?page={{ allowed_vehicles.next_page_number }}">Next</a>
-            <a href="?page={{ allowed_vehicles.paginator.num_pages }}">Last &raquo;</a> 
+        {% if users.has_next %} 
+            <a href="?page={{ users.next_page_number }}">Next</a>
+            <a href="?page={{ users.paginator.num_pages }}">Last &raquo;</a> 
         {% endif %}
         </div>
     </div>
@@ -143,10 +151,19 @@
                                 <option value="restricted" {% if vehicle.status == 'restricted' %}selected{% endif %}>restricted</option>
                             </select>
                         </td>
-                        <td><button name="delete" style="cursor: not-allowed;" class="form-input delete-btn" value="{{ vehicle.id }}" onclick="return confirmDelete();" disabled>DELETE</button></td>
-                        <td><button name="update" style="cursor: not-allowed;" class="form-input update-btn" value="{{ vehicle.id }}" disabled>UPDATE</button></td>
+                        <td>
+                            <button name="{% if is_archived %}restore{% else %}delete{% endif %}" 
+                                class="form-input form-btn" 
+                                value="{{ vehicle.id }}" 
+                                onclick="return {% if is_archived %}confirmRestore(){% else %}confirmDelete(){% endif %};"
+                                {% if not is_archived %}disabled{% endif %}>
+                                {% if is_archived %}RESTORE{% else %}DELETE{% endif %}
+                            </button>
+                        </td>
+
+                        <td><button name="update" class="form-input form-btn" value="{{ vehicle.id }}" disabled>UPDATE</button></td>
                     </form>
-                    <td><button onclick="toggleEditFields(this)" class="custom-toggle-btn">TOGGLE</button></td>
+                    <td><button onclick="toggleEditFields(this)">TOGGLE</button></td>
                     </tr>
                 {% empty %}
                  <tr>
@@ -160,16 +177,16 @@
     <!-- Pagination Controls -->
     <div class="pagination"> 
         <div>
-            <span>Page {{ restricted_vehicles.number }} of {{ restricted_vehicles.paginator.num_pages }}</span> 
+            <span>Page {{ users.number }} of {{ users.paginator.num_pages }}</span> 
         </div>
         <div>
-            {% if restricted_vehicles.has_previous %} 
+            {% if users.has_previous %} 
             <a href="?page=1">&laquo; First</a>
-            <a href="?page={{ restricted_vehicles.previous_page_number }}">Previous</a> 
+            <a href="?page={{ users.previous_page_number }}">Previous</a> 
         {% endif %} 
-        {% if restricted_vehicles.has_next %} 
-            <a href="?page={{ restricted_vehicles.next_page_number }}">Next</a>
-            <a href="?page={{ restricted_vehicles.paginator.num_pages }}">Last &raquo;</a> 
+        {% if users.has_next %} 
+            <a href="?page={{ users.next_page_number }}">Next</a>
+            <a href="?page={{ users.paginator.num_pages }}">Last &raquo;</a> 
         {% endif %}
         </div>
     </div>
@@ -244,6 +261,11 @@
         function confirmDelete() {
             return confirm('Do you really want to delete this user?');
         }
+
+        function confirmRestore() {
+    return confirm("Are you sure you want to restore this item?");
+}
+
     </script>
     
 {% endblock content %}

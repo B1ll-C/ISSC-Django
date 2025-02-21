@@ -36,20 +36,25 @@ def vehicles(request):
         'user_data':user[0],
         'allowed_vehicles':allowed_vehicle_type,
         'restricted_vehicles':restricted_vehicle_type,
+        'is_archived':is_archived
 
     }
 
     if request.method == 'POST':
         vehicle_id = request.POST['vehicle_id']
+        vehicle = VehicleRegistration.objects.get(id=vehicle_id)
         status = request.POST['status']
         if 'delete' in request.POST:
-            vehicle = VehicleRegistration.objects.get(id=vehicle_id)
             vehicle.is_archived = True
             vehicle.last_updated_by = user[0]['id_number']
             vehicle.save()
         if 'update' in request.POST:
-            vehicle = VehicleRegistration.objects.get(id=vehicle_id)
             vehicle.status = status
+            vehicle.last_updated_by = user[0]['id_number']
+            vehicle.save()
+
+        if 'restore' in request.POST:
+            vehicle.is_archived = False
             vehicle.last_updated_by = user[0]['id_number']
             vehicle.save()
 

@@ -14,6 +14,11 @@ from ..models import AccountRegistration, IncidentReport, VehicleRegistration
 
 from .utils import paginate
 
+from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.views import PasswordResetView
+from django.contrib import messages
+
+
 
 def login(request):
     template = loader.get_template('login.html')
@@ -121,3 +126,48 @@ def signup_forms(request):
 def logout(request):
     auth_logout(request)
     return redirect('login')
+
+
+# def password_reset(request):
+#     if request.method == "POST":
+#         email = request.POST.get("email")  # Get the email from the form
+#         form = PasswordResetForm({"email": email})
+
+#         if form.is_valid():
+#             form.save(
+#                 request=request,
+#                 use_https=request.is_secure(),
+#                 email_template_name="registration/password_reset_email.html"
+#             )
+#             messages.success(request, "A password reset link has been sent to your email.")
+#             return redirect("password_reset_done")  # Redirect to a confirmation page
+
+#         else:
+#             messages.error(request, "Invalid email address. Please try again.")
+
+#     else:
+#         form = PasswordResetForm()
+
+#     return render(request, "test.html")
+
+
+from django.contrib.auth import views as auth_views
+from django.urls import reverse_lazy
+from .forms import CustomPasswordResetForm, CustomSetPasswordForm
+
+class CustomPasswordResetView(auth_views.PasswordResetView):
+    template_name = 'registration/acc_reset.html'
+    form_class = CustomPasswordResetForm
+    email_template_name = 'registration/acc_reset_email.html'
+    success_url = reverse_lazy('password_reset_done')
+
+class CustomPasswordResetDoneView(auth_views.PasswordResetDoneView):
+    template_name = 'registration/acc_reset_done.html'
+
+class CustomPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
+    template_name = 'registration/acc_reset_confirm.html'
+    form_class = CustomSetPasswordForm
+    success_url = reverse_lazy('password_reset_complete')
+
+class CustomPasswordResetCompleteView(auth_views.PasswordResetCompleteView):
+    template_name = 'registration/acc_reset_complete.html'
