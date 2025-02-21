@@ -72,7 +72,8 @@ body {
     justify-content: space-between;
     background: var(--secondary-color);
     position: sticky;    /* Makes the navbar stick after reaching the top */
-    top: 0;              /* Sticks when it reaches the top */
+    top: 0;    
+    margin-bottom: 20px;          /* Sticks when it reaches the top */
     width: 100%;
     padding: 8px 0 9px 231px;
     z-index: 999;
@@ -177,7 +178,7 @@ footer {
     color: rgb(98, 98, 98);
     text-align: center;
     padding: 1.5rem;
-    margin-top: auto;
+    margin-top: 30px;
     font-size: smaller;
 }
 

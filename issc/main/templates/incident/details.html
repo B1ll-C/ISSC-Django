@@ -3,33 +3,48 @@
 {% block title %} Incident {% endblock title %}
 
 {% block content %} 
-    <h2>Incident Details</h2>
-    <p>ID: {{ incident.id }}</p>
-    <p>First Name: {{ incident.first_name }}</p>
-    <p>Middle Name: {{ incident.middle_name }}</p>
-    <p>Last Name: {{ incident.last_name }}</p>
-    <p>Contact Number: {{ incident.contact_number }}</p>
-    <p>ID Number: {{ incident.id_number }}</p>
-    <p>Subject: {{ incident.subject }}</p>
-    <p>Location: {{ incident.location }}</p>
-    <p>Incident: {{ incident.incident }}</p>
-    <p>Request for Action: {{ incident.request_for_action }}</p>
-    <p>Reported By: {{ incident.reported_by }}</p>
-    <p>Position: {{ incident.position }}</p>
-    <p>Department: {{ incident.department }}</p>
-    <p>Phone Number: {{ incident.phone_number }}</p>
-    <p>File: <a href="{{ incident.file.url }}">Download</a></p>
 
-    <p>Status: {{ incident.status }}</p>
-    <p>Date Joined: {{ incident.date_joined }}</p>
-    <form method="POST" accept="">
-    	{% csrf_token %}
-    	<select class="form-input" name="status" style="width: 140px;" >
-                            <option value="open" {% if incident.status == 'open' %}selected{% endif %}>Open</option>
-                            <option value="pending" {% if incident.status == 'pending' %}selected{% endif %}>Pending</option>
-                            <option value="closed" {% if incident.status == 'closed' %}selected{% endif %}>Closed</option>
-                        </select>
-        <input type="text" name="incident_id" value="{{ incident.id }}" hidden >
-    	<button>Submit</button>
-    </form>
+{% load static %} 
+
+    <link rel="stylesheet" href="{% static 'css/details.css' %}">
+
+    <div class="incident-container">
+        <!-- Transparent Header -->
+        <div class="incident-header">
+            <h2>Incident Details</h2>
+        </div>
+
+        <!-- Incident Details -->
+        <div class="incident-details">
+            <p><strong>ID:</strong> {{ incident.id }}</p>
+            <p><strong>First Name:</strong> {{ incident.first_name }}</p>
+            <p><strong>Middle Name:</strong> {{ incident.middle_name }}</p>
+            <p><strong>Last Name:</strong> {{ incident.last_name }}</p>
+            <p><strong>Contact Number:</strong> {{ incident.contact_number }}</p>
+            <p><strong>ID Number:</strong> {{ incident.id_number }}</p>
+            <p><strong>Subject:</strong> {{ incident.subject }}</p>
+            <p><strong>Location:</strong> {{ incident.location }}</p>
+            <p><strong>Incident:</strong> {{ incident.incident }}</p>
+            <p><strong>Request for Action:</strong> {{ incident.request_for_action }}</p>
+            <p><strong>Reported By:</strong> {{ incident.reported_by }}</p>
+            <p><strong>Position:</strong> {{ incident.position }}</p>
+            <p><strong>Department:</strong> {{ incident.department }}</p>
+            <p><strong>Phone Number:</strong> {{ incident.phone_number }}</p>
+            <p><strong>File:</strong> <a href="{{ incident.file.url }}">Download</a></p>
+            <p><strong>Status:</strong> {{ incident.status }}</p>
+            <p><strong>Date Joined:</strong> {{ incident.date_joined }}</p>
+        </div>
+
+        <!-- Form Section -->
+        <form method="POST" class="incident-form">
+            {% csrf_token %}
+            <select name="status">
+                <option value="open" {% if incident.status == 'open' %}selected{% endif %}>Open</option>
+                <option value="pending" {% if incident.status == 'pending' %}selected{% endif %}>Pending</option>
+                <option value="closed" {% if incident.status == 'closed' %}selected{% endif %}>Closed</option>
+            </select>
+            <input type="text" name="incident_id" value="{{ incident.id }}" hidden>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
 {% endblock %}
