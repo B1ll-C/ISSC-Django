@@ -86,9 +86,9 @@ def incident_details(request, id):
     if request.method == 'POST':
         incident_id = request.POST['incident_id']
         status = request.POST['status']
+        incident.last_updated_by = user[0]['id_number']
 
         incident.status = status
-        incident.last_updated_by = request.user 
         incident.save()
 
 
