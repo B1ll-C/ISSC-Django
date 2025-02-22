@@ -21,8 +21,8 @@ def vehicles(request):
 
     if user[0]['privilege'] == 'student' :
         template = loader.get_template('vehicle/student/vehicle.html')
-        allowed_vehicle_type = VehicleRegistration.objects.filter(status='allowed', is_archived=is_archived).order_by('id_number')
-        restricted_vehicle_type = VehicleRegistration.objects.filter(status='restricted' , is_archived=is_archived).order_by('id_number')
+        allowed_vehicle_type = VehicleRegistration.objects.filter(status='allowed', is_archived=is_archived, id_number=user[0]['id_number']).order_by('id_number')
+        restricted_vehicle_type = VehicleRegistration.objects.filter(status='restricted' , is_archived=is_archived, id_number=user[0]['id_number']).order_by('id_number')
     else:
         template = loader.get_template('vehicle/admin/vehicle.html')
         allowed_vehicle_type = VehicleRegistration.objects.filter(status='allowed', is_archived=is_archived).order_by('id_number')
@@ -111,7 +111,7 @@ def vehicle_forms(request):
         drivers_license = request.POST['drivers_license']
         guardian_name = request.POST['guardian_name']
         guardian_number = request.POST['guardian_number']
-        status = request.POST['status']
+        status = 'restricted' if user[0]['privilege'] == 'student' else request.POST['status']
         image = request.FILES.get('image')
         qr_code = request.FILES.get('qr_code')
 
@@ -134,7 +134,8 @@ def vehicle_forms(request):
             guardian_number=guardian_number,
             status=status,
             image=image,
-            qr_code=qr_code
+            qr_code=qr_code,
+            is_archived=False
         )
         vehicle.save()
         

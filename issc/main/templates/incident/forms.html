@@ -79,7 +79,7 @@
                 <label>Upload File</label>
                 <input type="file" name="file">
             </div>
-            
+            {% if user_role != 'student' %}
             <div class="form-field status">
                 <label>Status</label>
                 <select name="status">
@@ -88,6 +88,7 @@
                     <option value="pending">Pending</option>
                 </select>
             </div>
+            {% endif %}
             <div  class="register-btn">
                 <button type="submit">Submit</button>
             </div>

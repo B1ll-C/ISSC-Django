@@ -37,6 +37,7 @@
         </div>
 
         <!-- Form Section -->
+        {% if user_role != 'student' %}
         <form method="POST" class="incident-form">
             {% csrf_token %}
             <select name="status">
@@ -47,5 +48,6 @@
             <input type="text" name="incident_id" value="{{ incident.id }}" hidden>
             <button type="submit">Submit</button>
         </form>
+        {% endif %}
     </div>
 {% endblock %}

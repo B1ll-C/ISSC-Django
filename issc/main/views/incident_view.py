@@ -121,7 +121,7 @@ def incident_forms(request):
         position = request.POST['position']
         department = request.POST['department']
         phone_number = request.POST['phone_number']
-        status = request.POST['status']
+        status = 'pending' if user[0]['privilege'] == 'student' else request.POST['status']
         file = request.FILES.get('file', None)
 
         # Create and save the incident report manually
@@ -140,7 +140,8 @@ def incident_forms(request):
             department=department,
             phone_number=phone_number,
             status=status,
-            file=file
+            file=file,
+            is_archived=False
         )
         report.save()
         

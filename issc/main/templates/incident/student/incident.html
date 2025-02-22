@@ -118,7 +118,8 @@
                     <td>{{ data.department }}</td>
                     <td>{{ data.phone_number }}</td>
                     <td>{{ data.status }}</td>
-                    <td><a href="" style="text-decoration: underline;">Details</a></td>
+                    <td><a href="{% url 'incident_details' data.id %}" style="text-decoration: underline;">Details</a></td>
+
                 </tr>
                 {% empty %} 
                 <tr>
@@ -186,7 +187,8 @@
                     <td>{{ data.department }}</td>
                     <td>{{ data.phone_number }}</td>
                     <td>{{ data.status }}</td>
-                    <td><a href="" style="text-decoration: underline;">Details</a></td>
+                    <td><a href="{% url 'incident_details' data.id %}" style="text-decoration: underline;">Details</a></td>
+
                 </tr>
                 {% empty %} 
                 <tr>

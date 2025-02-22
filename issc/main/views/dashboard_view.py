@@ -166,6 +166,9 @@ def base(request):
     if not request.user.is_authenticated:
         return redirect('login')
 
+    if user.privilege == 'student':
+        return redirect('about')
+
     img_data = monthly_incident_graph()
     department_incident_data = department_incident_graph()
     vehicle_data = vehicle_graph()
