@@ -110,8 +110,8 @@ def capture_frames(camera_id):
             frame = generate_no_signal_frame()
 
         frame_count += 1
-        if frame_count % FRAME_SKIP == 0:  # Only process every 5th frame
-            frame = process_with_model(frame)
+        # if frame_count % FRAME_SKIP == 0:  # Only process every 5th frame
+            # frame = process_with_model(frame)
 
         if not frame_queues[camera_id].full():
             frame_queues[camera_id].put(frame)
