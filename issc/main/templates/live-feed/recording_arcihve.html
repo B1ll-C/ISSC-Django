@@ -9,51 +9,67 @@
     <link rel="stylesheet" href="{% static 'css/recording_archive.css' %}">
 
     <div class="content-container">
-
-        <h2>Available Recordings</h2>
         
+        <!-- Camera Selection Dropdown -->
+        <label for="camera-select">Select Camera:</label>
+        <select id="camera-select" onchange="showSelectedTable()" class="camera-select">
+            <option value="">Choose a Camera</option>
+            {% for cam_id in categorized_recordings.keys %}
+                <option value="table-{{ cam_id }}">Camera {{ cam_id }}</option>
+            {% endfor %}
+        </select>
+
         <div class="table-container">
             {% for cam_id, years in categorized_recordings.items %}
-                <h3>Camera {{ cam_id }}</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Year</th>
-                            <th>Month</th>
-                            <th>Day</th>
-                            <th>Recordings</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for year, months in years.items %}
-                            {% for month, days in months.items %}
-                                {% for day, files in days.items %}
-                                    <tr>
-                                        <td>{{ year }}</td>
-                                        <td>{{ month }}</td>
-                                        <td>{{ day }}</td>
-                                        <td>
-                                            <ul>
-                                                {% for file in files %}
-                                                    <li>
-                                                        <a href="javascript:void(0);" onclick="showPreview('{{ file }}')">
-                                                            {{ file }}
-                                                        </a>
-                                                    </li>
-                                                {% endfor %}
-                                            </ul>
-                                        </td>
-                                    </tr>
+                
+                <div id="table-{{ cam_id }}" class="camera-table" style="display: none;">
+                    <h3>Camera {{ cam_id }}</h3>
+
+                    <!-- Date Picker for Filtering -->
+                    <input type="date" class="date-filter" data-camera="{{ cam_id }}" onchange="filterTable('{{ cam_id }}')">
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th>Month</th>
+                                <th>Day</th>
+                                <th>Recordings</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for year, months in years.items %}
+                                {% for month, days in months.items %}
+                                    {% for day, files in days.items %}
+                                        <tr class="recording-row" data-camera="{{ cam_id }}" data-date="{{ year }}-{{ month|default:"01" }}-{{ day|default:"01" }}">
+                                            <td>{{ year }}</td>
+                                            <td>{{ month }}</td>
+                                            <td>{{ day }}</td>
+                                            <td>
+                                                <ul>
+                                                    {% for file in files %}
+                                                        <li>
+                                                            <a href="javascript:void(0);" onclick="showPreview('{{ file }}')">
+                                                                {{ file }}
+                                                            </a>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
                                 {% endfor %}
                             {% endfor %}
-                        {% endfor %}
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
+
             {% endfor %}
+            
             <a href="{% url 'reset_recordings' %}" class="reset-btn">Reset</a>
         </div>
     </div>
-    
+
     <!-- Fixed Preview Sidebar -->
     <div id="previewSidebar">
         <h3>Video Preview</h3>
@@ -64,7 +80,6 @@
         {% comment %} <button id="closePreviewBtn" onclick="closePreview()">Close Preview</button> {% endcomment %}
     </div>
 
-
     <script>
         function showPreview(fileName) {
             var videoSource = document.getElementById('videoSource');
@@ -72,11 +87,39 @@
             videoSource.src = "/recordings/" + fileName;
             videoPreview.load();
         }
-    
+
         function closePreview() {
             document.getElementById('videoSource').src = "";
         }
-    </script>
 
+        function filterTable(cameraId) {
+            var input = document.querySelector(`.date-filter[data-camera="${cameraId}"]`);
+            var selectedDate = input.value;
+            var rows = document.querySelectorAll(`tr.recording-row[data-camera="${cameraId}"]`);
+
+            rows.forEach(row => {
+                var rowDate = row.getAttribute("data-date");
+
+                if (selectedDate === rowDate) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+
+        function showSelectedTable() {
+            var selectedTableId = document.getElementById("camera-select").value;
+            var tables = document.querySelectorAll(".camera-table");
+
+            tables.forEach(table => {
+                table.style.display = "none"; // Hide all tables
+            });
+
+            if (selectedTableId) {
+                document.getElementById(selectedTableId).style.display = "block"; // Show selected table
+            }
+        }
+    </script>
 
 {% endblock content %}

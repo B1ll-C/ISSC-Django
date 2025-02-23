@@ -5,13 +5,15 @@
 {% block content %}
 
 {% load static %}
+
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 
     <div class="graph-container">
-        <img src="data:image/png;base64,{{ monthly_incident_data }}" alt="Generated Image">
-        <img src="data:image/png;base64,{{ department_incident_data }}" alt="Generated Image">
-        <img src="data:image/png;base64,{{ vehicle_data }}" alt="Generated Image" class="vehicle">        
-        <img src="data:image/png;base64,{{ incident_data }}" alt="Generated Image">
+        <img src="data:image/png;base64,{{ department_incident_data }}" alt="Department Incidents" class="graph1">
+        <img src="data:image/png;base64,{{ incident_data }}" alt="General Incidents" class="graph2">
+        <img src="data:image/png;base64,{{ monthly_incident_data }}" alt="Monthly Incidents" class="graph3">
+        <img src="data:image/png;base64,{{ vehicle_data }}" alt="Vehicle Data Graph" class="vehicle">
     </div>
 
 {% endblock content %}
+    

@@ -22,7 +22,7 @@
         <table class="form-table">
             <thead>
                 <tr>
-                    <th colspan="10">Open Cases</th>
+                    <th colspan="15">Open Cases</th>
                 </tr>
                 <tr>
                     <th>Date Time</th>
@@ -54,7 +54,7 @@
                 </tr>
                 {% empty %} 
                 <tr>
-                    <td colspan="10" style="text-align: center;">No Cases Found</td>
+                    <td colspan="15" style="text-align: center;">No Cases Found</td>
                 </tr> 
                 {% endfor %}
             </tbody>
@@ -64,16 +64,16 @@
     <!-- Pagination Controls -->
     <div class="pagination"> 
         <div>
-            <span>Page {{ users.number }} of {{ users.paginator.num_pages }}</span> 
+            <span>Page {{ open_incident.number }} of {{ open_incident.paginator.num_pages }}</span> 
         </div>
         <div>
-            {% if users.has_previous %} 
+            {% if open_incident.has_previous %} 
             <a href="?page=1">&laquo; First</a>
-            <a href="?page={{ users.previous_page_number }}">Previous</a> 
+            <a href="?page={{ open_incident.previous_page_number }}">Previous</a> 
         {% endif %} 
-        {% if users.has_next %} 
-            <a href="?page={{ users.next_page_number }}">Next</a>
-            <a href="?page={{ users.paginator.num_pages }}">Last &raquo;</a> 
+        {% if open_incident.has_next %} 
+            <a href="?page={{ open_incident.next_page_number }}">Next</a>
+            <a href="?page={{ open_incident.paginator.num_pages }}">Last &raquo;</a> 
         {% endif %}
         </div>
     </div>
@@ -90,7 +90,7 @@
         <table class="form-table">
             <thead>
                 <tr>
-                    <th colspan="10">Pending Cases</th>
+                    <th colspan="15">Pending Cases</th>
                 </tr>
                 <tr>
                     <th>Date Time</th>
@@ -123,7 +123,7 @@
                 </tr>
                 {% empty %} 
                 <tr>
-                    <td colspan="10" style="text-align: center;">No Cases Found</td>
+                    <td colspan="15" style="text-align: center;">No Cases Found</td>
                 </tr> 
                 {% endfor %}
             </tbody>
@@ -133,16 +133,16 @@
     <!-- Pagination Controls -->
     <div class="pagination"> 
         <div>
-            <span>Page {{ users.number }} of {{ users.paginator.num_pages }}</span> 
+            <span>Page {{ pending_incident.number }} of {{ pending_incident.paginator.num_pages }}</span> 
         </div>
         <div>
-            {% if users.has_previous %} 
+            {% if pending_incident.has_previous %} 
             <a href="?page=1">&laquo; First</a>
-            <a href="?page={{ users.previous_page_number }}">Previous</a> 
+            <a href="?page={{ pending_incident.previous_page_number }}">Previous</a> 
         {% endif %} 
-        {% if users.has_next %} 
-            <a href="?page={{ users.next_page_number }}">Next</a>
-            <a href="?page={{ users.paginator.num_pages }}">Last &raquo;</a> 
+        {% if pending_incident.has_next %} 
+            <a href="?page={{ pending_incident.next_page_number }}">Next</a>
+            <a href="?page={{ pending_incident.paginator.num_pages }}">Last &raquo;</a> 
         {% endif %}
         </div>
     </div>
@@ -159,7 +159,7 @@
         <table class="form-table">
             <thead>
                 <tr>
-                    <th colspan="10">Closed Cases</th>
+                    <th colspan="15">Closed Cases</th>
                 </tr>
                 <tr>
                     <th>Date Time</th>
@@ -192,7 +192,7 @@
                 </tr>
                 {% empty %} 
                 <tr>
-                    <td colspan="10" style="text-align: center;">No Cases Found</td>
+                    <td colspan="15" style="text-align: center;">No Cases Found</td>
                 </tr> 
                 {% endfor %}
             </tbody>
@@ -202,16 +202,16 @@
     <!-- Pagination Controls -->
     <div class="pagination"> 
         <div>
-            <span>Page {{ users.number }} of {{ users.paginator.num_pages }}</span> 
+            <span>Page {{ closed_incident.number }} of {{ closed_incident.paginator.num_pages }}</span> 
         </div>
         <div>
-            {% if users.has_previous %} 
+            {% if closed_incident.has_previous %} 
             <a href="?page=1">&laquo; First</a>
-            <a href="?page={{ users.previous_page_number }}">Previous</a> 
+            <a href="?page={{ closed_incident.previous_page_number }}">Previous</a> 
         {% endif %} 
-        {% if users.has_next %} 
-            <a href="?page={{ users.next_page_number }}">Next</a>
-            <a href="?page={{ users.paginator.num_pages }}">Last &raquo;</a> 
+        {% if closed_incident.has_next %} 
+            <a href="?page={{ closed_incident.next_page_number }}">Next</a>
+            <a href="?page={{ closed_incident.paginator.num_pages }}">Last &raquo;</a> 
         {% endif %}
         </div>
     </div>
