@@ -3,46 +3,10 @@
 {% block title %} About {% endblock title %}
 
 {% block content %}
-<style type="text/css">
-     .about-container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f9f6f1;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        text-align: center; /* Center everything */
-    }
 
-    .heading {
-        font-size: 32px;
-        color: #800000; /* Maroon color */
-        margin-bottom: 20px;
-    }
+{% load static %}
+    <link rel="stylesheet" href="{% static 'css/about.css' %}">
 
-    .subheading {
-        font-size: 24px;
-        color: #800000; /* Maroon color */
-        margin-top: 20px;
-        font-weight: 600;
-    }
-
-    .content {
-        font-size: 16px;
-        color: #333;
-        line-height: 1.6;
-    }
-
-    .contact-list {
-        list-style: none;
-        padding-left: 0;
-        display: inline-block;
-    }
-
-    .contact-list li {
-        margin-bottom: 10px;
-    }
-</style>
 <div class="about-container">
     <h2 class="subheading">Our Mission</h2>
     <p class="content">Advance an inclusive, equitable, and globally relevant polytechnic education towards national development.</p>

@@ -24,7 +24,7 @@
         <table class="form-table">
             <thead>
                 <tr>
-                    <th colspan="13">Allowed Vehicle</th>
+                    <th colspan="15">Allowed Vehicle</th>
                 </tr>
                 <tr>
                     <th>Date of Application</th>
@@ -63,7 +63,7 @@
                         </td>
                         <td>
                             <button name="{% if is_archived %}restore{% else %}delete{% endif %}" 
-                                class="form-input form-btn" 
+                                class="form-input delete-btn" 
                                 value="{{ vehicle.id }}" 
                                 onclick="return {% if is_archived %}confirmRestore(){% else %}confirmDelete(){% endif %};"
                                 {% if not is_archived %}disabled{% endif %}>
@@ -71,13 +71,13 @@
                             </button>
                         </td>
 
-                        <td><button name="update" class="form-input form-btn" value="{{ vehicle.id }}" disabled>UPDATE</button></td>
+                        <td><button name="update" class="form-input update-btn" value="{{ vehicle.id }}" disabled>UPDATE</button></td>
                     </form>
-                    <td><button onclick="toggleEditFields(this)">TOGGLE</button></td>
+                    <td><button onclick="toggleEditFields(this)" class="custom-toggle-btn">TOGGLE</button></td>
                     </tr>
                 {% empty %}
                  <tr>
-                    <td colspan="13" style="text-align: center;">No Vehicles Registered</td>
+                    <td colspan="15" style="text-align: center;">No Vehicles Registered</td>
                 </tr> 
                 {% endfor %}
             </tbody>
@@ -87,16 +87,16 @@
     <!-- Pagination Controls -->
     <div class="pagination"> 
         <div>
-            <span>Page {{ users.number }} of {{ users.paginator.num_pages }}</span> 
+            <span>Page {{ allowed_vehicles.number }} of {{ allowed_vehicles.paginator.num_pages }}</span> 
         </div>
         <div>
-            {% if users.has_previous %} 
+            {% if allowed_vehicles.has_previous %} 
             <a href="?page=1">&laquo; First</a>
-            <a href="?page={{ users.previous_page_number }}">Previous</a> 
+            <a href="?page={{ allowed_vehicles.previous_page_number }}">Previous</a> 
         {% endif %} 
-        {% if users.has_next %} 
-            <a href="?page={{ users.next_page_number }}">Next</a>
-            <a href="?page={{ users.paginator.num_pages }}">Last &raquo;</a> 
+        {% if allowed_vehicles.has_next %} 
+            <a href="?page={{ allowed_vehicles.next_page_number }}">Next</a>
+            <a href="?page={{ allowed_vehicles.paginator.num_pages }}">Last &raquo;</a> 
         {% endif %}
         </div>
     </div>
@@ -114,7 +114,7 @@
         <table class="form-table">
             <thead>
                 <tr>
-                    <th colspan="13">Allowed Vehicle</th>
+                    <th colspan="15">Allowed Vehicle</th>
                 </tr>
                 <tr>
                     <th>Date of Application</th>
@@ -153,7 +153,7 @@
                         </td>
                         <td>
                             <button name="{% if is_archived %}restore{% else %}delete{% endif %}" 
-                                class="form-input form-btn" 
+                                class="form-input delete-btn" 
                                 value="{{ vehicle.id }}" 
                                 onclick="return {% if is_archived %}confirmRestore(){% else %}confirmDelete(){% endif %};"
                                 {% if not is_archived %}disabled{% endif %}>
@@ -161,13 +161,13 @@
                             </button>
                         </td>
 
-                        <td><button name="update" class="form-input form-btn" value="{{ vehicle.id }}" disabled>UPDATE</button></td>
+                        <td><button name="update" class="form-input update-btn" value="{{ vehicle.id }}" disabled>UPDATE</button></td>
                     </form>
-                    <td><button onclick="toggleEditFields(this)">TOGGLE</button></td>
+                    <td><button onclick="toggleEditFields(this)" class="custom-toggle-btn">TOGGLE</button></td>
                     </tr>
                 {% empty %}
                  <tr>
-                    <td colspan="13" style="text-align: center;">No Vehicles Registered</td>
+                    <td colspan="15" style="text-align: center;">No Vehicles Registered</td>
                 </tr> 
                 {% endfor %}
             </tbody>
@@ -177,16 +177,16 @@
     <!-- Pagination Controls -->
     <div class="pagination"> 
         <div>
-            <span>Page {{ users.number }} of {{ users.paginator.num_pages }}</span> 
+            <span>Page {{ restricted_vehicles.number }} of {{ restricted_vehicles.paginator.num_pages }}</span> 
         </div>
         <div>
-            {% if users.has_previous %} 
+            {% if restricted_vehicles.has_previous %} 
             <a href="?page=1">&laquo; First</a>
-            <a href="?page={{ users.previous_page_number }}">Previous</a> 
+            <a href="?page={{ restricted_vehicles.previous_page_number }}">Previous</a> 
         {% endif %} 
-        {% if users.has_next %} 
-            <a href="?page={{ users.next_page_number }}">Next</a>
-            <a href="?page={{ users.paginator.num_pages }}">Last &raquo;</a> 
+        {% if restricted_vehicles.has_next %} 
+            <a href="?page={{ restricted_vehicles.next_page_number }}">Next</a>
+            <a href="?page={{ restricted_vehicles.paginator.num_pages }}">Last &raquo;</a> 
         {% endif %}
         </div>
     </div>
