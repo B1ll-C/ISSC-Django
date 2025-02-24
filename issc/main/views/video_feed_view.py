@@ -222,6 +222,9 @@ def handle_exit(signum, frame):
             cameras[cam_id].release()
         video_writers[cam_id].release()
     
+    recordings_dir = os.path.join(settings.BASE_DIR, 'recordings')
+    reencode_avi_to_mp4(recordings_dir)
+    
     sys.exit(0)
 
 # Register signal handler for Ctrl + C
