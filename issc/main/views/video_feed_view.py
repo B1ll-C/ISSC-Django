@@ -45,6 +45,8 @@ FRAME_WIDTH, FRAME_HEIGHT = 640, 480
 FPS = 30
 VIDEO_FORMAT = "XVID"
 
+recording = False
+
 def initialize_video_writers():
     """Creates new video writers for each camera."""
     global video_writers
@@ -59,7 +61,34 @@ def initialize_video_writers():
     video_writers = new_video_writers  # Replace old video writers
 
 # Initialize video writers at startup
-initialize_video_writers()
+def start_record(request):
+    global recording
+    if recording:
+        return redirect('multiple_streams')
+    else:
+        recording = True
+        initialize_video_writers()
+        return redirect('multiple_streams')
+
+def stop_record(request):
+    global recording
+    if recording:
+        recording = False
+        global video_writers
+
+        # Release current video writers
+        for cam_id in video_writers:
+            video_writers[cam_id].release()
+
+
+
+        recordings_dir = os.path.join(settings.BASE_DIR, 'recordings')
+        reencode_avi_to_mp4(recordings_dir)
+
+        return redirect('multiple_streams')
+
+    else:
+        return redirect('multiple_streams')
 
 
 def process_with_model(frame):

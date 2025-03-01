@@ -11,6 +11,13 @@
     <a href="{% url 'recording_archive' %}" class="archive-btn">
         <span class="fas fa-archive"></span>Archive</a>
 
+    <a href="{% url 'start_record' %}" class="archive-btn">
+        <span class="fas fa-archive"></span>Start Recording</a>
+
+    <a href="{% url 'stop_record' %}" class="archive-btn">
+        <span class="fas fa-archive"></span>Stop Recording</a>
+
+
     <div class="container">
 
         {% if camera_ids %}
