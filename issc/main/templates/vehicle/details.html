@@ -1,86 +1,73 @@
 {% extends 'base.html' %}
 
 {% block title %} Register Vehicle {% endblock title %} 
-{% block content %} 
-<h2>Registered Vehicles</h2>
-<div class="vehicle-details">
-  <form method="POST" action="">
-  	{% csrf_token %}
-    <div>
-      <strong>First Name:</strong> {{ vehicle.first_name }}
-    </div>
-    <div>
-      <strong>Middle Name:</strong> {{ vehicle.middle_name }}
-    </div>
-    <div>
-      <strong>Last Name:</strong> {{ vehicle.last_name }}
-    </div>
-    <div>
-      <strong>ID Number:</strong> {{ vehicle.id_number }}
-    </div>
-    <div>
-      <strong>Contact Number:</strong> {{ vehicle.contact_number }}
-    </div>
-    <div>
-      <strong>Email Address:</strong> {{ vehicle.email_address }}
-    </div>
-    <div>
-      <strong>Role:</strong> {{ vehicle.role }}
-    </div>
-    <div>
-      <strong>Vehicle Type:</strong> {{ vehicle.vehicle_type }}
-    </div>
-    <div>
-      <strong>Color:</strong> {{ vehicle.color }}
-    </div>
-    <div>
-      <strong>Model:</strong> {{ vehicle.model }}
-    </div>
-    <div>
-      <strong>Plate Number:</strong> {{ vehicle.plate_number }}
-    </div>
-    <div>
-      <strong>Sticker Number:</strong> {{ vehicle.sticker_number }}
-    </div>
-    <div>
-      <strong>Guardian Name:</strong> {{ vehicle.guardian_name }}
-    </div>
-    <div>
-      <strong>Guardian Number:</strong> {{ vehicle.guardian_number }}
-    </div>
-    <div>
-      <strong>Driver's License:</strong> {{ vehicle.drivers_license }}
-    </div>
-    <div>
-      <select class="form-input" name="status" style="width: 140px;">
-        <option value="allowed" {% if vehicle.status == 'allowed' %}selected{% endif %}>allowed</option>
-        <option value="restricted" {% if vehicle.status == 'restricted' %}selected{% endif %}>restricted</option>
-      </select>
-    </div>
-    <div>
-      <strong>QR Code:</strong>
-      <img src="{{ vehicle.qr_code.url }}" alt="QR Code" width="100" height="100">
-    </div>
-    <div>
-      <strong>Car Image:</strong>
-      <img src="{{ vehicle.image.url }}" alt="Car Image" width="100" height="100">
-    </div>
-</div>
-{% if user_role != 'student' %}
-<button type="submit">Submit</button>
-{% endif %}
-</form>
-<script type="text/javascript">
-  function toggleEditFields(button) {
-    const row = button.closest('tr'); // Get the closest row of the clicked button
-    const inputs = row.querySelectorAll('.form-input'); // Select all input fields in the row
-    inputs.forEach(input => {
-      input.disabled = !input.disabled;
-      input.style.cursor = input.disabled ? "not-allowed" : "auto";
-    });
-  }
 
-  function confirmDelete() {
-    return confirm('Do you really want to delete this user?');
-  }
-</script> {% endblock content %}
+{% block content %} 
+
+{% load static %} 
+
+    <link rel="stylesheet" href="{% static 'css/details.css' %}">
+
+
+    <div class="container">
+
+      <div class="header">
+        <h2>Registered Vehicles</h2>
+      </div>
+
+      <form method="POST" action="">
+        {% csrf_token %}
+        <div class="details">
+          <p><strong>First Name:</strong> {{ vehicle.first_name }}</p>
+          <p><strong>Middle Name:</strong> {{ vehicle.middle_name }}</p>
+          <p><strong>Last Name:</strong> {{ vehicle.last_name }}</p>
+          <p><strong>ID Number:</strong> {{ vehicle.id_number }}</p>
+          <p><strong>Contact Number:</strong> {{ vehicle.contact_number }}</p>
+          <p><strong>Email Address:</strong> {{ vehicle.email_address }}</p>
+          <p><strong>Role:</strong> {{ vehicle.role }}</p>
+          <p><strong>Vehicle Type:</strong> {{ vehicle.vehicle_type }}</p>
+          <p><strong>Color:</strong> {{ vehicle.color }}</p>
+          <p><strong>Model:</strong> {{ vehicle.model }}</p>
+          <p><strong>Plate Number:</strong> {{ vehicle.plate_number }}</p>
+          <p><strong>Sticker Number:</strong> {{ vehicle.sticker_number }}</p>
+          <p><strong>Guardian Name:</strong> {{ vehicle.guardian_name }}</p>
+          <p><strong>Guardian Number:</strong> {{ vehicle.guardian_number }}</p>
+          <p><strong>Driver's License:</strong> {{ vehicle.drivers_license }}</p>
+
+          <div class="qr-car-image">
+            <strong>QR Code:</strong>
+            <img src="{{ vehicle.qr_code.url }}" alt="QR Code">
+
+            <strong>Car Image:</strong>
+              <img src="{{ vehicle.image.url }}" alt="Car Image">
+          </div>
+
+          <select name="status">
+            <option value="allowed" {% if vehicle.status == 'allowed' %}selected{% endif %}>allowed</option>
+            <option value="restricted" {% if vehicle.status == 'restricted' %}selected{% endif %}>restricted</option>
+          </select>
+
+          {% if user_role != 'student' %}
+          {% endif %}
+
+          <button type="submit" style="margin-top: 20px;">Submit</button>
+        </div>
+      </form>
+    </div>
+
+  <script type="text/javascript">
+    function toggleEditFields(button) {
+      const row = button.closest('tr'); // Get the closest row of the clicked button
+      const inputs = row.querySelectorAll('.form-input'); // Select all input fields in the row
+      inputs.forEach(input => {
+        input.disabled = !input.disabled;
+        input.style.cursor = input.disabled ? "not-allowed" : "auto";
+      });
+    }
+
+    function confirmDelete() {
+      return confirm('Do you really want to delete this user?');
+    }
+  </script> 
+
+{% endblock content %}
