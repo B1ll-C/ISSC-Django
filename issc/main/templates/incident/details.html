@@ -8,14 +8,14 @@
 
     <link rel="stylesheet" href="{% static 'css/details.css' %}">
 
-    <div class="incident-container">
+    <div class="container">
         <!-- Transparent Header -->
-        <div class="incident-header">
+        <div class="header">
             <h2>Incident Details</h2>
         </div>
 
         <!-- Incident Details -->
-        <div class="incident-details">
+        <div class="details">
             <p><strong>ID:</strong> {{ incident.id }}</p>
             <p><strong>First Name:</strong> {{ incident.first_name }}</p>
             <p><strong>Middle Name:</strong> {{ incident.middle_name }}</p>
@@ -38,7 +38,7 @@
 
         <!-- Form Section -->
         {% if user_role != 'student' %}
-        <form method="POST" class="incident-form">
+        <form method="POST" class="form">
             {% csrf_token %}
             <select name="status">
                 <option value="open" {% if incident.status == 'open' %}selected{% endif %}>Open</option>

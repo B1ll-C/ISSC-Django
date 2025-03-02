@@ -1,15 +1,14 @@
 /* Container for the entire details section */
-.incident-container {
+.container {
     max-width: 500px;
     margin: 50px auto;
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    background: #fff;
 }
 
 /* Transparent upper section */
-.incident-header {
+.header {
     background: rgba(255, 255, 255, 0.2); /* Glass effect */
     backdrop-filter: blur(10px); /* Blurry glass effect */
     padding: 20px;
@@ -18,7 +17,7 @@
 }
 
 /* Headings */
-.incident-header h2 {
+.header h2 {
     text-align: center;
     color: #4B0000; /* Deep Maroon */
     font-size: 22px;
@@ -26,24 +25,24 @@
 }
 
 /* Details List */
-.incident-details {
+.details {
     padding: 20px;
     font-size: 16px;
     line-height: 1.6;
 }
 
-.incident-details p {
+.details p {
     margin-bottom: 15px;
     border-bottom: 1px solid #ddd;
     padding-bottom: 5px;
 }
 
-.incident-details strong {
+.details strong {
     padding-right: 10px;
 }
 
 /* Base Link Styling */
-.incident-details a {
+.details a {
     text-decoration: none;
     position: relative;
     transition: color 0.2s ease;
@@ -52,7 +51,7 @@
 }
 
 /* Create the underline effect */
-.incident-details a::after {
+.details a::after {
     content: "";
     position: absolute;
     left: 0;
@@ -64,12 +63,12 @@
 }
 
 /* Expand the underline from left to right on hover */
-.incident-details a:hover::after {
+.details a:hover::after {
     width: 100%;
 }
 
 /* Form Styling */
-.incident-form {
+.form {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -77,8 +76,8 @@
 }
 
 /* Dropdown & Input Fields */
-.incident-form select,
-.incident-form input[type="text"] {
+select,
+input[type="text"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -88,17 +87,22 @@
 }
 
 /* Submit Button */
-.incident-form button {
+.container button {
     background: #4B0000; /* Deep Maroon */
     color: #fff;
     border: none;
-    padding: 10px;
+    padding: 10px 20px;
     border-radius: 50px;
     cursor: pointer;
     font-size: 16px;
     transition: all 0.3s ease-in-out;
+    width: 100%;
 }
 
-.incident-form button:hover {
+.container button:hover {
     background: #600000;
+}
+
+.qr-car-image{
+    margin-bottom: 20px;
 }
