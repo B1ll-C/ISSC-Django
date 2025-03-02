@@ -39,7 +39,7 @@ pip install numpy==1.23.5 \
 
 
 ## env
-
+```.env
 ### API KEY
 SECRET_KEY 			= ""
 ### Database Credentials
@@ -56,7 +56,7 @@ PROJECT_NAME 		= "issc-plate-recognition"
 ### SMTP
 EMAIL_HOST_USER		= ""
 EMAIL_HOST_PASSWORD	= ""
-
+```
 # Code Review
 
 ## Structure
