@@ -31,31 +31,31 @@ run this next
 
 ```bash
 pip install numpy==1.23.5 \
-			django \
-			mysqlclient \
-			tensorflow==2.10.0 \
-			whitenoise
+            django \
+            mysqlclient \
+            tensorflow==2.10.0 \
+            whitenoise
 ```
 
 
 ## env
 ```.env
 ### API KEY
-SECRET_KEY 			= ""
+SECRET_KEY          = ""
 ### Database Credentials
-DB_NAME 			= ""
-DB_USER 			= ""
-DB_PASSWORD 		= ""
-DB_HOST 			= ""
-DB_PORT 			= ""
+DB_NAME             = ""
+DB_USER             = ""
+DB_PASSWORD         = ""
+DB_HOST             = ""
+DB_PORT             = ""
 
 ### Model
-ROBOFLOW_API_KEY 	= ""
-PROJECT_NAME 		= "issc-plate-recognition"
+ROBOFLOW_API_KEY    = ""
+PROJECT_NAME        = "issc-plate-recognition"
 
 ### SMTP
-EMAIL_HOST_USER		= ""
-EMAIL_HOST_PASSWORD	= ""
+EMAIL_HOST_USER     = ""
+EMAIL_HOST_PASSWORD = ""
 ```
 # Code Review
 
@@ -366,3 +366,76 @@ def reencode_avi_to_mp4(directory):
             except subprocess.CalledProcessError as e:
                 print(f"Error converting {avi_path}: {e}")
 ```
+
+# Face and License Plate Recognition Section
+
+This repository provides two Python modules for face enrollment and license plate recognition. It utilizes OpenCV, DeepFace, Roboflow, and EasyOCR for image processing and recognition tasks.
+
+## Features
+
+### 1. Face Enrollment Module
+- Detects faces in an image using OpenCV's Haar cascade classifier.
+- Generates face embeddings using DeepFace with a configurable model.
+- Supports batch processing of multiple face images.
+
+### 2. License Plate Recognition Module
+- Detects license plates using a Roboflow-trained model.
+- Crops detected plates from video frames.
+- Extracts text from license plates using EasyOCR with preprocessing steps.
+
+---
+
+## Usage
+
+### Face Enrollment
+
+```python
+import cv2
+from face_enrollment import FaceEnrollment
+
+# Initialize face enrollment
+face_enroller = FaceEnrollment(model_name='Facenet')
+
+# Load an image
+image = cv2.imread("face.jpg")
+
+# Detect faces
+faces = face_enroller.detect_faces(image)
+
+# Get embeddings for detected faces
+for (x, y, w, h, face) in faces:
+    embedding = face_enroller.get_face_embedding(face)
+    print(embedding)
+```
+
+### License Plate Recognition
+
+```python
+import cv2
+from licence_plate_recognition import LicencePlateRecognition
+
+# Initialize license plate recognizer
+lpr = LicencePlateRecognition("your_roboflow_api_key", "model_name", "model_version")
+
+# Load an image
+frame = cv2.imread("car.jpg")
+
+# Detect license plates
+plates = lpr.detect_license_plate(frame)
+
+# Crop detected plates
+cropped_plates = lpr.crop_license_plate(frame, plates)
+
+# Recognize text from cropped plates
+texts = lpr.recognize_text(cropped_plates)
+print(texts)
+```
+
+---
+
+## Configuration
+
+- **FaceEnrollment** supports multiple models (e.g., 'Facenet', 'VGG-Face', 'OpenFace'). Modify the `model_name` parameter accordingly.
+- **LicencePlateRecognition** requires a Roboflow API key and model details for plate detection. Adjust `DOWNSCALE_FACTOR` for performance tuning.
+
+---
