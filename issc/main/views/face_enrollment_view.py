@@ -1,104 +1,140 @@
-from django.http import HttpResponse, StreamingHttpResponse
-from django.template import loader
-from django.shortcuts import get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.views.decorators import gzip
-
-from ..models import AccountRegistration, FacesEmbeddings
-from ..computer_vision.face_enrollment import FaceEnrollment
-
 import cv2
 import threading
 import numpy as np
 import hashlib
-import time  # Track face detection time
+import time
+import os
+
+from django.views.decorators import gzip
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, JsonResponse, StreamingHttpResponse
+from django.shortcuts import get_object_or_404, render
+from django.contrib.auth.decorators import login_required
+
+from ..models import AccountRegistration, FacesEmbeddings
+from ..computer_vision.face_enrollment import FaceEnrollment
 
 
-class VideoCamera:
-    def __init__(self, camera_id=0, user=None):
+class VideoRecorder:
+    """ Records a short video and processes it for face enrollment """
+
+    def __init__(self, camera_id=0, user=None, output_path="recorded_video.avi", record_time=5):
         self.video = cv2.VideoCapture(camera_id)
         if not self.video.isOpened():
             raise Exception("Could not open camera.")
 
         self.running = True
-        self.face_enrollment = FaceEnrollment()
-        self.last_detected_time = None  # Track the time when a face was last seen
-        self.face_present = False
-        self.frame = None  # Store the latest frame
-        self.user = user  # Store the user instance
+        self.record_time = record_time
+        self.user = user
+        self.output_path = output_path
+        self.enrollment_successful = False
 
-        threading.Thread(target=self.update, daemon=True).start()
+        fourcc = cv2.VideoWriter_fourcc(*'XVID')
+        self.frame_width = int(self.video.get(3))
+        self.frame_height = int(self.video.get(4))
+        self.out = cv2.VideoWriter(self.output_path, fourcc, 20.0, (self.frame_width, self.frame_height))
 
-    def __del__(self):
-        self.running = False
-        self.video.release()
+        self.recording_thread = threading.Thread(target=self.record, daemon=True)
+        self.recording_thread.start()
 
-    def get_frame(self):
-        if self.frame is not None:
-            detected_faces = self.face_enrollment.detect_faces(self.frame)
+    def record(self):
+        """ Record video without GUI display (for web environment) """
+        start_time = time.time()
 
-            if detected_faces:
-                if not self.face_present:
-                    self.last_detected_time = time.time()  # Start timer when face appears
-                    self.face_present = True
-                else:
-                    elapsed_time = time.time() - self.last_detected_time
-                    if elapsed_time >= 5:
-                        self.enroll_face(detected_faces)
-            else:
-                self.face_present = False  # Reset if no face detected
-
-            for (x, y, w, h, _) in detected_faces:
-                cv2.rectangle(self.frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-
-            _, jpeg = cv2.imencode('.jpg', self.frame)
-            return jpeg.tobytes()
-        return None
-
-    def update(self):
         while self.running:
-            ret, self.frame = self.video.read()
+            ret, frame = self.video.read()
             if not ret:
+                break
+
+            self.out.write(frame)
+
+            if time.time() - start_time >= self.record_time:
                 self.running = False
                 break
 
-    def enroll_face(self, detected_faces):
-        """Enroll face embeddings after 5 seconds of continuous detection."""
-        if not self.user:
-            return  # Skip enrollment if user is missing
+        self.video.release()
+        self.out.release()
+        self.process_video()
+
+        if self.enrollment_successful:
+            recorders[self.user.username] = None
+
+    def process_video(self):
+        """ Extract frames and process face enrollment """
+        face_enrollment = FaceEnrollment()  
+        cap = cv2.VideoCapture(self.output_path)
+
+        detected_faces = []
+        while cap.isOpened():
+            ret, frame = cap.read()
+            if not ret:
+                break
+
+            faces = face_enrollment.detect_faces(frame)  # Detect faces in the frame
+            detected_faces.extend([face for (_, _, _, _, face) in faces])
+
+        cap.release()
+        os.remove(self.output_path)
+
+        print(f"Total faces detected: {len(detected_faces)}")  # Debugging print
+
+        if detected_faces:
+            self.enroll_faces(detected_faces)  # Call enroll_faces() for embedding
+            self.enrollment_successful = True  # Mark as successful
+
+    def enroll_faces(self, detected_faces):
+        """Enroll face embeddings into the database"""
+        if not self.user or not detected_faces:
+            return  
 
         user_instance = get_object_or_404(AccountRegistration, id_number=self.user.id_number)
 
-        for (_, _, _, _, face) in detected_faces:
-            embedding = self.face_enrollment.get_face_embedding(face)
-            if embedding is not None:
-                embedding_bytes = embedding.tobytes()
-                image_hash = hashlib.sha256(embedding_bytes).hexdigest()
+        face_enrollment = FaceEnrollment()  # Instantiate FaceEnrollment
+        embeddings = face_enrollment.batch_process_faces(detected_faces)  # Batch process embeddings
 
-                FacesEmbeddings.objects.update_or_create(
-                    id_number=user_instance,
-                    image_hash=image_hash,
-                    defaults={'embedding': embedding_bytes}
-                )
+        for embedding in embeddings:
+            embedding_bytes = embedding.tobytes()
+            image_hash = hashlib.sha256(embedding_bytes).hexdigest()
 
-
-def gen(camera):
-    while True:
-        frame = camera.get_frame()
-        if frame:
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+            FacesEmbeddings.objects.create(
+                id_number=user_instance,
+                image_hash=image_hash,
+                embedding=embedding_bytes
+            )
 
 
+
+
+# Global dictionary to track user recording instances
+recorders = {}
+
+
+@csrf_exempt
 @login_required(login_url='/login')
-def video_feed_face(request, camera_id):
-    """ Stream video feed dynamically for each camera with face detection """
+def start_recording(request):
+    """Start recording a short video for face enrollment."""
+    if request.method != "POST":
+        return JsonResponse({"success": False, "message": "Invalid request method."})
+
+    user = get_object_or_404(AccountRegistration, username=request.user.username)
+
+    if user.username in recorders and recorders[user.username] and recorders[user.username].running:
+        return JsonResponse({"message": "Recording already in progress."})
+
     try:
-        user = get_object_or_404(AccountRegistration, username=request.user.username)
-        cam = VideoCamera(camera_id=int(camera_id), user=user)
-        return StreamingHttpResponse(gen(cam), content_type="multipart/x-mixed-replace;boundary=frame")
+        recorder = VideoRecorder(camera_id=0, user=user)
+        recorders[user.username] = recorder
+        recorder.recording_thread.join()  # Ensure recording completes
+
+        if recorder.enrollment_successful:  # ✅ Ensure this is set properly
+            return JsonResponse({"redirect": True, "url": "/face-enrollment-success/"})  # Redirect to success page
+        
+        return JsonResponse({"message": "Recording completed, but face enrollment failed."})
+    
     except Exception as e:
-        return HttpResponse(f"Error: {e}")
+        return JsonResponse({"message": f"Error: {str(e)}"})
+
+
 
 
 @gzip.gzip_page
@@ -107,10 +143,56 @@ def face_enrollment(request):
     """ Render face enrollment page with camera options """
     user = get_object_or_404(AccountRegistration, username=request.user.username)
 
-    template = loader.get_template('face_enrollment/face.html')
-    context = {
+    return render(request, 'face_enrollment/faceenrollment.html', {
         'user_role': user.privilege,
         'user_data': user,
         'camera_ids': range(1)
-    }
-    return HttpResponse(template.render(context, request))
+    })
+
+
+@login_required(login_url='/login')
+def face_terms_agreement(request):
+    """ Render face enrollment terms agreement page """
+    user = get_object_or_404(AccountRegistration, username=request.user.username)
+
+    return render(request, 'face_enrollment/agreement.html', {
+        'user_role': user.privilege,
+        'user_data': user,
+        'camera_ids': range(1)
+    })
+
+
+@login_required(login_url='/login')
+def face_enrollment_success(request):
+    """ Render success page when face enrollment is completed """
+    return render(request, 'face_enrollment/success.html')
+
+
+
+video_capture = cv2.VideoCapture(0)
+
+def generate_frames():
+    """Generate frames from webcam with a green bounding box around detected faces"""
+    face_enrollment = FaceEnrollment()  # Face detector instance
+
+    while True:
+        success, frame = video_capture.read()
+        if not success:
+            break
+
+        # Detect faces
+        detected_faces = face_enrollment.detect_faces(frame)
+
+        for (x, y, w, h, _) in detected_faces:
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)  # Green bounding box
+
+        _, buffer = cv2.imencode('.jpg', frame)
+        frame_bytes = buffer.tobytes()
+
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+
+
+def video_feed(request):
+    """Streaming HTTP response for video feed"""
+    return StreamingHttpResponse(generate_frames(), content_type="multipart/x-mixed-replace; boundary=frame")

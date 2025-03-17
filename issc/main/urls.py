@@ -51,8 +51,10 @@ urlpatterns = [
 
 
     path("face-enrollment/", face_enrollment_view.face_enrollment, name="face_enrollment"),
-    path("video-feed-face/<int:camera_id>/", face_enrollment_view.video_feed_face, name="video_feed_face"),
-
-   
+    path("face-enrollment/start-recording/", face_enrollment_view.start_recording, name="start_recording"),
+    path("video-feed/", face_enrollment_view.video_feed, name="video_feed"),
+    path("face-terms-and-agreement/", face_enrollment_view.face_terms_agreement, name="face_terms_and_agreement"),
+    path("face-enrollment-success/", face_enrollment_view.face_enrollment_success, name="face_enrollment_success"),
+  
 ]
 

@@ -23,8 +23,8 @@ import subprocess
 from django.conf import settings
 import re
 
-from ..computer_vision.plate_recognition import LicencePlateRecognition
-recognizer = LicencePlateRecognition(os.getenv("ROBOFLOW_API_KEY"), os.getenv("PROJECT_NAME"), "1")
+# from ..computer_vision.plate_recognition import LicencePlateRecognition
+# recognizer = LicencePlateRecognition(os.getenv("ROBOFLOW_API_KEY"), os.getenv("PROJECT_NAME"), "1")   
 
 SAVE_DIR = 'recordings'
 os.makedirs(SAVE_DIR, exist_ok=True)

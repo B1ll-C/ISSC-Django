@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %} Face Enrollment Success {% endblock title %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="container text-center mt-5">
+    <div class="card shadow-lg p-4 rounded">
+        <div class="card-body">
+            <h2 class="text-success">Enrollment Successful!</h2>
+            <p class="mt-2">Your face features have been successfully enrolled.</p>
+            <a href="/about" class="btn btn-primary mt-3">Go to About</a>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
