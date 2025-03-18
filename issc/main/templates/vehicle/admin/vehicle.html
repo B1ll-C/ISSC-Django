@@ -36,7 +36,6 @@
                     <th>Plate Number</th>
                     <th>Guardian Name</th>
                     <th>Details</th>
-                    <th>Status</th>
                     <th colspan="3">Actions</th>
                 </tr>
             </thead>
@@ -55,12 +54,6 @@
                         <td>{{ vehicle.plate_number  }}</td>
                         <td>{{ vehicle.guardian_name }}</td>
                         <td><a href="{% url 'vehicle_details' vehicle.id %}">Details</a></td>
-                        <td>
-                            <select class="form-input" name="status" style="width: 140px;" disabled>
-                                <option value="allowed" {% if vehicle.status == 'allowed' %}selected{% endif %}>allowed</option>
-                                <option value="restricted" {% if vehicle.status == 'restricted' %}selected{% endif %}>restricted</option>
-                            </select>
-                        </td>
                         <td>
                             <button name="{% if is_archived %}restore{% else %}delete{% endif %}" 
                                 class="form-input delete-btn" 
@@ -126,7 +119,6 @@
                     <th>Plate Number</th>
                     <th>Guardian Name</th>
                     <th>Details</th>
-                    <th>Status</th>
                     <th colspan="3">Actions</th>
                 </tr>
             </thead>
@@ -145,12 +137,6 @@
                         <td>{{ vehicle.plate_number  }}</td>
                         <td>{{ vehicle.guardian_name }}</td>
                         <td><a href="{% url 'vehicle_details' vehicle.id %}">Details</a></td>
-                        <td>
-                            <select class="form-input" name="status" style="width: 140px;" disabled>
-                                <option value="allowed" {% if vehicle.status == 'allowed' %}selected{% endif %}>allowed</option>
-                                <option value="restricted" {% if vehicle.status == 'restricted' %}selected{% endif %}>restricted</option>
-                            </select>
-                        </td>
                         <td>
                             <button name="{% if is_archived %}restore{% else %}delete{% endif %}" 
                                 class="form-input delete-btn" 

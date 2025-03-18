@@ -21,23 +21,24 @@ def vehicles(request):
 
     if user[0]['privilege'] == 'student' :
         template = loader.get_template('vehicle/student/vehicle.html')
-        allowed_vehicle_type = VehicleRegistration.objects.filter(status='allowed', is_archived=is_archived, id_number=user[0]['id_number']).order_by('id_number')
-        restricted_vehicle_type = VehicleRegistration.objects.filter(status='restricted' , is_archived=is_archived, id_number=user[0]['id_number']).order_by('id_number')
+        # Removed the filtering for restricted vehicles
+        allowed_vehicle_type = VehicleRegistration.objects.filter(is_archived=is_archived, id_number=user[0]['id_number']).order_by('id_number')
+        restricted_vehicle_type = VehicleRegistration.objects.filter(is_archived=is_archived, id_number=user[0]['id_number']).order_by('id_number')
     else:
         template = loader.get_template('vehicle/admin/vehicle.html')
-        allowed_vehicle_type = VehicleRegistration.objects.filter(status='allowed', is_archived=is_archived).order_by('id_number')
-        restricted_vehicle_type = VehicleRegistration.objects.filter(status='restricted', is_archived=is_archived).order_by('id_number')
+        # Removed the filtering for restricted vehicles
+        allowed_vehicle_type = VehicleRegistration.objects.filter(is_archived=is_archived).order_by('id_number')
+        restricted_vehicle_type = VehicleRegistration.objects.filter(is_archived=is_archived).order_by('id_number')
 
-
-    allowed_vehicle_type = paginate(allowed_vehicle_type,request)
+    allowed_vehicle_type = paginate(allowed_vehicle_type, request)
     restricted_vehicle_type = paginate(restricted_vehicle_type, request)
+
     context = {
         'user_role': user[0]['privilege'],
-        'user_data':user[0],
-        'allowed_vehicles':allowed_vehicle_type,
-        'restricted_vehicles':restricted_vehicle_type,
-        'is_archived':is_archived
-
+        'user_data': user[0],
+        'allowed_vehicles': allowed_vehicle_type,  # still using this name but now includes all vehicles
+        'restricted_vehicles': restricted_vehicle_type,  # still using this name but now includes all vehicles
+        'is_archived': is_archived
     }
 
     if request.method == 'POST':
@@ -58,32 +59,29 @@ def vehicles(request):
             vehicle.last_updated_by = user[0]['id_number']
             vehicle.save()
 
-
     return HttpResponse(template.render(context, request))
+
 @login_required(login_url='/login/')
 def vehicle_details(request, id):
     user = AccountRegistration.objects.filter(username=request.user).values()
     vehicle = get_object_or_404(VehicleRegistration, id=id)
     template = loader.get_template('vehicle/details.html')
     context = {
-        'vehicle':vehicle,
+        'vehicle': vehicle,
         'user_role': user[0]['privilege'],
-        'user_data':user[0],
-
+        'user_data': user[0],
     }
 
     if request.method == 'POST':
         status = request.POST['status']
         vehicle.last_updated_by = user[0]['id_number']
-            
         vehicle.status = status
         vehicle.save()
 
-
-
         return redirect(request.META.get('HTTP_REFERER', '/'))
 
-    return HttpResponse(template.render(context,request))
+    return HttpResponse(template.render(context, request))
+
 @login_required(login_url='/login/')
 def vehicle_forms(request):
     user = AccountRegistration.objects.filter(username=request.user).values()
@@ -91,8 +89,7 @@ def vehicle_forms(request):
 
     context = {
         'user_role': user[0]['privilege'],
-        'user_data':user[0]
-
+        'user_data': user[0]
     }
 
     if request.method == 'POST':
@@ -138,8 +135,5 @@ def vehicle_forms(request):
             is_archived=False
         )
         vehicle.save()
-        
 
-    return HttpResponse(template.render(context,request))
-
-
+    return HttpResponse(template.render(context, request))

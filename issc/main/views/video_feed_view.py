@@ -61,7 +61,7 @@ def initialize_video_writers():
     video_writers = new_video_writers  # Replace old video writers
 
 # Initialize video writers at startup
-def start_record(request):
+def start_record():
     global recording
     if recording:
         return redirect('multiple_streams')
@@ -90,7 +90,8 @@ def stop_record(request):
     else:
         return redirect('multiple_streams')
 
-
+# start_record()
+initialize_video_writers()
 def process_with_model(frame):
     """Processes a video frame to detect and recognize license plates efficiently."""
     
@@ -152,8 +153,10 @@ def capture_frames(camera_id):
 
 
 # Start a separate thread for each camera
+
 for cam_id in cameras:
     Thread(target=capture_frames, args=(cam_id,), daemon=True).start()
+
 
 def generate(camera_id):
     """Fetches frames from the queue and yields them as an HTTP stream."""
