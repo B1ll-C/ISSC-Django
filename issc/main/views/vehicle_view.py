@@ -22,22 +22,16 @@ def vehicles(request):
     if user[0]['privilege'] == 'student' :
         template = loader.get_template('vehicle/student/vehicle.html')
         # Removed the filtering for restricted vehicles
-        allowed_vehicle_type = VehicleRegistration.objects.filter(is_archived=is_archived, id_number=user[0]['id_number']).order_by('id_number')
-        restricted_vehicle_type = VehicleRegistration.objects.filter(is_archived=is_archived, id_number=user[0]['id_number']).order_by('id_number')
+        registered_vehicle = VehicleRegistration.objects.filter(is_archived=is_archived, id_number=user[0]['id_number']).order_by('id_number')
     else:
         template = loader.get_template('vehicle/admin/vehicle.html')
         # Removed the filtering for restricted vehicles
-        allowed_vehicle_type = VehicleRegistration.objects.filter(is_archived=is_archived).order_by('id_number')
-        restricted_vehicle_type = VehicleRegistration.objects.filter(is_archived=is_archived).order_by('id_number')
-
-    allowed_vehicle_type = paginate(allowed_vehicle_type, request)
-    restricted_vehicle_type = paginate(restricted_vehicle_type, request)
+        registered_vehicle = VehicleRegistration.objects.filter(is_archived=is_archived).order_by('id_number')
 
     context = {
         'user_role': user[0]['privilege'],
         'user_data': user[0],
-        'allowed_vehicles': allowed_vehicle_type,  # still using this name but now includes all vehicles
-        'restricted_vehicles': restricted_vehicle_type,  # still using this name but now includes all vehicles
+        'registered_vehicle': registered_vehicle,  # still using this name but now includes all vehicles
         'is_archived': is_archived
     }
 

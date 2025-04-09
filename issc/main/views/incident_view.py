@@ -18,29 +18,29 @@ from .utils import paginate
 def incident(request):
     user = AccountRegistration.objects.filter(username=request.user).values()
     is_archived = request.GET.get('archive', 'false').lower() == 'true'
-    
     if user[0]['privilege'] == 'student':
         template = loader.get_template('incident/student/incident.html')
-        # Removed status filtering to show all incidents
-        all_incidents = IncidentReport.objects.filter(id_number=user[0]['id_number'], is_archived=is_archived).order_by('date_joined')
+        open_incident = IncidentReport.objects.filter(status='open', id_number=user[0]['id_number'] , is_archived=is_archived).order_by('date_joined')
+        pending_incident = IncidentReport.objects.filter(status='pending', id_number=user[0]['id_number'] , is_archived=is_archived).order_by('date_joined')
+        closed_incident = IncidentReport.objects.filter(status='closed', id_number=user[0]['id_number'] , is_archived=is_archived).order_by('date_joined')
     else:
         template = loader.get_template('incident/admin/incident.html')
-        # Removed status filtering to show all incidents
-        all_incidents = IncidentReport.objects.filter(is_archived=is_archived).order_by('date_joined')
+        open_incident = IncidentReport.objects.filter(status='open', is_archived=is_archived).order_by('date_joined')
+        pending_incident = IncidentReport.objects.filter(status='pending', is_archived=is_archived).order_by('date_joined')
+        closed_incident = IncidentReport.objects.filter(status='closed', is_archived=is_archived).order_by('date_joined')
 
-    # Paginate all incidents together
-    all_incidents = paginate(all_incidents, request)
 
     if request.method == 'POST':
         incident_id = request.POST['incident_id']
         incident = IncidentReport.objects.get(id=incident_id)
 
+       
         if 'delete' in request.POST:
             incident.is_archived = True
             incident.last_updated_by = user[0]['id_number']
             incident.save()
             return redirect('incidents')
-
+            
         if 'update' in request.POST:
             status = request.POST['status']
             incident.status = status
@@ -57,7 +57,9 @@ def incident(request):
     context = {
         'user_role': user[0]['privilege'],
         'user_data': user[0],
-        'all_incidents': all_incidents,  # Using a single variable for all incidents
+        'open_incident': open_incident,
+        'pending_incident': pending_incident,
+        'closed_incident': closed_incident,
         'is_archived': is_archived
     }
 

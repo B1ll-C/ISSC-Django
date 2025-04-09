@@ -10,20 +10,25 @@
 
     <div class="create-search">
         <a href="{% url 'incident_forms' %}" class="create-new-btn">File New Incident</a>
+        <a href="{% url 'incidents' %}?archive=true" class="create-new-btn">Archive</a>
 
-        <div class="search-container">
-            <input type="text" id="tableSearch" placeholder="Search..." onkeyup="filterTable()">
-            <span class="search-icon">&#128269;</span> <!-- Unicode for a magnifying glass -->
-        </div>
+
+
+    
     </div>
 
-    <!-- Incident Reports Table -->
-    <div class="table-container">
-        <table class="form-table">
+  <div class="p-4 bg-white rounded shadow-md">
+    <div class="flex justify-end mb-4 space-x-2">
+        <button onclick="showSection('open')" class="px-4 py-2 bg-blue-500 text-white rounded">Open Cases</button>
+        <button onclick="showSection('pending')" class="px-4 py-2 bg-yellow-500 text-white rounded">Pending Cases</button>
+        <button onclick="showSection('closed')" class="px-4 py-2 bg-gray-500 text-white rounded">Closed Cases</button>
+    </div>
+
+    <!-- Open Cases Section -->
+    <div id="open-section" class="section">
+        <div class="table-container">
+        <table class="form-table" id="open">
             <thead>
-                <tr>
-                    <th colspan="15">Open Cases</th>
-                </tr>
                 <tr>
                     <th>Date Time</th>
                     <th>First Name</th>
@@ -34,64 +39,65 @@
                     <th>Department</th>
                     <th>Phone Number</th>
                     <th>Status</th>
+                    <th>Last Updated By</th>
                     <th>Details</th>
+                    <th></th>
+                    <th>Action</th>
+                    <th></th>
+
                 </tr>
             </thead>
             <tbody>
                 {% for data in open_incident %}
                 <tr>
-                    <td>{{ data.date_joined }}</td>
-                    <td>{{ data.first_name }}</td>
-                    <td>{{ data.last_name }}</td>
-                    <td>{{ data.subject }}</td>
-                    <td>{{ data.location }}</td>
-                    <td>{{ data.reported_by }}</td>
-                    <td>{{ data.department }}</td>
-                    <td>{{ data.phone_number }}</td>
-                    <td>{{ data.status }}</td>
-                    <td><a href="{% url 'incident_details' data.id %}" style="text-decoration: underline;">Details</a></td>
-                    </a></td>
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <td>{{ data.date_joined }}</td>
+                        <input type="hidden" name="incident_id" value="{{ data.id }}">
+                        <td>{{ data.first_name }}</td>
+                        <td>{{ data.last_name }}</td>
+                        <td>{{ data.subject }}</td>
+                        <td>{{ data.location }}</td>
+                        <td>{{ data.reported_by }}</td>
+                        <td>{{ data.department }}</td>
+                        <td>{{ data.phone_number }}</td>
+                        <td>
+                            <select class="form-input" name="status" style="width: 140px;" disabled>
+                                <option value="open" {% if data.status == 'open' %}selected{% endif %}>Open</option>
+                                <option value="pending" {% if data.status == 'pending' %}selected{% endif %}>Pending</option>
+                                <option value="closed" {% if data.status == 'closed' %}selected{% endif %}>Closed</option>
+                            </select>
+                        </td>
+                        <td>{{ data.last_updated_by }}</td>
+                        <td><a href="{% url 'incident_details' data.id %}" >Details</a></td>
+                        <td>
+                            <button name="{% if is_archived %}restore{% else %}delete{% endif %}" 
+                                class="form-input delete-btn" 
+                                value="{{ data.id }}" 
+                                onclick="return {% if is_archived %}confirmRestore(){% else %}confirmDelete(){% endif %};"
+                                {% if not is_archived %}disabled{% endif %}>
+                                {% if is_archived %}RESTORE{% else %}DELETE{% endif %}
+                            </button>
+                        </td>
+
+                        <td><button name="update" class="form-input update-btn" value="{{ data.id }}" disabled>UPDATE</button></td>
+                    </form>
+                    <td><button onclick="toggleEditFields(this)" class="custom-toggle-btn">TOGGLE</button></td>
                 </tr>
                 {% empty %} 
-                <tr>
-                    <td colspan="15" style="text-align: center;">No Cases Found</td>
-                </tr> 
+                
                 {% endfor %}
             </tbody>
         </table>
     </div>
-
-    <!-- Pagination Controls -->
-    <div class="pagination"> 
-        <div>
-            <span>Page {{ open_incident.number }} of {{ open_incident.paginator.num_pages }}</span> 
-        </div>
-        <div>
-            {% if open_incident.has_previous %} 
-            <a href="?page=1">&laquo; First</a>
-            <a href="?page={{ open_incident.previous_page_number }}">Previous</a> 
-        {% endif %} 
-        {% if open_incident.has_next %} 
-            <a href="?page={{ open_incident.next_page_number }}">Next</a>
-            <a href="?page={{ open_incident.paginator.num_pages }}">Last &raquo;</a> 
-        {% endif %}
-        </div>
     </div>
 
-    <div class="create-search">
-        <a></a>
-        <div class="search-container">
-            <input type="text" id="tableSearch" placeholder="Search..." onkeyup="filterTable()">
-            <span class="search-icon">&#128269;</span> <!-- Unicode for a magnifying glass -->
-        </div>
-    </div>
-
-    <div class="table-container">
-        <table class="form-table">
+    <!-- Pending Cases Section -->
+    <div id="pending-section" class="section hidden">
+        <div class="table-container">
+        <table class="form-table" id="pending">
             <thead>
-                <tr>
-                    <th colspan="15">Pending Cases</th>
-                </tr>
+               
                 <tr>
                     <th>Date Time</th>
                     <th>First Name</th>
@@ -102,65 +108,62 @@
                     <th>Department</th>
                     <th>Phone Number</th>
                     <th>Status</th>
+                    <th>Last Updated By</th>
                     <th>Details</th>
-                    
+                    <th></th>
+                    <th>Action</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 {% for data in pending_incident %}
                 <tr>
-                    <td>{{ data.date_joined }}</td>
-                    <td>{{ data.first_name }}</td>
-                    <td>{{ data.last_name }}</td>
-                    <td>{{ data.subject }}</td>
-                    <td>{{ data.location }}</td>
-                    <td>{{ data.reported_by }}</td>
-                    <td>{{ data.department }}</td>
-                    <td>{{ data.phone_number }}</td>
-                    <td>{{ data.status }}</td>
-                    <td><a href="{% url 'incident_details' data.id %}" style="text-decoration: underline;">Details</a></td>
-
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <td>{{ data.date_joined }}</td>
+                        <input type="hidden" name="incident_id" value="{{ data.id }}">
+                        <td>{{ data.first_name }}</td>
+                        <td>{{ data.last_name }}</td>
+                        <td>{{ data.subject }}</td>
+                        <td>{{ data.location }}</td>
+                        <td>{{ data.reported_by }}</td>
+                        <td>{{ data.department }}</td>
+                        <td>{{ data.phone_number }}</td>
+                        <td>
+                            <select class="form-input" name="status" style="width: 140px;" disabled>
+                                <option value="open" {% if data.status == 'open' %}selected{% endif %}>Open</option>
+                                <option value="pending" {% if data.status == 'pending' %}selected{% endif %}>Pending</option>
+                                <option value="closed" {% if data.status == 'closed' %}selected{% endif %}>Closed</option>
+                            </select>
+                        </td>
+                        <td>{{ data.last_updated_by }}</td>
+                        <td><a href="{% url 'incident_details' data.id %}" >Details</a></td>
+                        <td>
+                            <button name="{% if is_archived %}restore{% else %}delete{% endif %}" 
+                                class="form-input delete-btn" 
+                                value="{{ data.id }}" 
+                                onclick="return {% if is_archived %}confirmRestore(){% else %}confirmDelete(){% endif %};"
+                                {% if not is_archived %}disabled{% endif %}>
+                                {% if is_archived %}RESTORE{% else %}DELETE{% endif %}
+                            </button>
+                        </td>
+                        <td><button name="update" class="form-input update-btn" value="{{ data.id }}" disabled>UPDATE</button></td>
+                    </form>
+                    <td><button onclick="toggleEditFields(this)" class="custom-toggle-btn">TOGGLE</button></td>
                 </tr>
                 {% empty %} 
-                <tr>
-                    <td colspan="15" style="text-align: center;">No Cases Found</td>
-                </tr> 
+                
                 {% endfor %}
             </tbody>
         </table>
     </div>
-
-    <!-- Pagination Controls -->
-    <div class="pagination"> 
-        <div>
-            <span>Page {{ pending_incident.number }} of {{ pending_incident.paginator.num_pages }}</span> 
-        </div>
-        <div>
-            {% if pending_incident.has_previous %} 
-            <a href="?page=1">&laquo; First</a>
-            <a href="?page={{ pending_incident.previous_page_number }}">Previous</a> 
-        {% endif %} 
-        {% if pending_incident.has_next %} 
-            <a href="?page={{ pending_incident.next_page_number }}">Next</a>
-            <a href="?page={{ pending_incident.paginator.num_pages }}">Last &raquo;</a> 
-        {% endif %}
-        </div>
     </div>
 
-    <div class="create-search">
-        <a></a>
-        <div class="search-container">
-            <input type="text" id="tableSearch" placeholder="Search..." onkeyup="filterTable()">
-            <span class="search-icon">&#128269;</span> <!-- Unicode for a magnifying glass -->
-        </div>
-    </div>
-
-    <div class="table-container">
-        <table class="form-table">
+    <!-- Closed Cases Section -->
+    <div id="closed-section" class="section hidden">
+        <div class="table-container">
+        <table class="form-table" id="closed">
             <thead>
-                <tr>
-                    <th colspan="15">Closed Cases</th>
-                </tr>
                 <tr>
                     <th>Date Time</th>
                     <th>First Name</th>
@@ -171,91 +174,143 @@
                     <th>Department</th>
                     <th>Phone Number</th>
                     <th>Status</th>
+                    <th>Last Updated By</th>
                     <th>Details</th>
-                    
+                    <th></th>
+                    <th>Action</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 {% for data in closed_incident %}
                 <tr>
-                    <td>{{ data.date_joined }}</td>
-                    <td>{{ data.first_name }}</td>
-                    <td>{{ data.last_name }}</td>
-                    <td>{{ data.subject }}</td>
-                    <td>{{ data.location }}</td>
-                    <td>{{ data.reported_by }}</td>
-                    <td>{{ data.department }}</td>
-                    <td>{{ data.phone_number }}</td>
-                    <td>{{ data.status }}</td>
-                    <td><a href="{% url 'incident_details' data.id %}" style="text-decoration: underline;">Details</a></td>
-
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <td>{{ data.date_joined }}</td>
+                        <input type="hidden" name="incident_id" value="{{ data.id }}">
+                        <td>{{ data.first_name }}</td>
+                        <td>{{ data.last_name }}</td>
+                        <td>{{ data.subject }}</td>
+                        <td>{{ data.location }}</td>
+                        <td>{{ data.reported_by }}</td>
+                        <td>{{ data.department }}</td>
+                        <td>{{ data.phone_number }}</td>
+                        <td>
+                            <select class="form-input" name="status" style="width: 140px;" disabled>
+                                <option value="open" {% if data.status == 'open' %}selected{% endif %}>Open</option>
+                                <option value="pending" {% if data.status == 'pending' %}selected{% endif %}>Pending</option>
+                                <option value="closed" {% if data.status == 'closed' %}selected{% endif %}>Closed</option>
+                            </select>
+                        </td>
+                        <td>{{ data.last_updated_by }}</td>
+                        <td><a href="{% url 'incident_details' data.id %}" >Details</a></td>
+                        <td>
+                            <button name="{% if is_archived %}restore{% else %}delete{% endif %}" 
+                                class="form-input delete-btn" 
+                                value="{{ data.id }}" 
+                                onclick="return {% if is_archived %}confirmRestore(){% else %}confirmDelete(){% endif %};"
+                                {% if not is_archived %}disabled{% endif %}>
+                                {% if is_archived %}RESTORE{% else %}DELETE{% endif %}
+                            </button>
+                        </td>
+                        <td><button name="update" class="form-input update-btn" value="{{ data.id }}" disabled>UPDATE</button></td>
+                    </form>
+                    <td><button onclick="toggleEditFields(this)" class="custom-toggle-btn">TOGGLE</button></td>
                 </tr>
                 {% empty %} 
-                <tr>
-                    <td colspan="15" style="text-align: center;">No Cases Found</td>
-                </tr> 
+                
                 {% endfor %}
             </tbody>
-        </table>        
+        </table>
     </div>
+    </div>
+</div>
 
-    <!-- Pagination Controls -->
-    <div class="pagination"> 
-        <div>
-            <span>Page {{ closed_incident.number }} of {{ closed_incident.paginator.num_pages }}</span> 
-        </div>
-        <div>
-            {% if closed_incident.has_previous %} 
-            <a href="?page=1">&laquo; First</a>
-            <a href="?page={{ closed_incident.previous_page_number }}">Previous</a> 
-        {% endif %} 
-        {% if closed_incident.has_next %} 
-            <a href="?page={{ closed_incident.next_page_number }}">Next</a>
-            <a href="?page={{ closed_incident.paginator.num_pages }}">Last &raquo;</a> 
-        {% endif %}
-        </div>
-    </div>
+<script>
+    function showSection(type) {
+        // Hide all
+        document.getElementById('open-section').classList.add('hidden');
+        document.getElementById('pending-section').classList.add('hidden');
+        document.getElementById('closed-section').classList.add('hidden');
+
+        // Show selected
+        if (type === 'open') {
+            document.getElementById('open-section').classList.remove('hidden');
+        } else if (type === 'pending') {
+            document.getElementById('pending-section').classList.remove('hidden');
+        } else if (type === 'closed') {
+            document.getElementById('closed-section').classList.remove('hidden');
+        }
+    }
+</script>
+
 
     <script type="text/javascript">
-        function filterTable(inputElement) {
-            const filter = inputElement.value.toLowerCase();
-            const table = inputElement.closest('.create-search').nextElementSibling.querySelector('.form-table tbody');
-            const rows = table.getElementsByTagName('tr');
         
-            for (let i = 0; i < rows.length; i++) {
-                let cells = rows[i].getElementsByTagName('td');
-                let rowMatches = false;
         
-                for (let j = 0; j < cells.length; j++) {
-                    let cellText = '';
+        function toggleEditFields(button) {
+            const row = button.closest('tr');
+            const inputs = row.querySelectorAll('.form-input');
         
-                    const inputElement = cells[j].querySelector('input, select');
-                    if (inputElement) {
-                        cellText = inputElement.value.toLowerCase();
-                    } else {
-                        cellText = cells[j].innerText.toLowerCase();
-                    }
-        
-                    if (cellText.includes(filter)) {
-                        rowMatches = true;
-                        break;
-                    }
-                }
-        
-                rows[i].style.display = rowMatches ? '' : 'none';
-            }
+            inputs.forEach(input => {
+                input.disabled = !input.disabled;
+                input.style.cursor = input.disabled ? "not-allowed" : "auto";
+            });
         }
         
-        // Attach event listeners to each search input field
-        document.addEventListener("DOMContentLoaded", function() {
-            const searchInputs = document.querySelectorAll('.search-container input');
+        function confirmDelete() {
+            return confirm('Do you really want to delete this user?');
+        }
         
-            searchInputs.forEach(input => {
-                input.addEventListener("keyup", function() {
-                    filterTable(this);
-                });
+        
+        function toggleEditFields(button) {
+            const row = button.closest('tr'); // Get the closest row of the clicked button
+            const inputs = row.querySelectorAll('.form-input'); // Select all input fields in the row
+            
+            inputs.forEach(input => {
+                input.disabled = !input.disabled;
+                input.style.cursor = input.disabled ? "not-allowed" : "auto";
             });
-        });
+        }
+
+        function confirmDelete() {
+            return confirm('Do you really want to delete this user?');
+        }
+
+        function confirmRestore() {
+    return confirm("Are you sure you want to restore this item?");
+}
+
     </script>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#open").DataTable({
+                "searching": true,
+                "ordering": true,
+                "paging": true,
+                "info": false
+            });
+
+        $("#pending").DataTable({
+                "searching": true,
+                "ordering": true,
+                "paging": true,
+                "info": false
+            });
+
+        $("#closed").DataTable({
+                "searching": true,
+                "ordering": true,
+                "paging": true,
+                "info": false
+            });
+    })
+</script>
 
 {% endblock content %}

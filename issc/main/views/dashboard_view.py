@@ -33,62 +33,32 @@ def incident_rate():
             percentage = ((current - prev) / prev) * 100
         percentage_increase.append(round(percentage, 2))
 
-    # Plot the data
-    plt.figure(figsize=(10, 5))
-    bars = plt.bar(months, counts, color="#6AAE43", alpha=0.7)
+    # Return raw data
+    return {
+        "months": [calendar.month_abbr[m] for m in months],
+        "incident_counts": counts,
+        "percentage_increase": percentage_increase
+    }
 
-    # Annotate each bar with percentage increase
-    for bar, percent in zip(bars, percentage_increase):
-        plt.text(
-            bar.get_x() + bar.get_width() / 2,  # Center text on bar
-            bar.get_height() + 1,  # Position above the bar
-            f"{percent}%",  # Display percentage
-            ha="center", va="bottom", fontsize=10, fontweight="bold", color="black"
-        )
-
-    plt.xticks(months, [calendar.month_abbr[m] for m in months])
-    plt.xlabel("Month")
-    plt.ylabel("Number of Incidents")
-    plt.title(f"Incident Reports Growth ({current_year})")
-    plt.grid(axis="y", linestyle="--", alpha=0.7)
-
-    # Convert plot to image
-    buffer = BytesIO()
-    plt.savefig(buffer, format="png")
-    buffer.seek(0)
-    image_png = buffer.getvalue()
-    buffer.close()
-    chart = base64.b64encode(image_png).decode("utf-8")
-
-    return chart
 
 
 def monthly_incident_graph():
     incidents = IncidentReport.objects.all()
     if not incidents.exists():
         return None
-    months = [incident.date.strftime('%B') for incident in incidents]
 
+    months = [incident.date.strftime('%B') for incident in incidents]
     month_counts = Counter(months)
     all_months = list(calendar.month_name)[1:]
+
     incident_data = [month_counts.get(month, 0) for month in all_months]
 
-    plt.figure(figsize=(10, 5))
-    plt.bar(all_months, incident_data, color='skyblue')
-    plt.xlabel("Month")
-    plt.ylabel("Number of Incidents")
-    plt.title("Monthly Incident Report")
-    plt.xticks(rotation=45)
+    # Return raw data
+    return {
+        "months": all_months,
+        "incident_data": incident_data
+    }
 
-    buf = BytesIO()
-
-    plt.savefig(buf, format='png')
-    buf.seek(0)
-
-
-    img_data = base64.b64encode(buf.read()).decode('utf-8')
-
-    return img_data
 
 
 
@@ -98,6 +68,7 @@ def department_incident_graph():
     incidents = IncidentReport.objects.all()
     if not incidents.exists():
         return None
+
     departments = [incident.department for incident in incidents]
 
     # Count incidents per department
@@ -105,29 +76,17 @@ def department_incident_graph():
     department_names = list(department_counts.keys())
     incident_data = list(department_counts.values())
 
-    # Create plot
-    plt.figure(figsize=(10, 5))
-    plt.bar(department_names, incident_data, color='lightcoral')
-    plt.xlabel("Department")
-    plt.ylabel("Number of Incidents")
-    plt.title("Incidents by Department")
-    plt.xticks(rotation=45)
-
-    buf = BytesIO()
-
-    plt.savefig(buf, format='png')
-    buf.seek(0)
-
-
-    img_data = base64.b64encode(buf.read()).decode('utf-8')
-
-    return img_data
+    # Return raw data
+    return {
+        "department_names": department_names,
+        "incident_data": incident_data
+    }
 
 def vehicle_graph():
     data = VehicleRegistration.objects.values('role', 'vehicle_type')
 
     if not data.exists():  # Check if the queryset is empty
-        return None  # Return None or a placeholder image if needed
+        return None
 
     df = pd.DataFrame(list(data))
 
@@ -136,23 +95,12 @@ def vehicle_graph():
 
     counts = df.groupby(['role', 'vehicle_type']).size().unstack(fill_value=0)
 
-    plt.figure(figsize=(10, 5))
-    counts.plot(kind='bar')
-
-    plt.title('Type of Owner and Type of Vehicle')
-    plt.xlabel('Vehicle Type')
-    plt.ylabel('Count')
-    plt.legend(title='Role')
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-
-    buf = BytesIO()
-    plt.savefig(buf, format='png')
-    buf.seek(0)
-
-    img_data = base64.b64encode(buf.read()).decode('utf-8')
-
-    return img_data  # Returns the base64 string of the image
+    # Return raw data
+    return {
+        "roles": counts.columns.tolist(),
+        "vehicle_types": counts.index.tolist(),
+        "counts": counts.values.tolist()
+    }
 
 
 
@@ -169,16 +117,16 @@ def base(request):
     if user.privilege == 'student':
         return redirect('about')
 
-    img_data = monthly_incident_graph()
+    monthly_incident_data = monthly_incident_graph()
     department_incident_data = department_incident_graph()
     vehicle_data = vehicle_graph()
     incident_data = incident_rate()
 
     # Pass the image data along with other context variables
     context = {
-        'user_role': user.privilege,  # Direct access without using `values()`
+        'user_role': user.privilege,  
         'user_data': user,
-        'monthly_incident_data': img_data,  # Pass the base64 image to the template
+        'monthly_incident_data': monthly_incident_data,
         'department_incident_data':department_incident_data,
         'vehicle_data':vehicle_graph,
         'incident_data':incident_data
