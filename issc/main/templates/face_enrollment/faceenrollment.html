@@ -1,22 +1,27 @@
 {% extends 'base.html' %}
 
-{% block title %} Face Enrollment {% endblock title %}
+{% block title %}Face Enrollment{% endblock title %}
 
 {% block content %}
 {% load static %}
 
-<div class="container text-center">
-    <h1 class="mt-4">Face Enrollment</h1>
+<link rel="stylesheet" href="{% static 'css/face.css' %}">
 
-    <!-- Live Video Feed -->
-    <div class="mt-4">
-        <h2>Live Video</h2>
-        <img id="video_feed" src="{% url 'video_feed' %}" alt="Video Feed" class="img-fluid rounded shadow-lg">
+<div class="face-enrollment container d-flex flex-column align-items-center justify-content-center min-vh-100">
+    <!-- Live Video Feed Section -->
+    <h3 class="h4 mb-3 text-secondary">Position yourself in front of the camera to begin the enrollment process</h3>
+
+    <div class="video-section bg-white p-4 rounded-4 shadow-lg text-center w-100" style="max-width: 720px;">
+        <div class="ratio ratio-16x9 rounded overflow-hidden">
+            <img id="video_feed" src="{% url 'video_feed' %}" alt="Video Feed" class="w-100 h-100 object-fit-cover">
+        </div>
     </div>
 
     <!-- Start Recording Button -->
     <div class="mt-4">
-        <button class="btn btn-primary btn-lg" onclick="startRecording()">Open Camera</button>
+        <button class="btn btn-lg btn-outline-primary px-5 py-2 shadow-sm" onclick="startRecording()">
+            <i class="fas fa-video me-2"></i>Open Camera
+        </button>
     </div>
 </div>
 
@@ -28,21 +33,20 @@
                 "X-CSRFToken": getCSRFToken(),
             },
         })
-            .then(response => response.json())
-            .then(data => {
-                if (data.redirect) {
-                    window.location.href = data.url;  // Redirect to success page
-                } else {
-                    alert(data.message);
-                    location.reload(); // Reload the page if enrollment failed
-                }
-            })
-            .catch(error => console.error("Error:", error));
+        .then(response => response.json())
+        .then(data => {
+            if (data.redirect) {
+                window.location.href = data.url;
+            } else {
+                alert(data.message);
+                location.reload();
+            }
+        })
+        .catch(error => console.error("Error:", error));
     }
 
     function getCSRFToken() {
-        return document.cookie.split('; ').find(row => row.startsWith('csrftoken'))
-            ?.split('=')[1];
+        return document.cookie.split('; ').find(row => row.startsWith('csrftoken'))?.split('=')[1];
     }
 </script>
 

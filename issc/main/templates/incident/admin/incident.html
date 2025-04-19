@@ -11,85 +11,81 @@
     <div class="create-search">
         <a href="{% url 'incident_forms' %}" class="create-new-btn">File New Incident</a>
         <a href="{% url 'incidents' %}?archive=true" class="create-new-btn">Archive</a>
-
-
-
-    
     </div>
 
-  <div class="p-4 bg-white rounded shadow-md">
-    <div class="flex justify-end mb-4 space-x-2">
-        <button onclick="showSection('open')" class="px-4 py-2 bg-blue-500 text-white rounded">Open Cases</button>
-        <button onclick="showSection('pending')" class="px-4 py-2 bg-yellow-500 text-white rounded">Pending Cases</button>
-        <button onclick="showSection('closed')" class="px-4 py-2 bg-gray-500 text-white rounded">Closed Cases</button>
-    </div>
+    <div class="p-4 mt-2 mb-4rounded">
+        <div class="flex justify-end mb-4 space-x-2">
+            <button onclick="showSection('open')" class="px-4 py-2 bg-red-900 text-white rounded-xl transition-all duration-300 transform shadow-md hover:shadow-xl hover:translate-y-[-3px] active:translate-y-[0px] active:shadow-sm">Open Cases</button>
+            <button onclick="showSection('pending')" class="px-4 py-2 bg-red-900 text-white rounded-xl transition-all duration-300 transform shadow-md hover:shadow-xl hover:translate-y-[-3px] active:translate-y-[0px] active:shadow-sm">Pending Cases</button>
+            <button onclick="showSection('closed')" class="px-4 py-2 bg-red-900 text-white rounded-xl transition-all duration-300 transform shadow-md hover:shadow-xl hover:translate-y-[-3px] active:translate-y-[0px] active:shadow-sm">Closed Cases</button>
+        </div>
 
-    <!-- Open Cases Section -->
-    <div id="open-section" class="section">
-        <div class="table-container">
-        <table class="form-table" id="open">
-            <thead>
-                <tr>
-                    <th>Date Time</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Subject</th>
-                    <th>Location</th>
-                    <th>Reported By</th>
-                    <th>Department</th>
-                    <th>Phone Number</th>
-                    <th>Status</th>
-                    <th>Last Updated By</th>
-                    <th>Details</th>
-                    <th></th>
-                    <th>Action</th>
-                    <th></th>
+        <!-- Open Cases Section -->
+        <div id="open-section" class="section">
+            <div class="table-container">
+            <table class="form-table" id="open">
+                <thead>
+                    <tr>
+                        <th>Date Time</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Subject</th>
+                        <th>Location</th>
+                        <th>Reported By</th>
+                        <th>Department</th>
+                        <th>Phone Number</th>
+                        <th>Status</th>
+                        <th>Last Updated By</th>
+                        <th>Details</th>
+                        <th></th>
+                        <th>Action</th>
+                        <th></th>
 
-                </tr>
-            </thead>
-            <tbody>
-                {% for data in open_incident %}
-                <tr>
-                    <form method="POST" action="">
-                        {% csrf_token %}
-                        <td>{{ data.date_joined }}</td>
-                        <input type="hidden" name="incident_id" value="{{ data.id }}">
-                        <td>{{ data.first_name }}</td>
-                        <td>{{ data.last_name }}</td>
-                        <td>{{ data.subject }}</td>
-                        <td>{{ data.location }}</td>
-                        <td>{{ data.reported_by }}</td>
-                        <td>{{ data.department }}</td>
-                        <td>{{ data.phone_number }}</td>
-                        <td>
-                            <select class="form-input" name="status" style="width: 140px;" disabled>
-                                <option value="open" {% if data.status == 'open' %}selected{% endif %}>Open</option>
-                                <option value="pending" {% if data.status == 'pending' %}selected{% endif %}>Pending</option>
-                                <option value="closed" {% if data.status == 'closed' %}selected{% endif %}>Closed</option>
-                            </select>
-                        </td>
-                        <td>{{ data.last_updated_by }}</td>
-                        <td><a href="{% url 'incident_details' data.id %}" >Details</a></td>
-                        <td>
-                            <button name="{% if is_archived %}restore{% else %}delete{% endif %}" 
-                                class="form-input delete-btn" 
-                                value="{{ data.id }}" 
-                                onclick="return {% if is_archived %}confirmRestore(){% else %}confirmDelete(){% endif %};"
-                                {% if not is_archived %}disabled{% endif %}>
-                                {% if is_archived %}RESTORE{% else %}DELETE{% endif %}
-                            </button>
-                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in open_incident %}
+                    <tr>
+                        <form method="POST" action="">
+                            {% csrf_token %}
+                            <td>{{ data.date_joined }}</td>
+                            <input type="hidden" name="incident_id" value="{{ data.id }}">
+                            <td>{{ data.first_name }}</td>
+                            <td>{{ data.last_name }}</td>
+                            <td>{{ data.subject }}</td>
+                            <td>{{ data.location }}</td>
+                            <td>{{ data.reported_by }}</td>
+                            <td>{{ data.department }}</td>
+                            <td>{{ data.phone_number }}</td>
+                            <td>
+                                <select class="form-input" name="status" style="width: 140px;" disabled>
+                                    <option value="open" {% if data.status == 'open' %}selected{% endif %}>Open</option>
+                                    <option value="pending" {% if data.status == 'pending' %}selected{% endif %}>Pending</option>
+                                    <option value="closed" {% if data.status == 'closed' %}selected{% endif %}>Closed</option>
+                                </select>
+                            </td>
+                            <td>{{ data.last_updated_by }}</td>
+                            <td><a href="{% url 'incident_details' data.id %}" >Details</a></td>
+                            <td>
+                                <button name="{% if is_archived %}restore{% else %}delete{% endif %}" 
+                                    class="form-input delete-btn" 
+                                    value="{{ data.id }}" 
+                                    onclick="return {% if is_archived %}confirmRestore(){% else %}confirmDelete(){% endif %};"
+                                    {% if not is_archived %}disabled{% endif %}>
+                                    {% if is_archived %}RESTORE{% else %}DELETE{% endif %}
+                                </button>
+                            </td>
 
-                        <td><button name="update" class="form-input update-btn" value="{{ data.id }}" disabled>UPDATE</button></td>
-                    </form>
-                    <td><button onclick="toggleEditFields(this)" class="custom-toggle-btn">TOGGLE</button></td>
-                </tr>
-                {% empty %} 
-                
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+                            <td><button name="update" class="form-input update-btn" value="{{ data.id }}" disabled>UPDATE</button></td>
+                        </form>
+                        <td><button onclick="toggleEditFields(this)" class="custom-toggle-btn">TOGGLE</button></td>
+                    </tr>
+                    {% empty %} 
+                    
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- Pending Cases Section -->

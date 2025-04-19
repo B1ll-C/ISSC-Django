@@ -12,10 +12,10 @@
         <a href="{% url 'vehicle_forms' %}" class="create-new-btn">Register New Vehicle</a>
         <a href="{% url 'vehicles' %}?archive=true" class="create-new-btn">Archive</a>
 
-        <div class="search-container">
+        {% comment %} <div class="search-container">
             <input type="text" id="tableSearch" placeholder="Search..." onkeyup="filterTable()">
             <span class="search-icon">&#128269;</span> <!-- Unicode for a magnifying glass -->
-        </div>
+        </div> {% endcomment %}
     </div>
 
     <!-- Vehicle Registrations Table -->

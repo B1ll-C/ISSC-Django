@@ -1,56 +1,46 @@
 {% extends 'base.html' %}
-
 {% block title %} Face Enrollment {% endblock title %}
-
 {% block content %}
+{% load static %}
 
-{% load static %} 
-<div class="container"
-    style="max-width: 800px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; background-color: #f9f9f9; font-family: Arial, sans-serif;">
-    <h2 style="text-align: center; color: #333;">Terms and Services</h2>
-    <p style="text-align: center; font-size: 14px; color: #666;">Last Updated: March 17, 2025</p>
+<link rel="stylesheet" href="{% static 'css/agreement.css' %}">
 
-    <h3 style="color: #444;">1. Introduction</h3>
-    <p style="line-height: 1.6;">By using our face enrollment service, you agree to the following terms and conditions.
-        Please read them carefully.</p>
+<div class="agreement-container">
+    <h2 class="agreement-title">Terms and Services</h2>
+    <p class="agreement-subtitle">Last Updated: March 17, 2025</p>
 
-    <h3 style="color: #444;">2. Data Collection</h3>
-    <p style="line-height: 1.6;">We collect and store facial data to provide secure and efficient authentication
-        services. Your data will be processed according to our Privacy Policy.</p>
+    <h3>1. Introduction</h3>
+    <p>By using our face enrollment service, you agree to the following terms and conditions. Please read them carefully.</p>
 
-    <h3 style="color: #444;">3. User Consent</h3>
-    <p style="line-height: 1.6;">By enrolling your face, you consent to the collection, storage, and processing of your
-        facial information for authentication purposes.</p>
+    <h3>2. Data Collection</h3>
+    <p>We collect and store facial data to provide secure and efficient authentication services. Your data will be processed according to our Privacy Policy.</p>
 
-    <h3 style="color: #444;">4. Data Security</h3>
-    <p style="line-height: 1.6;">We implement industry-standard security measures to protect your data from unauthorized
-        access, loss, or misuse.</p>
+    <h3>3. User Consent</h3>
+    <p>By enrolling your face, you consent to the collection, storage, and processing of your facial information for authentication purposes.</p>
 
-    <h3 style="color: #444;">5. Third-Party Sharing</h3>
-    <p style="line-height: 1.6;">We do not sell or share your facial data with third parties, except as required by law
-        or with your explicit consent.</p>
+    <h3>4. Data Security</h3>
+    <p>We implement industry-standard security measures to protect your data from unauthorized access, loss, or misuse.</p>
 
-    <h3 style="color: #444;">6. User Responsibilities</h3>
-    <p style="line-height: 1.6;">You are responsible for ensuring that your facial data is accurate and up to date.
-        Misuse of our services may result in suspension or termination.</p>
+    <h3>5. Third-Party Sharing</h3>
+    <p>We do not sell or share your facial data with third parties, except as required by law or with your explicit consent.</p>
 
-    <h3 style="color: #444;">7. Changes to Terms</h3>
-    <p style="line-height: 1.6;">We reserve the right to modify these terms at any time. Continued use of our service
-        after changes indicates your acceptance of the updated terms.</p>
+    <h3>6. User Responsibilities</h3>
+    <p>You are responsible for ensuring that your facial data is accurate and up to date. Misuse of our services may result in suspension or termination.</p>
 
-    <h3 style="color: #444;">8. Contact Information</h3>
-    <p style="line-height: 1.6;">If you have any questions or concerns regarding these terms, please contact us at <a
-            href="mailto:support@example.com" style="color: #007bff; text-decoration: none;">support@example.com</a>.
+    <h3>7. Changes to Terms</h3>
+    <p>We reserve the right to modify these terms at any time. Continued use of our service after changes indicates your acceptance of the updated terms.</p>
+
+    <h3>8. Contact Information</h3>
+    <p>If you have any questions or concerns regarding these terms, please contact us at
+        <a href="mailto:support@example.com">support@example.com</a>.
     </p>
 
-    <p style="font-weight: bold; text-align: center; margin-top: 20px;">By using our face enrollment service, you
-        acknowledge that you have read, understood, and agree to these terms.</p>
+    <p class="agreement-footer">By using our face enrollment service, you acknowledge that you have read, understood, and agree to these terms.</p>
 
-    <div style="text-align: center; margin-top: 20px;">
-        <button onclick="window.location.href='/face-enrollment/'"
-            style="padding: 10px 20px; font-size: 16px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">Accept</button>
-        <button onclick="window.location.href='/about/'"
-            style="padding: 10px 20px; font-size: 16px; background-color: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px;">Decline</button>
+    <div class="agreement-buttons">
+        <button onclick="window.location.href='/face-enrollment/'" class="btn-accept">Accept</button>
+        <button onclick="window.location.href='/about/'" class="btn-decline">Decline</button>
     </div>
 </div>
+
 {% endblock content %}

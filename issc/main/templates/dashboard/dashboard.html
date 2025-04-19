@@ -1,16 +1,179 @@
 {% extends 'base.html' %}
-	
+
 {% block title %} Dashboard {% endblock title %}
 
 {% block content %}
 
 {% load static %}
 
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 
-    <div class="graph-container">
-       
+<div class="dashboard-wrapper">
+  <h2>Incident Overview</h2>
+
+  <div class="graph-container">
+
+    <div class="graph-section graph1">
+      <h3 class="chart-title">Monthly Incident</h3>
+      <canvas id="monthlyIncidentsChart" class="chart-canvas"></canvas>
     </div>
 
+    <div class="graph-section graph2">
+      <h3 class="chart-title">Department Incident</h3>
+      <canvas id="departmentIncidentsChart" class="chart-canvas"></canvas>
+    </div>
+
+    <div class="graph-section graph3">
+      <h3 class="chart-title">Incident Data</h3>
+      <canvas id="incidentRateChart" class="chart-canvas"></canvas>
+    </div>
+
+    <div class="graph-section vehicle">
+      <h3 class="chart-title">Registered Vehicles</h3>
+      <canvas id="vehicleGraphChart" class="chart-canvas"></canvas>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const monthlyData = {{ monthly_incident_data|safe }};
+  const departmentData = {{ department_incident_data|safe }};
+  const vehicleData = {{ vehicle_data|safe }};
+  const incidentRate = {{ incident_data|safe }};
+
+  // Graph 1: Monthly Incident (Bar Chart)
+  new Chart(document.getElementById('monthlyIncidentsChart'), {
+    type: 'bar',
+    data: {
+      labels: monthlyData.months,
+      datasets: [{
+        label: 'Monthly Incidents',
+        data: monthlyData.incident_data,
+        backgroundColor: '#800000',
+        borderRadius: 8,
+        hoverBackgroundColor: '#a29bfe'
+      }]
+    },
+    options: {
+      responsive: true,
+      animation: {
+        duration: 1000,
+        easing: 'easeOutBounce'
+      },
+      plugins: {
+        legend: { display: false }
+      }
+    }
+  });
+
+  // Graph 2: Department Incident (Pie Chart)
+  new Chart(document.getElementById('departmentIncidentsChart'), {
+    type: 'pie',
+    data: {
+      labels: departmentData.department_names,
+      datasets: [{
+        data: departmentData.incident_data,
+        backgroundColor: [
+          '#800000',
+          '#e17055',
+          '#fceea3',
+          '#6c5ce7',
+          '#74b9ff'
+        ]
+      }]
+    },
+    options: {
+      responsive: true,
+      animation: {
+        animateScale: true,
+        duration: 1500
+      }
+    }
+  });
+
+  // Graph 3: Incident Data (Line Chart)
+  new Chart(document.getElementById('incidentRateChart'), {
+    type: 'line',
+    data: {
+      labels: incidentRate.months,
+      datasets: [
+        {
+          label: 'Total Incidents',
+          data: incidentRate.incident_counts,
+          borderColor: '#800000',
+          backgroundColor: 'rgba(128, 0, 0, 0.1)',
+          tension: 0.3,
+          fill: true,
+          pointRadius: 5,
+          pointHoverRadius: 7
+        },
+        {
+          label: '% Increase',
+          data: incidentRate.percentage_increase,
+          borderColor: '#d63031',
+          backgroundColor: 'rgba(214, 48, 49, 0.1)',
+          borderDash: [5, 5],
+          tension: 0.3,
+          fill: false,
+          yAxisID: 'y1'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      interaction: {
+        mode: 'index',
+        intersect: false
+      },
+      stacked: false,
+      plugins: {
+        legend: { position: 'top' },
+        tooltip: { mode: 'index' }
+      },
+      scales: {
+        y: { title: { display: true, text: 'Number of Incidents' } },
+        y1: {
+          position: 'right',
+          grid: { drawOnChartArea: false },
+          title: { display: true, text: '% Change' }
+        }
+      },
+      animation: {
+        duration: 1000,
+        easing: 'easeOutCirc'
+      }
+    }
+  });
+
+  // Graph 4: Registered Vehicles (Stacked Bar Chart)
+  new Chart(document.getElementById('vehicleGraphChart'), {
+    type: 'bar',
+    data: {
+      labels: vehicleData.vehicle_types,
+      datasets: vehicleData.roles.map((role, i) => ({
+        label: role,
+        data: vehicleData.counts.map(row => row[i]),
+        backgroundColor: [
+          '#800000', '#d63031', '#6c5ce7', '#fceea3', '#e17055', '#74b9ff'
+        ][i % 6],
+        borderRadius: 6
+      }))
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: { stacked: true },
+        y: { stacked: true }
+      },
+      plugins: {
+        legend: { position: 'bottom' }
+      },
+      animation: {
+        duration: 1200,
+        easing: 'easeInOutQuart'
+      }
+    }
+  });
+</script>
 {% endblock content %}
-    
