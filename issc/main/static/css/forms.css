@@ -410,6 +410,25 @@ select {
     width: 100%;
 }
 
+/* Rounded and clean DataTables search bar */
+.dataTables_filter label input {
+    margin-bottom: 10px;
+}
+
+.dataTables_filter label input:focus {
+    border-color: #800000; /* blue border on focus */
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); /* soft blue glow */
+}
+
+.dataTables_length label select:focus {
+    border-color: #800000; /* blue border on focus */
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+.dataTables_paginate{
+    margin: 10px;
+}
+
 /* Scrollbar Styling (Optional for Webkit Browsers) */
 .table-container::-webkit-scrollbar {
     width: 8px;

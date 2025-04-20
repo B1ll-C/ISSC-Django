@@ -1,67 +1,61 @@
-/* General Page Styling */
-body {
-    color: #ffffff;
-    font-family: 'Arial', sans-serif;
-}
-
-/* Main Container */
-.container {
-    max-width: 90%;
+.face-enrollment {
     text-align: center;
+    padding-top: 40px; /* You can adjust this for spacing above */
+    padding-bottom: 40px;
+    min-height: 100vh; /* Ensures full viewport height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Vertically centers content */
+    align-items: center; /* Horizontally centers content */
 }
 
-/* Page Title */
-.page-title {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 15px;
-    color: maroon;
-}
-
-/* Grid for Cameras */
-.camera-grid {
-    display: grid;
-    grid-template-columns: repeat( minmax(200px, 1fr)); /* Makes cameras larger */
-    gap: 20px;
-    justify-content: center;
-}
-
-/* Individual Camera Card */
-.camera-card {
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease-in-out;
-}
-
-.camera-card:hover {
-    transform: scale(1.03);
-}
-
-/* Camera Title */
-.camera-card h3 {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-    color: rgba(128, 0, 0, 0.9);
-}
-
-/* Camera Frame */
-.camera-frame {
-    border: 3px solid rgba(128, 0, 0, 0.9);
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-/* Camera Feed */
-.camera-feed {
+.video-section {
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 30px;
     width: 100%;
-    height: auto;
-    border-radius: 8px;
+    max-width: 720px;
+    transition: all 0.3s ease;
+    margin-bottom: 20px; /* Optional, for spacing below */
 }
 
-/* No Camera Message */
-.no-camera {
-    margin-top: 50px;
-    font-size: 1.2rem;
-    color: #aaaaaa;
+.video-section:hover {
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.15);
+}
+
+.video-section h2 {
+    color: #202020;
+    font-size: 1.25rem;
+    margin-bottom: 20px;
+}
+
+.video-section img {
+    border-radius: 12px;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.btn-outline-primary {
+    background-color: rgba(230, 230, 230, 1);
+    color: maroon;
+    border: none;
+    padding: 13px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.17);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 13px;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.btn-outline-primary:hover {
+    background-color: maroon;
+    color: white;
+}
+
+.btn-outline-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 8px rgba(75, 0, 0, 0.4);
 }

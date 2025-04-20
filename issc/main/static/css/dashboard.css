@@ -1,60 +1,66 @@
-/* Graph Container */
-.graph-container {
+/* Container that holds all the graphs */
+.dashboard-wrapper {
+    padding: 2rem;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .dashboard-wrapper h2 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: #2d3436;
+  }
+  
+  /* Graph container layout */
+  .graph-container {
     display: grid;
-    grid-template-areas:
-        "graph1 graph2 graph3"
-        "vehicle vehicle vehicle";
-    grid-template-columns: 2fr 2fr 2fr; /* Equal width for incident graphs */
-    grid-template-rows: auto auto; /* Adjust row sizes dynamically */
-    gap: 20px; /* Smaller gaps */
-    justify-content: center;
-    align-items: center;
-}
-
-/* Styling for Graph Images */
-.graph-container img {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    gap: 1.5rem;  /* Adjusted spacing between graphs */
+    max-width: 1200px; /* Limit container width */
+    margin: 0 auto;
+  }
+  
+  /* Individual graph section */
+  .graph-section {
+    padding: 1.5rem;
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .graph-section:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Styling for canvas (graph area) */
+  .graph-section canvas {
     width: 100%;
-    max-width: 100%;
-    border-radius: 8px;
-    box-shadow: 0px 12px 15px rgba(0, 0, 0, 0.15);
-}
-
-/* Assign grid areas */
-.graph1 {
-    grid-area: graph1;
-}
-
-.graph2 {
-    grid-area: graph2;
-}
-
-.graph3 {
-    grid-area: graph3;
-    max-height: 650px;
-}
-
-.vehicle {
-    grid-area: vehicle;
-    max-height: 450px; /* Reduce height of vehicle graph */
-}
-
-/* Responsive Design */
-@media (max-width: 1024px) {
+    height: 300px !important;
+    display: block;
+    margin: auto;
+  }
+  
+  /* Styling for headings within each graph */
+  .graph-section h3 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #2d3436;  /* Slightly dark for emphasis */
+    margin-bottom: 1rem;
+  }
+  
+  /* Grid structure */
+  .graph-monthly { grid-column: 1 / span 1; }
+  .graph-incident { grid-column: 2 / span 1; }
+  .graph-department { grid-column: 1 / span 1; }
+  .graph-vehicles { grid-column: 2 / span 1; }
+  
+  /* Responsive layout for smaller screens */
+  @media (max-width: 768px) {
     .graph-container {
-        grid-template-areas:
-            "graph1 graph2"
-            "graph3 vehicle";
-        grid-template-columns: 1.5fr 1fr; /* Make incident graphs wider */
+      grid-template-columns: 1fr; /* 1 column for small screens */
     }
-}
-
-@media (max-width: 768px) {
-    .graph-container {
-        grid-template-areas:
-            "graph1"
-            "graph2"
-            "graph3"
-            "vehicle";
-        grid-template-columns: 1fr; /* Stack everything for mobile */
+    .graph-monthly, .graph-incident, .graph-department, .graph-vehicles {
+      grid-column: span 1;
     }
-}
+  }
+  

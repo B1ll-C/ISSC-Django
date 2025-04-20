@@ -13,9 +13,7 @@
     max-width: 900px;
     margin: 40px auto;
     padding: 20px;
-    background: var(--background-color);
     border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     text-align: center;
     backdrop-filter: blur(10px); /* Blurs background for transparency effect */
     animation: fadeIn 1s ease-in-out; /* Apply fade-in animation */
