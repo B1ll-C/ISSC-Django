@@ -50,11 +50,8 @@ urlpatterns = [
     path("about/", about_view.about, name="about"),
 
 
-    path("face-enrollment/", face_enrollment_view.face_enrollment, name="face_enrollment"),
-    path("face-enrollment/start-recording/", face_enrollment_view.start_recording, name="start_recording"),
-    path("video-feed/", face_enrollment_view.video_feed, name="video_feed"),
-    path("face-terms-and-agreement/", face_enrollment_view.face_terms_agreement, name="face_terms_and_agreement"),
-    path("face-enrollment-success/", face_enrollment_view.face_enrollment_success, name="face_enrollment_success"),
+    path("face-enrollment/", face_enrollment_view.face_enrollment_view, name="face_enrollment"),
+    path('face_feed/', face_enrollment_view.face_video_feed, name='face_feed'),
   
 ]
 

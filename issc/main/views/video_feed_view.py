@@ -30,7 +30,7 @@ SAVE_DIR = 'recordings'
 os.makedirs(SAVE_DIR, exist_ok=True)
 
 # Initialize cameras and frame queues
-NUM_CAMERAS = 4
+NUM_CAMERAS = 5
 cameras = {i: cv2.VideoCapture(i) for i in range(NUM_CAMERAS)}
 frame_queues = {i: Queue(maxsize=10) for i in cameras}
 video_writers = {}
@@ -299,3 +299,19 @@ def reencode_avi_to_mp4(directory):
 
             except subprocess.CalledProcessError as e:
                 print(f"Error converting {avi_path}: {e}")
+
+
+# =======================================================
+
+face_frame_queue = Queue(maxsize=10)
+face_cam = cv2.VideoCapture(1)
+
+def capture_face_frames():
+    while True:
+        ret, frame = face_cam.read()
+        if ret and not face_frame_queue.full():
+            face_frame_queue.put(frame)
+        time.sleep(1 / 30)
+
+# Start this thread on import or from the main Django view
+Thread(target=capture_face_frames, daemon=True).start()
