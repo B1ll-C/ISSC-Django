@@ -1,22 +1,20 @@
 {% extends 'base.html' %}
 
 {% block title %} Face Enrollment {% endblock title %}
+
 {% block content %}
 {% load static %}
 
-
 <div class="max-w-7xl mx-auto mt-10 px-4">
-  <h1 class="text-center text-4xl font-bold text-gray-800 mb-10">Face Enrollment</h1>
-
+  <h1 class="text-center text-4xl font-bold text-gray-800 mb-10">Face Enrollment for Student with ID Number: {{ user_data.id_number }}</h1>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-    <!-- Live Video Section -->
+
     <div class="bg-white rounded-xl shadow-md p-6">
       <h3 class="text-2xl font-semibold text-gray-700 mb-4 text-center">Live Video</h3>
       <img id="video_feed" src="{% url 'face_feed' %}" alt="Video Feed"
            class="rounded-lg w-full aspect-video object-cover border border-gray-300">
     </div>
 
-    <!-- Capture & Images Section -->
     <div class="bg-white rounded-xl shadow-md p-6">
       <h3 class="text-2xl font-semibold text-gray-700 mb-6 text-center">Captured Faces</h3>
 
@@ -26,7 +24,7 @@
       </button>
 
       <div class="flex justify-between gap-4 text-center">
-        <!-- Left Face -->
+
         <div class="flex flex-col items-center flex-1">
           <p class="text-sm text-gray-600 mb-2">Left</p>
           <img id="img-left" src="{% static 'images/left.jpg' %}" class="rounded-md border w-full max-w-[100px]" alt="Left face">
@@ -36,7 +34,7 @@
           </button>
         </div>
 
-        <!-- Front Face -->
+
         <div class="flex flex-col items-center flex-1">
           <p class="text-sm text-gray-600 mb-2">Front</p>
           <img id="img-front" src="{% static 'images/front.jpg' %}" class="rounded-md border w-full max-w-[100px]" alt="Front face">
@@ -46,7 +44,7 @@
           </button>
         </div>
 
-        <!-- Right Face -->
+
         <div class="flex flex-col items-center flex-1">
           <p class="text-sm text-gray-600 mb-2">Right</p>
           <img id="img-right" src="{% static 'images/right.jpg' %}" class="rounded-md border w-full max-w-[100px]" alt="Right face">
@@ -57,52 +55,18 @@
         </div>
       </div>
 
-      <button id="submitButton"
-              class="bg-green-600 hover:bg-green-700 transition text-white text-lg font-medium py-3 px-6 rounded-md w-full mt-6 hidden">
-        Enroll / Submit
-      </button>
+        <form id="enrollmentForm" method="POST" action="{% url 'face_enrollment' id_number=user_data.id_number %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="front_image" id="front_image">
+            <input type="hidden" name="left_image" id="left_image">
+            <input type="hidden" name="right_image" id="right_image">
+            <button type="submit" id="submitButton" class="bg-green-600 hover:bg-green-700 transition text-white text-lg font-medium py-3 px-6 rounded-md w-full mt-6 hidden">
+                Enroll / Submit
+            </button>
+        </form>
     </div>
   </div>
 
-  <!-- Table Section -->
-   
-
-  
-  <div class="mt-12">
-    <div class="overflow-x-auto bg-white rounded-xl shadow-md p-6">
-      <table class="form-table w-full text-sm text-left text-gray-700 border-collapse">
-        <thead class="bg-gray-100 text-xs uppercase text-gray-600">
-          <tr>
-            <th class="px-4 py-3">Date Time</th>
-            <th class="px-4 py-3">First Name</th>
-            <th class="px-4 py-3">Last Name</th>
-            <th class="px-4 py-3">Location</th>
-            <th class="px-4 py-3">Department</th>
-            <th class="px-4 py-3">Phone Number</th>
-            <th class="px-4 py-3">Status</th>
-            <th class="px-4 py-3">Last Updated By</th>
-            <th class="px-4 py-3">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <form method="POST" action="">
-              <td class="px-4 py-2"></td>
-              <td class="px-4 py-2"></td>
-              <td class="px-4 py-2"></td>
-              <td class="px-4 py-2"></td>
-              <td class="px-4 py-2"></td>
-              <td class="px-4 py-2"></td>
-              <td class="px-4 py-2"></td>
-              <td class="px-4 py-2"></td>
-              <td class="px-4 py-2"></td>
-            </form>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
 
 
 <script>
@@ -140,7 +104,7 @@
     function updateCaptureButton() {
         const nextStep = getNextCaptureStep();
         if (nextStep) {
-            captureBtn.textContent = `Capture ${nextStep.charAt(0).toUpperCase() + nextStep.slice(1)}`;
+            captureBtn.textContent = `Capture ${nextStep.charAt(0).toUpperCase() + nextStep.slice(1)} Face`;
             captureBtn.disabled = false;
         } else {
             captureBtn.textContent = "All Captured!";
@@ -171,6 +135,14 @@
             retakeButtons[step].classList.remove('hidden');
             updateCaptureButton();
             updateSubmitButton();
+
+            if (step === 'front') {
+                document.getElementById('front_image').value = imgData;
+            } else if (step === 'left') {
+                document.getElementById('left_image').value = imgData;
+            } else if (step === 'right') {
+                document.getElementById('right_image').value = imgData;
+            }
         } catch (e) {
             alert("Unable to capture image from the video feed.");
             console.error(e);
@@ -192,20 +164,35 @@
         updateCaptureButton();
     }
 
-    // Setup event listeners
     captureBtn.addEventListener('click', handleCapture);
     retakeButtons.front.addEventListener('click', () => handleRetake('front'));
     retakeButtons.left.addEventListener('click', () => handleRetake('left'));
     retakeButtons.right.addEventListener('click', () => handleRetake('right'));
     submitButton.addEventListener('click', () => {
-        alert("Submitting images...");
     });
 
-    // Initial UI setup
     updateCaptureButton();
     updateSubmitButton();
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const enrollmentForm = document.getElementById('enrollmentForm');
+    const loadingSpinner = document.getElementById('loading-spinner');
+
+    if (enrollmentForm && loadingSpinner) {
+        enrollmentForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            loadingSpinner.style.display = 'flex';
+
+            setTimeout(() => {
+                loadingSpinner.style.display = 'none';
+                enrollmentForm.submit();
+            }, 3000);
+        });
+    }
+});
+
+
 </script>
-
-
 
 {% endblock content %}

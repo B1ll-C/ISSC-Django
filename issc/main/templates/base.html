@@ -15,6 +15,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
 </head>
 <body>
     <!-- Main Navbar (Top) -->
@@ -89,5 +96,13 @@
             }
         });
     </script>
+    
+    <div id="loading-spinner" class="fixed inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center z-50" style="display: none;">
+      <div class="spinner-border animate-spin rounded-full border-t-4 border-b-4 border-blue-600 w-16 h-16 mb-4"></div>
+      <p id="loading-message" class="text-center text-lg text-white">
+        Extracting face embeddings and saving to the database...
+      </p>
+    </div>
+
   </body>
 </html>
