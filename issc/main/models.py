@@ -111,8 +111,9 @@ class IncidentReport(models.Model):
 class FacesEmbeddings(models.Model):
     face_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     id_number = models.ForeignKey(AccountRegistration, to_field="id_number", on_delete=models.CASCADE)
-    embedding = models.TextField()
-    image_hash = models.CharField(max_length=64, unique=True)
+    front_embedding = models.JSONField(default=dict)
+    left_embedding = models.JSONField(default=dict)
+    right_embedding = models.JSONField(default=dict)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
