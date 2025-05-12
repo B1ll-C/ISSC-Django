@@ -6,7 +6,6 @@ from .views import (
         dashboard_view, 
         incident_view, 
         vehicle_view, 
-        live_view, 
         about_view, 
         face_enrollment_view, 
         video_feed_view
@@ -49,9 +48,11 @@ urlpatterns = [
 
     path("about/", about_view.about, name="about"),
 
-
-    path("face-enrollment/", face_enrollment_view.face_enrollment_view, name="face_enrollment"),
+    
+    path("face-enrollment/enrollee", face_enrollment_view.enrollee_view, name="enrollee_view"),
+    path("face-enrollment/<str:id_number>", face_enrollment_view.face_enrollment_view, name="face_enrollment"),
     path('face_feed/', face_enrollment_view.face_video_feed, name='face_feed'),
-  
+    path('face_enrollment/success', face_enrollment_view.success_page, name='success_page'),
+    path('face_enrollment/error', face_enrollment_view.error_page, name='error_page'),
 ]
 
