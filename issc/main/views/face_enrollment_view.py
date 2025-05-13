@@ -72,11 +72,12 @@ def face_enrollment_view(request, id_number):
                 left_faces, _ = face_enrollment.detect_faces(left_img)
                 right_faces, _ = face_enrollment.detect_faces(right_img)
 
-                front_face = front_faces[0]
-                left_face = left_faces[0]
-                right_face = right_faces[0]
 
-                if len(front_faces) == 1 and len(left_faces) == 1 and len(right_faces) == 1:
+                if len(front_faces) == 1:
+
+                    front_face = front_faces[0]
+                    left_face = left_faces[0]
+                    right_face = right_faces[0]
 
                     front_embedding = face_enrollment.get_face_embedding(front_face)
                     left_embedding = face_enrollment.get_face_embedding(left_face)

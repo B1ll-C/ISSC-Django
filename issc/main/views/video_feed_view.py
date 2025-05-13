@@ -17,6 +17,10 @@ load_dotenv()
 
 from ..models import AccountRegistration, IncidentReport, VehicleRegistration
 
+from ..computer_vision.face_enrollment import FaceEnrollment
+
+detector = FaceEnrollment()
+
 
 import subprocess
 
@@ -93,24 +97,28 @@ def stop_record(request):
 # start_record()
 initialize_video_writers()
 def process_with_model(frame):
-    """Processes a video frame to detect and recognize license plates efficiently."""
+    """Processes a video frame to detect and recognize faces and license plates."""
+    
+    cropped_faces, annotated_frame = detector.detect_faces(frame)
+
+    if not cropped_faces:
+        return frame
     
     bounding_boxes = recognizer.detect_license_plate(frame)
     
-    if not bounding_boxes:
-        return frame  
-
-    cropped_plates = recognizer.crop_license_plate(frame, bounding_boxes)
-    plate_texts = recognizer.recognize_text(cropped_plates) if cropped_plates else []
-    
-    for (box, text) in zip(bounding_boxes, plate_texts):
-        x_min, y_min, x_max, y_max = box
-        cv2.rectangle(frame, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
+    if bounding_boxes:
+        cropped_plates = recognizer.crop_license_plate(frame, bounding_boxes)
+        plate_texts = recognizer.recognize_text(cropped_plates) if cropped_plates else []
         
-        cv2.putText(frame, text, (x_min, y_min - 10), cv2.FONT_HERSHEY_SIMPLEX, 
-                    0.9, (0, 0, 255), 2, cv2.LINE_AA)
+        for (box, text) in zip(bounding_boxes, plate_texts):
+            x_min, y_min, x_max, y_max = box
+            cv2.rectangle(annotated_frame, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
+            
+            cv2.putText(annotated_frame, text, (x_min, y_min - 10), cv2.FONT_HERSHEY_SIMPLEX, 
+                        0.9, (0, 0, 255), 2, cv2.LINE_AA)
 
-    return frame
+    return annotated_frame
+
 
 
 def generate_no_signal_frame():
@@ -140,8 +148,8 @@ def capture_frames(camera_id):
             frame = generate_no_signal_frame()
 
         frame_count += 1
-        # if frame_count % FRAME_SKIP == 0:  # Only process every 5th frame
-            # frame = process_with_model(frame)
+        if frame_count % FRAME_SKIP == 0:  # Only process every 5th frame
+            frame = process_with_model(frame)
 
         if not frame_queues[camera_id].full():
             frame_queues[camera_id].put(frame)
