@@ -17,6 +17,8 @@ urlpatterns = [
     path("logout/", auth_view.logout, name="logout"),
     path("signup/", auth_view.signup, name='signup'),
     path("signup-forms/", auth_view.signup_forms, name='signup-forms'),
+    path("import/",auth_view.import_data, name='import-forms'),
+    path('get-user/', auth_view.getUser, name='get_user'),
 
     path("account/password-reset/", auth_view.CustomPasswordResetView.as_view(), name="password_reset"),
     # path("account/password-reset/done/", auth_view.CustomPasswordResetDoneView.as_view(), name="password_reset_done"),
@@ -33,10 +35,12 @@ urlpatterns = [
     path("incidents/", incident_view.incident, name="incidents"),
     path("incidents/forms", incident_view.incident_forms, name="incident_forms"),
     path('incidents/<int:id>/', incident_view.incident_details, name='incident_details'),
+    path('incidents/<int:id>/print', incident_view.incident_print, name='incident_print'),
 
     path("vehicles/", vehicle_view.vehicles, name="vehicles"),
     path("vehicles/forms", vehicle_view.vehicle_forms, name="vehicle_forms"),
     path('vehicles/<int:id>/', vehicle_view.vehicle_details, name='vehicle_details'),
+    path('vehicles/<int:id>/print', vehicle_view.vehicle_print, name='vehicle_print'),
 
 
     path('video-feed/<int:camera_id>/', video_feed_view.video_feed, name='video_feed'),

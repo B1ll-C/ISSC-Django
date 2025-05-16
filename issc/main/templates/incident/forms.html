@@ -37,12 +37,57 @@
 
             <div class="form-field subject">
                 <label>Subject</label>
-                <input type="text" name="subject" required>
+                <!-- <input type="text" name="subject" required> -->
+                <select name="subject" required>
+                    <option value="Theft">Theft</option>
+                    <option value="Missing">Missing</option>
+                    <option value="Damage of Property">Damage of Property</option>
+                    <option value="Vandalism">Vandalism</option>
+                    <option value="Bullying/Fights">Bullying/Fights</option>
+                    <option value="Accidental Injuries">Accidental Injuries</option>
+                    <option value="Threats/Harassment">Threats/Harassment</option>
+                    <option value="Cheating">Cheating</option>
+                    <option value="Drugs">Drugs</option>
+                    <option value="Suicide Incident">Suicide Incident</option>
+                    <option value="Building Maintenance Issues">Building Maintenance Issues</option>
+                </select>
             </div>
             
             <div class="form-field location">
                 <label>Location</label>
-                <input type="text" name="location" required>
+                <!-- <input type="text" name="location" required> -->
+                <select name="location" required>
+                    <optgroup label="1st Floor">
+                        <option value="101">101</option>
+                        <option value="102">102</option>
+                        <option value="103">103</option>
+                        <option value="104">104</option>
+                        <option value="105">105</option>
+                        <option value="Bathroom 1st Floor">Bathroom 1st Floor</option>
+                    </optgroup>
+                    <optgroup label="2nd Floor">
+                        <option value="201">201</option>
+                        <option value="202">202</option>
+                        <option value="203">203</option>
+                        <option value="204">204</option>
+                        <option value="205">205</option>
+                        <option value="Bathroom 2nd Floor">Bathroom 2nd Floor</option>
+                    </optgroup>
+                    <optgroup label="3rd Floor">
+                        <option value="301">301</option>
+                        <option value="302">302</option>
+                        <option value="303">303</option>
+                        <option value="304">304</option>
+                        <option value="305">305</option>
+                        <option value="Bathroom 3rd Floor">Bathroom 3rd Floor</option>
+                    </optgroup>
+                    <optgroup label="Special Rooms">
+                        <option value="AVR">AVR</option>
+                        <option value="Faculty">Faculty</option>
+                        <option value="Admin Office">Admin Office</option>
+                        <option value="TLE Room/Canteen">TLE Room/Canteen</option>
+                    </optgroup>
+                </select>
             </div>
             
             <div class="form-field incident-description">
@@ -96,7 +141,12 @@
     </form>
 </div>
 
+
+
+
 <!-- Incident Report Template ## REMOVE <H1> -->
     
 
 {% endblock content %}
+
+

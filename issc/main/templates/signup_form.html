@@ -11,7 +11,7 @@
         <div class="form-group">
             <div class="form-field username">
                 <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
+                <input type="text" id="username" name="username" required  readonly>
             </div>
 
             <div class="form-field first-name">
@@ -36,7 +36,7 @@
 
             <div class="form-field id-number">
                 <label for="id_number">ID Number:</label>
-                <input type="text" id="id_number" name="id_number" required>
+                <input type="text" id="id_number" name="id_number" required readonly>
             </div>
 
             <div class="form-field contact-number">
@@ -85,4 +85,34 @@
             <button type="submit">Register</button>
         </div>
     </form>
+
+
+<script type="text/javascript">
+  function fetchGeneratedId(userType) {
+    fetch(`/get-user/?type=${userType}`)
+      .then(response => {
+        if (!response.ok) throw new Error('Network response was not ok.');
+        return response.json();
+      })
+      .then(data => {
+        console.log(`Generated ID for ${userType}:`, data.id_number);
+        document.getElementById('id_number').value = data.id_number;
+        document.getElementById('username').value = data.id_number;
+      })
+      .catch(error => console.error('Error fetching ID:', error));
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const privilegeSelect = document.getElementById('privilege');
+
+    // Fetch ID on page load (default: student)
+    fetchGeneratedId(privilegeSelect.value);
+
+    // Refetch ID when the user changes privilege type
+    privilegeSelect.addEventListener('change', function () {
+      fetchGeneratedId(this.value);
+    });
+  });
+</script>
+
 {% endblock content %}
