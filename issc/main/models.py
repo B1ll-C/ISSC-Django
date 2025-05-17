@@ -124,6 +124,20 @@ class FacesEmbeddings(models.Model):
         verbose_name = "Face Embedding"
         verbose_name_plural = "Faces Embeddings"
 
+class FaceLogs(models.Model):
+    id_number = models.ForeignKey(AccountRegistration, to_field="id_number", on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=100)
+    middle_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    date = models.DateField(auto_now_add=True)
+    time = models.TimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f" Face Log at : {self.id_number.id_number} at {self.created_at}"
+
+    class Meta:
+        verbose_name = "Face Logs"
+        verbose_name_plural = "Face Logs"
 
 class VehicleEntry(models.Model):
     entry_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
