@@ -9,7 +9,7 @@ import base64
 from django.views.decorators import gzip
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse, StreamingHttpResponse
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import get_object_or_404, render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 from ..models import AccountRegistration, FacesEmbeddings
@@ -42,17 +42,27 @@ def face_video_feed(request):
                                   content_type='multipart/x-mixed-replace; boundary=frame')
 
 def handle_base64_image(data):
-    format, imgstr = data.split(';base64,')
-    img_data = base64.b64decode(imgstr)
-    img_array = np.frombuffer(img_data, dtype=np.uint8)
-    return cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+    try:
+        if not data.startswith("data:image"):
+            raise ValueError("Base64 string does not have an image prefix.")
+        
+        format, imgstr = data.split(';base64,')
+        img_data = base64.b64decode(imgstr)
+        img_array = np.frombuffer(img_data, dtype=np.uint8)
+        image = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+        
+        if image is None:
+            raise ValueError("cv2.imdecode failed: image is None.")
+        
+        return image
 
+    except Exception as e:
+        print(f"[handle_base64_image] Error decoding image: {e}")
+        return None
 
 @login_required(login_url='/login')
 def face_enrollment_view(request, id_number):
     user_privilege = AccountRegistration.objects.filter(username=request.user).values()
-
-
     user = get_object_or_404(AccountRegistration, id_number=id_number)
 
     if request.method == "POST":
@@ -62,8 +72,6 @@ def face_enrollment_view(request, id_number):
 
         if front_image and left_image and right_image:
             try:
-                face_enrollment = FaceEnrollment()
-
                 front_img = handle_base64_image(front_image)
                 left_img = handle_base64_image(left_image)
                 right_img = handle_base64_image(right_image)
@@ -72,15 +80,11 @@ def face_enrollment_view(request, id_number):
                 left_faces, _ = face_enrollment.detect_faces(left_img)
                 right_faces, _ = face_enrollment.detect_faces(right_img)
 
-                front_face = front_faces[0]
-                left_face = left_faces[0]
-                right_face = right_faces[0]
-
                 if len(front_faces) == 1 and len(left_faces) == 1 and len(right_faces) == 1:
 
-                    front_embedding = face_enrollment.get_face_embedding(front_face)
-                    left_embedding = face_enrollment.get_face_embedding(left_face)
-                    right_embedding = face_enrollment.get_face_embedding(right_face)
+                    front_embedding = face_enrollment.get_face_embedding(front_faces)
+                    left_embedding = face_enrollment.get_face_embedding(left_faces)
+                    right_embedding = face_enrollment.get_face_embedding(right_faces)
 
 
                     if front_embedding is not None and left_embedding is not None and right_embedding is not None:
@@ -97,7 +101,11 @@ def face_enrollment_view(request, id_number):
                         )
 
 
-                        return render(request, 'face_enrollment/success_page.html')
+                        return render(request, 'face_enrollment/success_page.html',{
+                                    "front_faces": front_image,
+                                    "left_faces": left_image,
+                                    "right_faces": right_image,
+                        })
                     else:
                         return render(request, 'face_enrollment/error.html', {'message': 'Failed to extract embeddings for one or more images.'})
 
@@ -107,14 +115,15 @@ def face_enrollment_view(request, id_number):
             except Exception as e:
                 return render(request, 'face_enrollment/error.html', {'message': f'Error processing images. : {e}'})
 
-    else:
-        return render(request, 'face_enrollment/error.html', {'message': 'Missing image data!'})
-
+        else:
+            return render(request, 'face_enrollment/error.html', {'message': 'Missing image data!'})
+    
     return render(request, 'face_enrollment/faceenrollment.html', {
         'user_role': user_privilege[0]['privilege'],
         'user_data': user,
         'camera_ids': range(5),
     })
+
 
 @login_required(login_url='/login')
 def enrollee_view(request):
