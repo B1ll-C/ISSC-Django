@@ -175,23 +175,15 @@
     updateSubmitButton();
 
     document.addEventListener('DOMContentLoaded', function () {
-    const enrollmentForm = document.getElementById('enrollmentForm');
-    const loadingSpinner = document.getElementById('loading-spinner');
+        const enrollmentForm = document.getElementById('enrollmentForm');
+        const loadingSpinner = document.getElementById('loading-spinner');
 
-    if (enrollmentForm && loadingSpinner) {
-        enrollmentForm.addEventListener('submit', function (event) {
-            event.preventDefault();
-
-            loadingSpinner.style.display = 'flex';
-
-            setTimeout(() => {
-                loadingSpinner.style.display = 'none';
-                enrollmentForm.submit();
-            }, 3000);
-        });
-    }
-});
-
+        if (enrollmentForm && loadingSpinner) {
+            enrollmentForm.addEventListener('submit', function () {
+                loadingSpinner.style.display = 'flex';
+            });
+        }
+    });
 
 </script>
 
