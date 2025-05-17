@@ -46,6 +46,8 @@ urlpatterns = [
     path('live-feed/archive', video_feed_view.recording_archive, name="recording_archive"),
     path('live-feed/reset', video_feed_view.reset_recordings, name="reset_recordings"),
 
+    path('live-feed/face-logs', video_feed_view.face_logs, name='face_logs'),
+
     path("about/", about_view.about, name="about"),
 
     
