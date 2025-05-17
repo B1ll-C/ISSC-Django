@@ -2,7 +2,7 @@ import cv2
 import os
 import numpy as np
 from django.http import StreamingHttpResponse, HttpResponse, JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from threading import Thread
 from queue import Queue
 import time
@@ -10,12 +10,13 @@ import signal
 import sys
 from django.template import loader
 from datetime import datetime
+from django.core.exceptions import ObjectDoesNotExist
 
 from dotenv import load_dotenv
 
 load_dotenv()
 
-from ..models import AccountRegistration, IncidentReport, VehicleRegistration
+from ..models import AccountRegistration, IncidentReport, VehicleRegistration, FaceLogs
 
 
 import subprocess
@@ -24,7 +25,13 @@ from django.conf import settings
 import re
 
 # from ..computer_vision.plate_recognition import LicencePlateRecognition
+from ..computer_vision.face_matching import FaceMatcher
+from ..computer_vision.face_enrollment import FaceEnrollment
 # recognizer = LicencePlateRecognition(os.getenv("ROBOFLOW_API_KEY"), os.getenv("PROJECT_NAME"), "1")   
+
+face_detector = FaceEnrollment()
+matcher = FaceMatcher()
+matcher.load_embeddings()
 
 SAVE_DIR = 'recordings'
 os.makedirs(SAVE_DIR, exist_ok=True)
@@ -93,24 +100,51 @@ def stop_record(request):
 # start_record()
 initialize_video_writers()
 def process_with_model(frame):
-    """Processes a video frame to detect and recognize license plates efficiently."""
-    
-    bounding_boxes = recognizer.detect_license_plate(frame)
-    
-    if not bounding_boxes:
-        return frame  
+    cropped_faces, annotated_frame = face_detector.detect_faces(frame)
 
-    cropped_plates = recognizer.crop_license_plate(frame, bounding_boxes)
-    plate_texts = recognizer.recognize_text(cropped_plates) if cropped_plates else []
-    
-    for (box, text) in zip(bounding_boxes, plate_texts):
-        x_min, y_min, x_max, y_max = box
-        cv2.rectangle(frame, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
-        
-        cv2.putText(frame, text, (x_min, y_min - 10), cv2.FONT_HERSHEY_SIMPLEX, 
-                    0.9, (0, 0, 255), 2, cv2.LINE_AA)
+    if not cropped_faces:
+        return annotated_frame
 
-    return frame
+    for face in cropped_faces:
+        live_embedding = face_detector.get_face_embedding(face)
+
+        if live_embedding is None:
+            print("[Warning] Failed to generate embedding for a face.")
+            continue
+
+        live_embedding = np.array(live_embedding, dtype=np.float32)
+        if live_embedding.shape != (128,):
+            print(f"[Warning] Invalid embedding shape: {live_embedding.shape}")
+            continue
+
+        best_match, distance = matcher.match(live_embedding)
+
+        if best_match:
+            print(f"[Match] ID: {best_match}, Distance: {distance:.2f}")
+
+            log(best_match)
+
+
+        else:
+            print(f"[No Match] Closest distance: {distance:.2f}")
+
+
+    return annotated_frame
+
+
+    # ----- License Plate Detection -----
+    # bounding_boxes = recognizer.detect_license_plate(frame)
+    # if bounding_boxes:
+    #     cropped_plates = recognizer.crop_license_plate(frame, bounding_boxes)
+    #     plate_texts = recognizer.recognize_text(cropped_plates) if cropped_plates else []
+
+    #     for (box, text) in zip(bounding_boxes, plate_texts):
+    #         x_min, y_min, x_max, y_max = box
+    #         cv2.rectangle(annotated_frame, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
+    #         cv2.putText(annotated_frame, text, (x_min, y_min - 10), cv2.FONT_HERSHEY_SIMPLEX,
+    #                     0.9, (0, 0, 255), 2, cv2.LINE_AA)
+
+    return annotated_frame
 
 
 def generate_no_signal_frame():
@@ -139,9 +173,10 @@ def capture_frames(camera_id):
         if not success:
             frame = generate_no_signal_frame()
 
-        frame_count += 1
-        # if frame_count % FRAME_SKIP == 0:  # Only process every 5th frame
-            # frame = process_with_model(frame)
+        # frame_count += 1
+        # if frame_count % FRAME_SKIP == 0:
+        frame = process_with_model(frame)
+            # continue
 
         if not frame_queues[camera_id].full():
             frame_queues[camera_id].put(frame)
@@ -301,9 +336,39 @@ def reencode_avi_to_mp4(directory):
                 print(f"Error converting {avi_path}: {e}")
 
 
+def face_logs(request):
+
+    user_privilege = AccountRegistration.objects.filter(username=request.user).values()
+
+    logs = FaceLogs.objects.all()
+
+
+    template = loader.get_template('live-feed/face_logs.html')
+    context = {
+        'user_role': user_privilege[0]['privilege'],
+        'logs': logs,
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def log(id_number):
+    try:
+        acc_info = AccountRegistration.objects.get(id_number=id_number)
+    except ObjectDoesNotExist:
+        print(f"No account found for id_number {id_number}")
+        return
+    FaceLogs.objects.create(
+        id_number=acc_info,
+        first_name=acc_info.first_name,
+        middle_name=acc_info.middle_name,
+        last_name=acc_info.last_name,
+    )
+
+
 # =======================================================
 
 face_frame_queue = Queue(maxsize=10)
+
 face_cam = cv2.VideoCapture(1)
 
 def capture_face_frames():
