@@ -14,8 +14,21 @@ from ..models import AccountRegistration, IncidentReport, VehicleRegistration
 
 from .utils import paginate
 
+import random
+import string
+
 from django.template.loader import render_to_string
 import pdfkit
+
+
+def generate_unique_sticker_number(length=10):
+    while True:
+        # Generate a random alphanumeric string
+        number = ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
+        # Check if it already exists
+        if not VehicleRegistration.objects.filter(sticker_number=number).exists():
+            return number
+
 
 @login_required(login_url='/login/')
 def vehicles(request):
@@ -108,12 +121,14 @@ def vehicle_details(request, id):
 
 @login_required(login_url='/login/')
 def vehicle_forms(request):
+    unique_number = generate_unique_sticker_number()
     user = AccountRegistration.objects.filter(username=request.user).values()
     template = loader.get_template('vehicle/forms.html')
 
     context = {
         'user_role': user[0]['privilege'],
-        'user_data': user[0]
+        'user_data': user[0],
+        'sticker_number':unique_number
     }
 
     if request.method == 'POST':
@@ -161,3 +176,5 @@ def vehicle_forms(request):
         vehicle.save()
 
     return HttpResponse(template.render(context, request))
+
+

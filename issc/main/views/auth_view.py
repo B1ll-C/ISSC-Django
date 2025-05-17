@@ -46,14 +46,14 @@ def signup(request):
     user = AccountRegistration.objects.filter(username=request.user).values()
 
     users_list = AccountRegistration.objects.all().order_by('-date_joined')
-    users = users_list
+    # users = paginate(users_list,request)
 
 
     template = loader.get_template('signup.html')
     context = {
         'user_role': user[0]['privilege'],
         'user_data':user[0],
-        'users':users
+        'users':users_list
     }
 
     if request.method == 'POST':
@@ -136,6 +136,7 @@ def import_data(request):
     if request.method == 'POST':
         import_type = request.POST.get('import_type')
         excel_file = request.FILES.get('excel_file')
+        print(import_type)
 
         if not import_type:
             context['error'] = "Please select an import type."
@@ -145,7 +146,10 @@ def import_data(request):
             try:
                 df = pd.read_excel(excel_file)
 
+                print(import_type=='user')
+
                 if import_type == "user":
+                    print("Reached import_data view")  # Debug
                     for index, row in df.iterrows():
                         try:
                             user = AccountRegistration(
@@ -163,6 +167,7 @@ def import_data(request):
                             )
                             user.set_password('password')
                             user.save()
+                            print(df)
 
                             print(f"Saved User: {row['First Name']} - {row['ID Number']}")
                         except Exception as inner_e:
@@ -207,6 +212,7 @@ def import_data(request):
 
             except Exception as e:
                 context['error'] = f"Error processing Excel file: {str(e)}"
+                print(f"Error processing Excel file: {str(e)}")
 
     return HttpResponse(template.render(context, request))
 
