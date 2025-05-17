@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %} Face Logs {% endblock title %}
+
+{% block content %}
+
+{% load static %} 
+
+<div class="mt-12">
+  <h1 class="text-center text-4xl font-bold text-gray-800 mb-10">Face Logs</h1>
+  <div class="overflow-x-auto bg-white rounded-xl shadow-md p-6" style="min-width: 100%;">
+    <table id="logsDataTable" class="form-table w-full text-sm text-left text-gray-700 border-collapse">
+      <thead class="bg-gray-100 text-xs uppercase text-gray-600">
+        <tr>
+          <th class="px-4 py-3">First Name</th>
+          <th class="px-4 py-3">Middle Name</th>
+          <th class="px-4 py-3">Last Name</th>
+          <th class="px-4 py-3">ID Number</th>
+          <th class="px-4 py-3">Date</th>
+          <th class="px-4 py-3">Time</th>
+      </thead>
+      <tbody>
+        {% for log in logs %}
+        <tr class="border-b hover:bg-gray-50">
+          <td class="px-4 py-3">{{ log.first_name }}</td>
+          <td class="px-4 py-3">{{ log.middle_name }}</td>
+          <td class="px-4 py-3">{{ log.last_name }}</td>
+          <td class="px-4 py-3">{{ log.id_number }}</td>
+          <td class="px-4 py-3">{{ log.date }}</td>
+          <td class="px-4 py-3">{{ log.time }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $('#logsDataTable').DataTable({
+      search: true,
+      responsive: true,
+      ordering: true,
+      paging: true,
+      info: true
+    });
+  });
+</script>
+
+{% endblock content %}

@@ -11,6 +11,10 @@
     <a href="{% url 'recording_archive' %}" class="archive-btn">
         <span class="fas fa-archive"></span>Archive</a>
 
+    {% comment %} <a href="{% url 'face_logs' %}">Logs </a> {% endcomment %}
+    <a href="{% url 'face_logs' %}" class="archive-btn">
+        <span class="fas fa-user"></span>Face Logs</a>
+
 
         {% if camera_ids %}
             <div class="grid">
