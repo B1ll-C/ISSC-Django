@@ -60,17 +60,6 @@ def handle_base64_image(data):
         print(f"[handle_base64_image] Error decoding image: {e}")
         return None
 
-def ensure_base64_prefix(data):
-    return data if data.startswith("data:image") else f"data:image/jpeg;base64,{data}"
-
-
-def convert_cv2_image_to_base64(image):
-    """Converts a cv2 (NumPy) image to a base64-encoded data URI for HTML rendering."""
-    _, buffer = cv2.imencode('.jpg', image)
-    encoded_image = base64.b64encode(buffer).decode('utf-8')
-    return f"data:image/jpeg;base64,{encoded_image}"
-
-
 @login_required(login_url='/login')
 def face_enrollment_view(request, id_number):
     user_privilege = AccountRegistration.objects.filter(username=request.user).values()
@@ -98,16 +87,7 @@ def face_enrollment_view(request, id_number):
                 left_faces, _ = face_enrollment.detect_faces(left_img)
                 right_faces, _ = face_enrollment.detect_faces(right_img)
                 
-                # # Convert detected faces to base64 strings
-                # base64_front_faces = [convert_cv2_image_to_base64(face) for face in front_faces]
-                # base64_left_faces = [convert_cv2_image_to_base64(face) for face in left_faces]
-                # base64_right_faces = [convert_cv2_image_to_base64(face) for face in right_faces]
 
-                # return render(request, 'face_enrollment/check.html', {
-                #     "front_faces": base64_front_faces,
-                #     "left_faces": base64_left_faces,
-                #     "right_faces": base64_right_faces,
-                # })
 
                 if len(front_faces) == 1 and len(left_faces) == 1 and len(right_faces) == 1:
 
@@ -146,11 +126,7 @@ def face_enrollment_view(request, id_number):
 
     else:
         return render(request, 'face_enrollment/error.html', {'message': 'Missing image data!'})
-        # return render(request, 'face_enrollment/faceenrollment.html', {
-        #         'user_role': user_privilege[0]['privilege'],
-        #         'user_data': user,
-        #         'camera_ids': range(5),
-        #     })
+
 
     return render(request, 'face_enrollment/faceenrollment.html', {
         'user_role': user_privilege[0]['privilege'],
