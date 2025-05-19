@@ -1,25 +1,25 @@
-/* Root Variables for Colors */
+
 :root {
-    --primary-color: rgba(64, 0, 0, 0.9); /* Deep Maroon */
-    --secondary-color: rgba(230, 230, 230, 0.8); /* Light Gray with transparency */
-    --text-color: #333333; /* Dark Gray */
-    --background-color: rgba(248, 248, 248, 0.9); /* Soft Transparent Background */
-    --border-color: rgba(128, 0, 0, 0.3); /* Light Maroon Border */
-    --hover-color: rgba(128, 0, 0, 0.8); /* Dark Maroon Hover */
+    --primary-color: rgba(64, 0, 0, 0.9); 
+    --secondary-color: rgba(230, 230, 230, 0.8); 
+    --text-color: #333333; 
+    --background-color: rgba(248, 248, 248, 0.9); 
+    --border-color: rgba(128, 0, 0, 0.3); 
+    --hover-color: rgba(128, 0, 0, 0.8); 
 }
 
-/* About Page Container */
+
 .about-container {
     max-width: 900px;
     margin: 40px auto;
     padding: 20px;
     border-radius: 10px;
     text-align: center;
-    backdrop-filter: blur(10px); /* Blurs background for transparency effect */
-    animation: fadeIn 1s ease-in-out; /* Apply fade-in animation */
+    backdrop-filter: blur(10px); 
+    animation: fadeIn 1s ease-in-out; 
 }
 
-/* Fade-In Animation */
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -31,7 +31,7 @@
     }
 }
 
-/* Subheadings */
+
 .subheading {
     font-size: 2rem;
     color: var(--primary-color);
@@ -44,13 +44,13 @@
     font-family: "Cinzel", serif;
 }
 
-/* Delayed Animation for Subheadings */
+
 .subheading:nth-child(1) { animation-delay: 0.2s; }
 .subheading:nth-child(2) { animation-delay: 0.4s; }
 .subheading:nth-child(3) { animation-delay: 0.6s; }
 .subheading:nth-child(4) { animation-delay: 0.8s; }
 
-/* Paragraph Content */
+
 .content {
     font-size: 1.2rem;
     color: var(--text-color);
@@ -58,10 +58,10 @@
     margin: 15px 0;
     opacity: 0;
     animation: fadeIn 1s ease-in-out forwards;
-    animation-delay: 1s; /* Staggered animation for smooth effect */
+    animation-delay: 1s; 
 }
 
-/* Contact List */
+
 .contact-list {
     list-style: none;
     padding: 0;
@@ -77,13 +77,13 @@
     transition: transform 0.3s ease, color 0.3s ease;
 }
 
-/* Hover Effect for Contact Details */
+
 .contact-list li:hover {
     color: var(--hover-color);
     transform: scale(1.05);
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
     .about-container {
         padding: 15px;

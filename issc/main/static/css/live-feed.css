@@ -1,23 +1,23 @@
-/* Root Variables for Colors */
+
 :root {
-    --primary-color: rgba(64, 0, 0, 0.9); /* Deep Maroon */
-    --secondary-color: rgba(230, 230, 230, 1); /* Light Gray */
+    --primary-color: rgba(64, 0, 0, 0.9); 
+    --secondary-color: rgba(230, 230, 230, 1); 
     --background-gradient: linear-gradient(135deg, rgba(200, 200, 200, 1), rgba(64, 0, 0, 1));
-    --text-color: #333333; /* Dark Gray */
-    --hover-color: rgba(128, 0, 0, 0.9); /* Dark Maroon for hover */
-    --link-color: rgba(64, 0, 0, 1); /* Deep Maroon for links */
+    --text-color: #333333; 
+    --hover-color: rgba(128, 0, 0, 0.9); 
+    --link-color: rgba(64, 0, 0, 1); 
 }
 
-/* Grid Layout - Single Row */
+
 .grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
-    gap: 2px; /* Minimal gap */
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 2px; 
     width: 100%;
-    position: relative; /* Needed for blur effect */
+    position: relative; 
 }
 
-/* Individual Camera Card */
+
 .camera-card {
     border-radius: 3px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -26,20 +26,20 @@
     margin-top: 60px;
 }
 
-/* Hover Effect - Expand & Blur Background */
+
 .camera-card:hover {
-    transform: scale(1.1); /* Makes the hovered camera bigger */
-    z-index: 10; /* Brings it to the front */
-    box-shadow: 0 6px 15px rgba(64, 0, 0, 0.5); /* Maroon Glow */
+    transform: scale(1.1); 
+    z-index: 10; 
+    box-shadow: 0 6px 15px rgba(64, 0, 0, 0.5); 
 }
 
-/* Blur Effect on Other Cameras */
+
 .grid:hover .camera-card:not(:hover) {
-    filter: blur(4px); /* Blurs the non-hovered cameras */
-    opacity: 0.6; /* Makes them slightly faded */
+    filter: blur(4px); 
+    opacity: 0.6; 
 }
 
-/* Camera Titles */
+
 .camera-card h3 {
     text-align: center;
     font-size: 1.2rem;
@@ -47,16 +47,16 @@
     color: var(--primary-color);
 }
 
-/* Camera Feed Styling */
+
 .camera-frame {
     width: 100%;
-    height: 300px; /* Adjusted to keep all cameras same size */
+    height: 300px; 
     object-fit: cover;
     border-radius: 5px;
-    border: 1px solid var(--hover-color); /* Maroon Border */
+    border: 1px solid var(--hover-color); 
 }
 
-/* No Cameras Message */
+
 .no-cameras {
     text-align: center;
     font-size: 1rem;
@@ -64,19 +64,19 @@
     font-style: italic;
 }
 
-/* Responsive Design */
+
 @media (max-width: 1024px) {
     .grid {
-        grid-template-columns: repeat(2, 1fr); /* 2 columns for tablets */
+        grid-template-columns: repeat(2, 1fr); 
     }
     .camera-frame {
-        height: 250px; /* Adjust height for smaller screens */
+        height: 250px; 
     }
 }
 
 @media (max-width: 768px) {
     .grid {
-        grid-template-columns: 1fr; /* Stack in a single column for mobile */
+        grid-template-columns: 1fr; 
     }
     .camera-frame {
         height: 220px;
