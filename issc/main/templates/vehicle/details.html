@@ -13,6 +13,10 @@
 
       <div class="header">
         <h2>Registered Vehicles</h2>
+        <a href="#" id="print-link" class="inline-block px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+          Print
+        </a>
+
       </div>
 
       <form method="POST" action="">
@@ -34,13 +38,7 @@
           <p><strong>Guardian Number:</strong> {{ vehicle.guardian_number }}</p>
           <p><strong>Driver's License:</strong> {{ vehicle.drivers_license }}</p>
 
-          <div class="qr-car-image">
-            <strong>QR Code:</strong>
-            <img src="{{ vehicle.qr_code.url }}" alt="QR Code">
-
-            <strong>Car Image:</strong>
-              <img src="{{ vehicle.image.url }}" alt="Car Image">
-          </div>
+         
 
           <select name="status">
             <option value="allowed" {% if vehicle.status == 'allowed' %}selected{% endif %}>allowed</option>
@@ -68,6 +66,12 @@
     function confirmDelete() {
       return confirm('Do you really want to delete this user?');
     }
+
+
   </script> 
+
+  <script>
+  document.getElementById('print-link').href = window.location.href + 'print';
+</script>
 
 {% endblock content %}

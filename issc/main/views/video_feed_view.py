@@ -90,7 +90,7 @@ def stop_record(request):
 
 
         recordings_dir = os.path.join(settings.BASE_DIR, 'recordings')
-        reencode_avi_to_mp4(recordings_dir)
+        # reencode_avi_to_mp4(recordings_dir)
 
         return redirect('multiple_streams')
 
@@ -98,7 +98,7 @@ def stop_record(request):
         return redirect('multiple_streams')
 
 # start_record()
-initialize_video_writers()
+# initialize_video_writers()
 def process_with_model(frame):
     cropped_faces, annotated_frame = face_detector.detect_faces(frame)
 
@@ -238,10 +238,10 @@ def reset_recordings(request):
 
 
     recordings_dir = os.path.join(settings.BASE_DIR, 'recordings')
-    reencode_avi_to_mp4(recordings_dir)
+    # reencode_avi_to_mp4(recordings_dir)
 
     # Create new video writers
-    initialize_video_writers()
+    # initialize_video_writers()
 
     return redirect('recording_archive')
 
@@ -290,7 +290,7 @@ def handle_exit(signum, frame):
         video_writers[cam_id].release()
     
     recordings_dir = os.path.join(settings.BASE_DIR, 'recordings')
-    reencode_avi_to_mp4(recordings_dir)
+    # reencode_avi_to_mp4(recordings_dir)
     
     sys.exit(0)
 

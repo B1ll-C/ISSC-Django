@@ -4,6 +4,8 @@
 Download FFMPEG [Here](https://github.com/BtbN/FFmpeg-Builds/releases)
 **ffmpeg-master-latest-win64-gpl**
 
+Download wkhtmltopdf [Here](https://wkhtmltopdf.org/downloads.html) for Windows
+
 
 ## Reinstall Packages
 
@@ -20,6 +22,10 @@ run this next
 pip install numpy==1.23.5 django mysqlclient tensorflow==2.10.0 whitenoise
 ```
 
+```bash
+pip install pdfkit
+pip install openpyxl
+```
 
 ## env
 ```.env

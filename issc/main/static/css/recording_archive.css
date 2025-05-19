@@ -1,14 +1,14 @@
-/* General Page Styling */
+
 body {
     display: flex;
-    justify-content: space-between; /* Creates gap between table & sidebar */
+    justify-content: space-between; 
 }
 
-/* === Main Content Container === */
+
 .content-container {
-    flex: 1; /* Allows it to take up remaining space */
-    max-width: 42%; /* Ensure it doesn’t stretch too much */
-    margin-right: 10px; /* Adds gap between table and sidebar */
+    flex: 1; 
+    max-width: 42%; 
+    margin-right: 10px; 
 }
 
 .reset-btn{
@@ -26,7 +26,7 @@ body {
 }
 
 .reset-btn:hover, .date-filter:hover {
-    background-color: maroon;  /* Darker maroon on hover */
+    background-color: maroon;  
     color: #fff;
 }
 
@@ -49,11 +49,11 @@ body {
     padding: 8px 40px 8px 10px;
 }
 
-/* Headings */
+
 h2 {
     text-align: center;
     font-size: 26px;
-    color: #4B0000; /* Deep Maroon */
+    color: #4B0000; 
     margin-bottom: 20px;
 }
 
@@ -63,7 +63,7 @@ h3 {
     padding-bottom: 5px;
 }
 
-/* Table Styling */
+
 .table-container {
     padding: 15px;
     border-radius: 7px;
@@ -86,7 +86,7 @@ th, td {
     margin-bottom: 20px;
 }
 
-/* Table Header */
+
 thead {
     background: #4B0000;
     color: white;
@@ -97,7 +97,7 @@ th {
     text-transform: uppercase;
 }
 
-/* Hover Effect on Table Rows */
+
 tbody tr {
     transition: background 0.3s ease-in-out;
 }
@@ -106,7 +106,7 @@ tbody tr:hover {
     background: rgba(75, 0, 0, 0.1);
 }
 
-/* Recording Links */
+
 td ul {
     list-style-type: none;
     padding: 0;
@@ -116,7 +116,7 @@ td ul li {
     padding: 5px 0;
 }
 
-/* Smooth Hover Effect on File Links */
+
 td ul li a {
     color: #4B0000;
     text-decoration: none;
@@ -146,15 +146,15 @@ td ul li a:hover::after {
     transform: scaleX(1);
 }
 
-/* === Sidebar Styling === */
+
 #previewSidebar {
     position: fixed;
     top: 0;
     right: 0;
-    width: 56%; /* Increased width */
+    width: 56%; 
     height: 100%;
     margin: 1.1rem;
-    background: rgba(25, 0, 0, 0.9); /* Darker Maroon Glassmorphism */
+    background: rgba(25, 0, 0, 0.9); 
     color: white;
     flex-direction: column;
     align-items: center;
@@ -165,7 +165,7 @@ td ul li a:hover::after {
     border-left: 2px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Preview Title */
+
 #previewSidebar h3 {
     font-size: 20px;
     text-align: center;
@@ -175,16 +175,16 @@ td ul li a:hover::after {
     color: #ddd;
 }
 
-/* Larger Video Player */
+
 #videoPreview {
     width: 100%;
-    height: 90%; /* Bigger preview */
+    height: 90%; 
     border-radius: 5px;
     margin-top: 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* === Responsive Design === */
+
 @media (max-width: 1024px) {
     .content-container {
         max-width: 100%;

@@ -1,4 +1,4 @@
-/* Container that holds all the graphs */
+
 .dashboard-wrapper {
     padding: 2rem;
     font-family: 'Segoe UI', sans-serif;
@@ -11,16 +11,16 @@
     color: #2d3436;
   }
   
-  /* Graph container layout */
+  
   .graph-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 columns */
-    gap: 1.5rem;  /* Adjusted spacing between graphs */
-    max-width: 1200px; /* Limit container width */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 1.5rem;  
+    max-width: 1200px; 
     margin: 0 auto;
   }
   
-  /* Individual graph section */
+  
   .graph-section {
     padding: 1.5rem;
     border-radius: 12px;
@@ -32,7 +32,7 @@
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
   }
   
-  /* Styling for canvas (graph area) */
+  
   .graph-section canvas {
     width: 100%;
     height: 300px !important;
@@ -40,24 +40,24 @@
     margin: auto;
   }
   
-  /* Styling for headings within each graph */
+  
   .graph-section h3 {
     font-size: 1.1rem;
     font-weight: 500;
-    color: #2d3436;  /* Slightly dark for emphasis */
+    color: #2d3436;  
     margin-bottom: 1rem;
   }
   
-  /* Grid structure */
+  
   .graph-monthly { grid-column: 1 / span 1; }
   .graph-incident { grid-column: 2 / span 1; }
   .graph-department { grid-column: 1 / span 1; }
   .graph-vehicles { grid-column: 2 / span 1; }
   
-  /* Responsive layout for smaller screens */
+  
   @media (max-width: 768px) {
     .graph-container {
-      grid-template-columns: 1fr; /* 1 column for small screens */
+      grid-template-columns: 1fr; 
     }
     .graph-monthly, .graph-incident, .graph-department, .graph-vehicles {
       grid-column: span 1;

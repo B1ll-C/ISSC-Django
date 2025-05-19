@@ -1,12 +1,12 @@
 .face-enrollment {
     text-align: center;
-    padding-top: 40px; /* You can adjust this for spacing above */
+    padding-top: 40px; 
     padding-bottom: 40px;
-    min-height: 100vh; /* Ensures full viewport height */
+    min-height: 100vh; 
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Vertically centers content */
-    align-items: center; /* Horizontally centers content */
+    justify-content: center; 
+    align-items: center; 
 }
 
 .video-section {
@@ -16,7 +16,7 @@
     width: 100%;
     max-width: 720px;
     transition: all 0.3s ease;
-    margin-bottom: 20px; /* Optional, for spacing below */
+    margin-bottom: 20px; 
 }
 
 .video-section:hover {

@@ -1,15 +1,15 @@
-/* Updated Modern Color Palette */
+
 :root {
-    --primary-color: rgba(64, 0, 0, 0.9); /* Deep Maroon */
-    --secondary-color: rgba(230, 230, 230, 1); /* Light Gray */
+    --primary-color: rgba(64, 0, 0, 0.9); 
+    --secondary-color: rgba(230, 230, 230, 1); 
     --background-gradient: linear-gradient(135deg, rgba(200, 200, 200, 1), rgba(64, 0, 0, 1));
-    --text-color: #333333; /* Dark Gray */
-    --hover-color: rgba(128, 0, 0, 0.9); /* Dark Maroon for hover */
-    --link-color: rgba(64, 0, 0, 1); /* Deep Maroon for links */
+    --text-color: #333333; 
+    --hover-color: rgba(128, 0, 0, 0.9); 
+    --link-color: rgba(64, 0, 0, 1); 
     --sidebar-width: 250px;
 }
   
-/* Global Styles */
+
 body {
     font-family: 'Poppins', Arial, sans-serif;
     background-color: #f9f9f9;
@@ -21,16 +21,16 @@ body {
     color: var(--text-color);
     background-image: 
         linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1),
-        rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.5)), url('../images/overlay-bg.jpg');  /* Your actual background image */
-    background-size: cover;          /* Make sure image covers entire area */
-    background-repeat: no-repeat;    /* Prevent repeating */
-    background-position: center;  /* Center the background */
+        rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.5)), url('../images/overlay-bg.jpg');  
+    background-size: cover;          
+    background-repeat: no-repeat;    
+    background-position: center;  
     background-attachment: fixed;
-    animation: fadeIn .7s ease-in-out;  /* Page fade-in effect */
+    animation: fadeIn .7s ease-in-out;  
 }
 
   
-/* Main Navbar (Top) */
+
 .navbar {
     font-family: "Cinzel", serif;
     font-weight: 700;
@@ -67,14 +67,14 @@ body {
     font-size: 16px;
 }
 
-/* Secondary Navbar */
+
 .secondary-navbar {
     display: flex;
     justify-content: space-between;
     background: var(--secondary-color);
-    position: sticky;    /* Makes the navbar stick after reaching the top */
+    position: sticky;    
     top: 0;    
-    margin-bottom: 20px;          /* Sticks when it reaches the top */
+    margin-bottom: 20px;          
     width: 100%;
     padding: 8px 0 9px 231px;
     z-index: 999;
@@ -82,48 +82,48 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: background-color 0.3s;
     animation: slideDownFade .6s ease-out forwards;
-    animation-delay: 0.3s;  /* Slight delay after primary navbar */
-    opacity: 0;  /* Start hidden */
+    animation-delay: 0.3s;  
+    opacity: 0;  
 }
 
-/* Sticky Logo Initial State (Hidden) */
+
 .sticky-logo {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: 20px;  /* Adjust as needed */
+    margin-left: 20px;  
     padding-right: 10px;
-    opacity: 0;         /* Initially hidden */
-    transform: scale(0.5);  /* Smaller scale */
+    opacity: 0;         
+    transform: scale(0.5);  
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .sticky-logo img {
-    height: 38px;       /* Adjust the logo size */
+    height: 38px;       
     width: auto;
 }
 
-/* Show logo when navbar sticks to the top */
+
 .secondary-navbar.sticky-active .sticky-logo {
     opacity: 1;
-    transform: scale(1);  /* Scale up the logo smoothly */
+    transform: scale(1);  
 }
 
-/* Navigation Links */
+
 .secondary-navbar ul {
     list-style: none;
     display: flex;
     align-items: center;
-    width: 100%; /* Make sure it spans full width */
-    flex: 1; /* Makes the nav items take up available space */
+    width: 100%; 
+    flex: 1; 
 }
 
-/* Left-side Links */
+
 .secondary-navbar ul li {
     margin-right: 0;
 }
 
-/* Navbar Links Styling */
+
 .secondary-navbar ul li a {
     font-weight: 600;
     font-size: 13px;
@@ -132,13 +132,13 @@ body {
     transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
-/* Hover Effect */
+
 .secondary-navbar ul li a:hover {
     color: rgb(215, 215, 215);
     background: var(--hover-color);
 }
 
-/* Logout Button */
+
 .user-info .logout-btn {
     color: rgb(206, 206, 206);
     border: none;
@@ -147,24 +147,24 @@ body {
     transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
-/* Hover Effect for Button */
+
 .user-info .logout-btn:hover {
     color: white;
     text-decoration: underline;
 }
 
-/* Main Content */
+
 .container {
     margin:auto;     
     flex-grow: 1;   
     box-sizing: border-box;
     animation: contentFadeIn .6s ease-out forwards;
-    animation-delay: 0.5s;  /* Delay to start after navbars */
-    opacity: 0;  /* Start hidden */
+    animation-delay: 0.5s;  
+    opacity: 0;  
     padding: 20px;
 }
 
-/* Buttons */
+
 .user-info {
     text-align: center;
 }
@@ -175,7 +175,7 @@ body {
     text-transform: capitalize;
 }
 
-/* Footer */
+
 footer {
     background-color: #242121;
     color: rgb(98, 98, 98);
@@ -185,7 +185,7 @@ footer {
     font-size: smaller;
 }
 
-/* Toggle Button */
+
 .toggle-btn {
     display: none;
     background: var(--secondary-color);
@@ -203,7 +203,7 @@ footer {
     transform: scale(1.1);
 }
 
-/* Responsive Styles */
+
 @media (max-width: 768px) {
     .toggle-btn {
         display: block;
@@ -236,7 +236,7 @@ footer {
     }
 }
 
-/* Keyframe for General Fade-In */
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -246,26 +246,26 @@ footer {
     }
 }
 
-/* Keyframe for Slide-Down and Fade-In */
+
 @keyframes slideDownFade {
     from {
         opacity: 0;
-        transform: translateY(-20px);  /* Start slightly above */
+        transform: translateY(-20px);  
     }
     to {
         opacity: 1;
-        transform: translateY(0);  /* Return to original position */
+        transform: translateY(0);  
     }
 }
 
-/* Keyframe for Content Fade-In */
+
 @keyframes contentFadeIn {
     from {
         opacity: 0;
-        transform: translateY(30px);  /* Start slightly below */
+        transform: translateY(30px);  
     }
     to {
         opacity: 1;
-        transform: translateY(0);  /* Return to original position */
+        transform: translateY(0);  
     }
 }

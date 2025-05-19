@@ -87,6 +87,26 @@ def incident_details(request, id):
     return HttpResponse(template.render(context, request))
 
 @login_required(login_url='/login/')
+def incident_print(request, id):
+    user = AccountRegistration.objects.filter(username=request.user).values()
+    incident = get_object_or_404(IncidentReport, id=id)
+    template = loader.get_template('incident/print.html')
+    context = {
+        'incident': incident,
+        'user_role': user[0]['privilege'],
+        'user_data': user[0],
+    }
+
+    if request.method == 'POST':
+        status = request.POST['status']
+        incident.last_updated_by = user[0]['id_number']
+        incident.status = status
+        incident.save()
+
+        return redirect(request.META.get('HTTP_REFERER', '/'))
+
+    return HttpResponse(template.render(context, request))
+@login_required(login_url='/login/')
 def incident_forms(request):
     user = AccountRegistration.objects.filter(username=request.user).values()
     template = loader.get_template('incident/forms.html')

@@ -1,4 +1,4 @@
-/* Wider Form with Blur (Glassmorphism Effect) */
+
 .forms {
     max-width: 1000px;
     margin: 50px auto;
@@ -11,28 +11,28 @@
     font-family: 'Poppins', Arial, sans-serif;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     animation: fadeIn .7s ease-in-out forwards;
-    opacity: 0; /* Start hidden before animation */
+    opacity: 0; 
 }
 
-/* Subtle Hover Effect */
+
 .forms:hover {
     transform: translateY(-5px);
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
 }
 
-/* Grid Layout for Form */
+
 .form-group {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);  /* 3 columns layout */
+    grid-template-columns: repeat(3, 1fr);  
     gap: 20px;
 }
 
-/* Row 1: Username spans all 3 columns */
+
 .username {
     grid-column: span 3;
 }
 
-/* Row 2: First Name, Middle Name, Last Name (1 column each) */
+
 .first-name {
     grid-column: span 1;
 }
@@ -43,7 +43,7 @@
     grid-column: span 1;
 }
 
-/* Row 3: Email, ID Number, Contact Number (1 column each) */
+
 .email {
     grid-column: span 1;
 }
@@ -54,7 +54,7 @@
     grid-column: span 1;
 }
 
-/* Row 4: Gender, Department, Privilege (1 column each) */
+
 .gender {
     grid-column: span 1;
 }
@@ -65,32 +65,32 @@
     grid-column: span 1;
 }
 
-/* Row 5: Status and Password */
+
 .status {
     grid-column: span 1;
 }
 .password {
-    grid-column: span 2;  /* Password spans 2 columns for wider input */
+    grid-column: span 2;  
 }
 
-/* Button spans full width */
+
 .register-btn {
     grid-column: span 3;
     margin-top: 20px;
 }
 
-/* Label Styling */
+
 .form-field label {
     display: block;
     margin-bottom: 8px;
     font-size: 14px;
-    color: #4B0000;  /* Deep Maroon */
+    color: #4B0000;  
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
-/* Input Fields with Modern Style */
+
 .form-field input[type="text"],
 .form-field input[type="email"],
 .form-field input[type="password"],
@@ -100,17 +100,17 @@
 .form-field select {
     width: 100%;
     padding: 8px 25px;
-    border: none;  /* Remove borders */
-    border-radius: 50px;
-    background-color: rgba(224, 224, 224, 0.5);  /* Light gray transparent background */
+    border: none;  
+    border-radius: 40px;
+    background-color: rgba(224, 224, 224, 0.5);  
     font-size: 13px;
-    color: #333333;  /* Dark Gray Text */
+    color: #333333;  
     transition: all 0.3s ease;
     outline: none;
     box-sizing: border-box;
 }
 
-/* Focus Effect on Inputs */
+
 .form-field input[type="text"]:focus,
 .form-field input[type="email"]:focus,
 .form-field input[type="password"]:focus,
@@ -118,11 +118,11 @@
 .form-field input[type="file"]:focus,
 .form-field textarea:focus,
 .form-field select:focus {
-    background-color: rgba(255, 255, 255, 0.8);  /* White-ish background on focus */
-    box-shadow: 0 0 5px rgba(75, 0, 0, 0.5);  /* Deep Maroon Glow */
+    background-color: rgba(255, 255, 255, 0.8);  
+    box-shadow: 0 0 5px rgba(75, 0, 0, 0.5);  
 }
 
-/* Hover Effect on Inputs */
+
 .form-field input[type="text"]:hover,
 .form-field input[type="email"]:hover,
 .form-field input[type="password"]:hover,
@@ -130,19 +130,19 @@
 .form-field input[type="file"]:hover,
 .form-field textarea:hover,
 .form-field select:hover {
-    background-color: rgba(255, 255, 255, 0.8);  /* White-ish background on focus */
-    box-shadow: 0 0 5px rgba(75, 0, 0, 0.5);  /* Deep Maroon Glow */
+    background-color: rgba(255, 255, 255, 0.8);  
+    box-shadow: 0 0 5px rgba(75, 0, 0, 0.5);  
 }
 
 .form-field textarea {
     width: 100%;
-    height: 150px; /* Set a larger default height */
-    min-height: 150px; /* Prevent shrinking */
-    max-height: 250px; /* Prevent excessive stretching */
-    resize: vertical; /* Allow vertical resizing within limits */
+    height: 150px; 
+    min-height: 150px; 
+    max-height: 250px; 
+    resize: vertical; 
 }
 
-/* Select Dropdown Customization */
+
 select {
     appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 140 140' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='20,50 70,100 120,50' fill='none' stroke='%234B0000' stroke-width='15' stroke-linecap='round'/%3E%3C/svg%3E");
@@ -152,7 +152,7 @@ select {
     cursor: pointer;
 }
 
-/* Submit Button with Deep Maroon Gradient */
+
 .register-btn button[type="submit"],
 .form-field button {
     width: 100%;
@@ -169,7 +169,7 @@ select {
     box-shadow: 0 4px 12px rgba(75, 0, 0, 0.5);
 }
 
-/* Button Hover & Active Effects */
+
 .register-btn button[type="submit"]:hover,
 .form-field button:hover {
     background: linear-gradient(135deg, #260000, #4B0000);
@@ -183,7 +183,7 @@ select {
     box-shadow: 0 3px 8px rgba(75, 0, 0, 0.4);
 }
 
-/* Search Bar Styling */
+
 .search-container {
     display: flex;
     align-items: center;
@@ -199,7 +199,7 @@ select {
 
 #tableSearch {
     width: 100%;
-    padding: 8px 30px 8px 20px; /* Leave space for icon */
+    padding: 8px 30px 8px 20px; 
     border: 1px solid #ccc;
     border-radius: 50px;
     font-size: 14px;
@@ -208,18 +208,18 @@ select {
 .create-search {
     padding-top: 40px;
     display: flex;
-    justify-content: space-between; /* Push items to opposite ends */
-    align-items: center;            /* Vertically center them */
+    justify-content: space-between; 
+    align-items: center;            
 }
 
 .search-icon {
     position: absolute;
     right: 10px;
     font-size: 16px;
-    color: #fff;  /* Deep Maroon */
+    color: #fff;  
 }
 
-/* General Button Styles */
+
 .create-new-btn, .pagination a, .update-btn, .delete-btn, .toggle-btn , .archive-btn {
     background-color: rgba(230, 230, 230, 1);
     color: maroon;
@@ -246,7 +246,7 @@ select {
     font-size: 13px;
 }
 
-/* Specific Button Colors */
+
 .delete-btn {
     color: maroon;
 }
@@ -255,7 +255,7 @@ select {
     color: darkgreen;
 }
 
-/* Hover Effects */
+
 .delete-btn:hover {
     background-color: maroon;
     color: white;
@@ -286,7 +286,7 @@ select {
 
 
 .create-new-btn:hover, .pagination a:hover, .pagination button:hover, .create-new-btn button:hover, .archive-btn:hover {
-    background-color: maroon;  /* Darker maroon on hover */
+    background-color: maroon;  
     color: #fff;
 }
 
@@ -300,7 +300,7 @@ select {
     outline: none;
 }
 
-/* Pagination Styling */
+
 .pagination{
     display: flex;
     align-items: center;
@@ -318,44 +318,44 @@ select {
     color: #686767c1;
 }
 
-/* Table Wrapper for Scroll */
+
 .table-container {
-    max-width: 100%;         /* Restrict table width to container */
-    overflow-x: auto;        /* Enable horizontal scroll if content overflows */
+    max-width: 100%;         
+    overflow-x: auto;        
     border-radius: 5px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     margin: 20px auto 15px auto;
     animation: fadeIn .5s ease-in-out forwards;
-    animation-delay: 0.2s; /* Delay to start after the form */
-    opacity: 0; /* Start hidden before animation */
+    animation-delay: 0.2s; 
+    opacity: 0; 
 }
 
-/* Table Styling */
+
 .form-table {
     width: 100%;
-    min-width: 800px;        /* Set a minimum width to trigger horizontal scroll */
+    min-width: 800px;        
     border-collapse: collapse;
     background: rgba(255, 255, 255, 0.9);
     border-radius: 5px;
 }
 
-/* Table Header */
+
 .form-table thead {
-    background-color: #4B0000;  /* Deep Maroon */
+    background-color: #4B0000;  
     color: #ffffff;
     text-transform: uppercase;
-    font-size: 15px;           /* Smaller Header Font */
+    font-size: 15px;           
     letter-spacing: 1px;
 }
 
-/* Table Cells */
+
 .form-table th, .form-table td {
-    padding: 10px;       /* Reduce padding for smaller cell size */
+    padding: 10px;       
     text-align: left;
-    font-size: 12px;          /* Smaller Font Size */
+    font-size: 12px;          
     color: #333333;
     border-bottom: 1px solid #ddd;
-    white-space: nowrap;      /* Prevent text from wrapping */
+    white-space: nowrap;      
 }
 
 .form-table th{
@@ -364,19 +364,19 @@ select {
     text-align: center;
 }
 
-/* Table Rows */
+
 .form-table tbody tr {
     background-color: #f9f9f9;
     transition: background-color 0.3s ease;
 }
 
 .form-table tbody tr:hover {
-    background-color: rgba(75, 0, 0, 0.1);  /* Light Maroon Hover */
+    background-color: rgba(75, 0, 0, 0.1);  
 }
 
-/* First Column (Date Time) Styling */
+
 .form-table tbody tr td:first-child {
-    color: #4B0000;  /* Deep Maroon for Date Time */
+    color: #4B0000;  
     font-weight: 600;
 }
 
@@ -384,7 +384,7 @@ select {
     text-align: center;
 }
 
-/* Base Link Styling */
+
 .form-table a {
     text-decoration: none;
     position: relative;
@@ -393,35 +393,35 @@ select {
     font-style: italic;
 }
 
-/* Create the underline effect */
+
 .form-table a::after {
     content: "";
     position: absolute;
     left: 0;
-    bottom: -2px; /* Adjust spacing below text */
+    bottom: -2px; 
     width: 0%;
-    height: 1px; /* Thickness of the underline */
-    background-color: #4B0000; /* Match text color */
+    height: 1px; 
+    background-color: #4B0000; 
     transition: width 0.2s ease-in-out;
 }
 
-/* Expand the underline from left to right on hover */
+
 .form-table a:hover::after {
     width: 100%;
 }
 
-/* Rounded and clean DataTables search bar */
+
 .dataTables_filter label input {
     margin-bottom: 10px;
 }
 
 .dataTables_filter label input:focus {
-    border-color: #800000; /* blue border on focus */
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); /* soft blue glow */
+    border-color: #800000; 
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); 
 }
 
 .dataTables_length label select:focus {
-    border-color: #800000; /* blue border on focus */
+    border-color: #800000; 
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
 }
 
@@ -429,7 +429,18 @@ select {
     margin: 10px;
 }
 
-/* Scrollbar Styling (Optional for Webkit Browsers) */
+
+.dataTables_length select {
+  -webkit-appearance: none; 
+  -moz-appearance: none;    
+  appearance: none;         
+  background: none;
+  padding-right: 1.5em; 
+  border: 1px solid #ccc;
+  background-color: white;
+}
+
+
 .table-container::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -440,15 +451,15 @@ select {
 }
 
 .table-container::-webkit-scrollbar-thumb {
-    background: gray;  /* Deep Maroon Scrollbar */
+    background: gray;  
     border-radius: 4px;
 }
 
 .table-container::-webkit-scrollbar-thumb:hover {
-    background: #260000;  /* Darker Maroon on Hover */
+    background: #260000;  
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
     .form-table th, .form-table td {
         padding: 10px 12px;
@@ -456,11 +467,11 @@ select {
     }
 
     .form-group {
-        grid-template-columns: 1fr;  /* Single column on smaller screens */
+        grid-template-columns: 1fr;  
     }
 
     .full-width {
-        grid-column: span 1;  /* Reset full-width fields */
+        grid-column: span 1;  
     }
 
     .username,
@@ -476,18 +487,18 @@ select {
     .status,
     .password,
     .register-btn {
-        grid-column: span 1;  /* All fields take full width */
+        grid-column: span 1;  
     }
 }
 
-/* Keyframe for Fade-In Effect */
+
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(20px); /* Slight upward movement */
+        transform: translateY(20px); 
     }
     to {
         opacity: 1;
-        transform: translateY(0); /* Settle to original position */
+        transform: translateY(0); 
     }
 }

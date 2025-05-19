@@ -5,153 +5,125 @@
 {% block content %}
 
 {% load static %} 
-
+        <style>
+  .d-none {
+    display: none;
+  }
+</style>
     <link rel="stylesheet" href="{% static 'css/forms.css' %}">
-
-    <div class="create-search">
-        <a href="{% url 'signup-forms' %}" class="create-new-btn">Create New Account</a>
-
-        <!-- Search Bar -->
-        <div class="search-container">
-            <input type="text" id="tableSearch" placeholder="Search..." onkeyup="filterTable()">
-            <span class="search-icon">&#128269;</span> <!-- Unicode for a magnifying glass -->
-        </div>
-    </div>
-
+    <a href="{% url 'signup-forms' %}" class="create-new-btn">Create New Account</a>
+    <a href="{% url 'import-forms' %}" class="create-new-btn">Import Accounts</a>
+  
     <div class="table-container">
-        <table class="form-table">
-            <thead>
-            <tr>
-                <th>Date Time</th>
-                <th>Username</th>
-                <th>First Name</th>
-                <th>Middle Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>ID Number</th>
-                <th>Contact Number</th>
-                <th>Gender</th>
-                <th>Department</th>
-                <th>Privilege</th>
-                <th>Status</th>
-                <th colspan="3" style="text-align: center;">Action</th>
-            </tr>
-            </thead>
-            <tbody> 
-                {% for user in users %} 
-                <tr>
-                    <form method="POST" action="">
-                        {% csrf_token %}
+      <table class="form-table" id="tblusers">
+        <thead>
+          <tr>
+            <th>Date Time</th>
+            <th>Username</th>
+            <th>First Name</th>
+            <th>Middle Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>ID Number</th>
+            <th>Contact Number</th>
+            <th>Gender</th>
+            <th>Department</th>
+            <th>Privilege</th>
+            <th>Status</th>
+            <th style="text-align: center;"></th>
+            <th style="text-align: center;">Action</th>
+            <th style="text-align: center;"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <form method="POST" action="">
+              {% csrf_token %}
+              
+              <td>
+                <span class="d-none">{{ user.date_joined }}</span>
+                {{ user.date_joined }}
+              </td>
+              <td>
+                <span class="d-none">{{ user.username }}</span>
+                {{ user.username }}
+                <input type="text" name="username" value="{{ user.username }}" hidden>
+              </td>
+              <td>
+                <span class="d-none">{{ user.first_name }}</span>
+                <input type="text" class="form-input" style="width: 140px;" name="first_name" value="{{ user.first_name }}" disabled>
+              </td>
+              <td>
+                <span class="d-none">{{ user.middle_name }}</span>
+                <input type="text" class="form-input" style="width: 140px;" name="middle_name" value="{{ user.middle_name }}" disabled>
+              </td>
+              <td>
+                <span class="d-none">{{ user.last_name }}</span>
+                <input type="text" class="form-input" style="width: 140px;" name="last_name" value="{{ user.last_name }}" disabled>
+              </td>
+              <td>
+                <span class="d-none">{{ user.email }}</span>
+                <input type="text" class="form-input" style="width: 140px;" name="email" value="{{ user.email }}" disabled>
+              </td>
+              <td>
+                <span class="d-none">{{ user.id_number }}</span>
+                <input type="text" class="form-input" style="width: 140px;" name="id_number" value="{{ user.id_number }}" disabled>
+              </td>
+              <td>
+                <span class="d-none">{{ user.contact_number }}</span>
+                <input type="text" class="form-input" style="width: 140px;" name="contact_number" value="{{ user.contact_number }}" disabled>
+              </td>
+              <td>
+                <span class="d-none">
+                  {% if user.gender == 'M' %}Male{% elif user.gender == 'F' %}Female{% else %}Other{% endif %}
+                </span>
+                <select id="gender" class="form-input" name="gender" style="width: 140px;" disabled>
+                  <option value="M" {% if user.gender == 'M' %}selected{% endif %}>Male</option>
+                  <option value="F" {% if user.gender == 'F' %}selected{% endif %}>Female</option>
+                  <option value="O" {% if user.gender == 'O' %}selected{% endif %}>Other</option>
+                </select>
+              </td>
+              <td>
+                <span class="d-none">{{ user.department }}</span>
+                <input type="text" class="form-input" style="width: 140px;" name="department" value="{{ user.department }}" disabled>
+              </td>
+              <td>
+                <span class="d-none">{{ user.privilege }}</span>
+                <select id="privilege" class="form-input" name="privilege" style="width: 140px;" disabled>
+                  <option value="student" {% if user.privilege|lower == 'student' %}selected{% endif %}>Student</option>
+                  <option value="faculty" {% if user.privilege|lower == 'faculty' %}selected{% endif %}>Faculty</option>
+                  <option value="admin" {% if user.privilege|lower == 'admin' %}selected{% endif %}>Admin</option>
+                </select>
+              </td>
+              <td>
+                <span class="d-none">{{ user.status }}</span>
+                <select id="status" class="form-input" name="status" style="width: 140px;" disabled>
+                  <option value="allowed" {% if user.status == 'allowed' %}selected{% endif %}>Allowed</option>
+                  <option value="restricted" {% if user.status == 'restricted' %}selected{% endif %}>Restricted</option>
+                </select>
+              </td>
+              <td>
+                <button name="delete" style="cursor: not-allowed;" value="{{ user.username }}" class="form-input delete-btn" onclick="return confirmDelete();" disabled>DELETE</button>
+              </td>
+              <td>
+                <button style="cursor: not-allowed;" name="update" class="form-input update-btn" value="{{ user.username }}" disabled>UPDATE</button>
+              </td>
+            </form>
+            <td>
+              <button id="{{ forloop.counter }}" class="custom-toggle-btn" onclick="toggleEditFields(this)">TOGGLE</button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
 
-                        <td>{{ user.date_joined }}</td>
-                        <td>{{ user.username }}</td>
-                        <input type="text" name="username" value="{{ user.username }}" hidden>
-                        <td><input type="text" class="form-input" style="width: 140px;" name="first_name" value="{{ user.first_name }}" disabled></td>
-                        <td><input type="text" class="form-input" style="width: 140px;" name="middle_name" value="{{ user.middle_name }}" disabled></td>
-                        <td><input type="text" class="form-input" style="width: 140px;" name="last_name" value="{{ user.last_name }}" disabled></td>
-                        <td><input type="text" class="form-input" style="width: 140px;" name="email" value="{{ user.email }}" disabled></td>
-                        <td><input type="text" class="form-input" style="width: 140px;" name="id_number" value="{{ user.id_number }}" disabled></td>
-                        <td><input type="text" class="form-input" style="width: 140px;" name="contact_number" value="{{ user.contact_number }}" disabled></td>
-                        <td>
-                            <select id="gender" class="form-input" name="gender" style="width: 140px;" disabled>
-                                <option value="M" {% if user.gender == 'M' %}selected{% endif %}>Male</option>
-                                <option value="F" {% if user.gender == 'F' %}selected{% endif %}>Female</option>
-                                <option value="O" {% if user.gender == 'O' %}selected{% endif %}>Other</option>
-                            </select>
-                        </td>
-                        <td><input type="text" class="form-input" style="width: 140px;" name="department" value="{{ user.department }}" disabled></td>
-
-                        <td>
-                            <select id="privilege" class="form-input" name="privilege" style="width: 140px;" disabled>
-                                <option value="student" {% if user.privilege == 'student' %}selected{% endif %}>Student</option>
-                                <option value="faculty" {% if user.privilege == 'faculty' %}selected{% endif %}>Faculty</option>
-                                <option value="admin" {% if user.privilege == 'admin' %}selected{% endif %}>Admin</option>
-                            </select>
-                        </td>
-                        <td>
-                            <select id="status" class="form-input" name="status" style="width: 140px;" disabled>
-                                <option value="allowed" {% if user.status == 'allowed' %}selected{% endif %}>Allowed</option>
-                                <option value="restricted" {% if user.status == 'restricted' %}selected{% endif %}>Restricted</option>
-                            </select>
-                        </td>
-                        <td><button name="delete" style="cursor: not-allowed;" value="{{ user.username }}" class="form-input delete-btn" onclick="return confirmDelete();" disabled>DELETE</button></td>
-                        <td><button style="cursor: not-allowed;" name="update" class="form-input update-btn" value="{{ user.username }}" disabled>UPDATE</button></td>
-                    </form>
-                    <td><button id="{{ forloop.counter }}" class="custom-toggle-btn" onclick="toggleEditFields(this)">TOGGLE</button></td>
-                </tr> 
-                {% empty %} 
-                    <tr>
-                        <td colspan="12" style="text-align: center;">No users found</td>
-                    </tr> 
-                {% endfor %} 
-            </tbody>
-        </table>
     </div> 
 
     <!-- Pagination Controls -->
-    <div class="pagination"> 
-        <div>
-            <span>Page {{ users.number }} of {{ users.paginator.num_pages }}</span> 
-        </div>
-        <div>
-            {% if users.has_previous %} 
-            <a href="?page=1">&laquo; First</a>
-            <a href="?page={{ users.previous_page_number }}">Previous</a> 
-        {% endif %} 
-        {% if users.has_next %} 
-            <a href="?page={{ users.next_page_number }}">Next</a>
-            <a href="?page={{ users.paginator.num_pages }}">Last &raquo;</a> 
-        {% endif %}
-        </div>
-    </div>
-
+   
     <script type="text/javascript">
-        function filterTable() {
-            const input = document.getElementById('tableSearch');
-            const filter = input.value.toLowerCase();
-            const table = document.querySelector('.form-table tbody');
-            const rows = table.getElementsByTagName('tr');
-        
-            for (let i = 0; i < rows.length; i++) {
-                let cells = rows[i].getElementsByTagName('td');
-                let rowMatches = false;
-        
-                // Check each cell in the row
-                for (let j = 0; j < cells.length; j++) {
-                    let cellText = '';
-        
-                    // If the cell contains an input/select element, get its value
-                    const inputElement = cells[j].querySelector('input, select');
-                    if (inputElement) {
-                        cellText = inputElement.value.toLowerCase();
-                    } else {
-                        cellText = cells[j].innerText.toLowerCase();
-                    }
-        
-                    // Check if the cell text includes the filter keyword
-                    if (cellText.includes(filter)) {
-                        rowMatches = true;
-                        break;  // No need to check the rest of the cells if one matches
-                    }
-                }
-        
-                // Show or hide the row based on whether a match was found
-                rows[i].style.display = rowMatches ? '' : 'none';
-            }
-        }
-
-        let formInputs = document.getElementsByClassName('form-input');
-        const totalFields = formInputs.length; 
-
-        const fieldsPerRow = 13;
-
-        function getStartIndex(rowIndex) {
-            return (rowIndex - 1) * fieldsPerRow;
-        }
-
-        function getEndIndex(rowIndex) {
-            return (rowIndex * fieldsPerRow) - 1;
-        }
+       
 
         function toggleEditFields(button){
             const rowIndex = parseInt(button.id);
@@ -179,5 +151,21 @@
             return confirm('Do you really want to delete this user?');
         }
     </script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+        $("#tblusers").DataTable({
+                "searching": true,
+                "ordering": true,
+                "paging": true,
+                "info": false
+            });
+        });
+
+    </script>
+
+    
 
 {% endblock content %}
